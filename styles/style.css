@@ -1,0 +1,135 @@
+@font-face {
+    font-family: "Mont";
+    src: url("../fonts/Mont-Regular.ttf");
+    font-weight: 400;
+} 
+
+@font-face {
+    font-family: "Mont";
+    src: url("../fonts/Mont-SemiBold.ttf");
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("../fonts/Mont-Bold.ttf");
+    font-weight: 800;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Mont", Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #fff;
+    margin: 0;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+header {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    padding: 40px 0;
+}
+
+.wrapper {
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.push-apart {
+    display: flex;
+    justify-content: space-between;
+}
+
+header .push-apart {
+    align-items: center;
+}
+
+.menu {
+    display: flex;
+    gap: 30px;
+}
+
+.menu-link {
+    font-size: 14px;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.menu-link:active {
+    color: #00a3ff;
+}
+
+.menu-link::after {
+    content: "";
+    display: block;
+    width: 0;
+    border-radius: 1px;
+    height: 2px;
+    background-color: #00a3ff;
+    transition: 0.3s ease-in;
+}
+
+.menu-link:hover::after {
+    width: 100%;
+}
+
+.main-screen {
+    background: no-repeat 100%/100% url("../images/main-screen-bg-image.svg");
+    padding: 200px 0 80px;
+}
+
+h1 {
+    width: 970px;
+    font-size: 70px;
+    font-weight: 800;
+    line-height: 90px;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+.accent-title {
+    display: block;
+    color: #00a3ff;
+}
+
+.main-screen-description {
+    width: 545px;
+    margin-bottom: 75px;
+}
+
+.btn-link {
+    display: inline-block;
+    transition: 0.3s; 
+}
+
+.btn-link:active {
+    transform: scale(1.2);
+}
+
+.btn-link:hover svg {
+    filter: drop-shadow(0px 2px 6px rgba(0, 163, 255, 0.8));
+}
+
+.btn-link svg {
+    stroke: #00a3ff;
+}
