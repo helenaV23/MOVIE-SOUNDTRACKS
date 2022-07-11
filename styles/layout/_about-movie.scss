@@ -1,0 +1,46 @@
+.about-movie {
+    background-color: $primary-bg-color;
+    padding: 130px 0;
+
+    .push-apart {
+        gap: 200px;
+    }
+
+    h2 {
+        position: relative;
+        margin-top: 50px;
+        margin-bottom: 40px;
+        z-index: 1;
+    }
+}
+
+.rating {
+    font-size: 135px;
+    font-weight: 700;
+    color: $accent-color-dark;
+    position: absolute;
+    bottom: 78px;
+    left: -100px;
+    z-index: -1;
+}
+
+.movie-content {
+    padding-left: 100px;
+}
+
+.movie-description {
+    position: relative;
+    color: $secondary-text-color;
+    margin-bottom: 55px;
+}
+
+.movie-description::before {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 2px;
+    background-color: $accent-color;
+    position: absolute;
+    top: 5px;
+    left: -100px;
+}

@@ -1,0 +1,39 @@
+header {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    padding: 40px 0;
+
+    .push-apart {
+        align-items: center;
+    }
+}
+
+.menu {
+    display: flex;
+    gap: 30px;
+}
+
+.menu-link {
+    font-size: 14px;
+    color: $primary-text-color;
+    text-transform: uppercase;
+
+    &:active {
+        color: $accent-color;
+    }
+
+    &::after {
+        content: "";
+        display: block;
+        width: 0;
+        border-radius: 1px;
+        height: 2px;
+        background-color: $accent-color;
+        transition: 0.3s ease-in;
+    }
+    
+    &:hover::after {
+        width: 100%;
+    }
+}

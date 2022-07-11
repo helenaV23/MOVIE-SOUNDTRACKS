@@ -1,0 +1,20 @@
+h1 {
+    width: 970px;
+    font-size: 70px;
+    font-weight: 800;
+    line-height: 90px;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+.accent-title {
+    display: block;
+    color: $accent-color;
+}
+
+h2 {
+    font-size: 40px;
+    line-height: 50px;
+    font-weight: 800;
+}
