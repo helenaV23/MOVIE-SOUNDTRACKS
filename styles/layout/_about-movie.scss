@@ -2,10 +2,6 @@
     background-color: $primary-bg-color;
     padding: 130px 0;
 
-    .push-apart {
-        gap: 200px;
-    }
-
     h2 {
         position: relative;
         margin-top: 50px;
@@ -14,10 +10,15 @@
     }
 }
 
+.movie-info {
+    width: 450px;
+}
+
 .rating {
     font-size: 135px;
     font-weight: 700;
     color: $accent-color-dark;
+    display: block;
     position: absolute;
     bottom: 78px;
     left: -100px;

@@ -57,6 +57,7 @@ a {
     border: 2px solid $accent-color;
     color: $primary-text-color;
     text-transform: uppercase;
+    transition: 0.3s; 
     cursor: pointer;
 
     &:active {
