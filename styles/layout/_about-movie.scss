@@ -11,7 +11,12 @@
 }
 
 .movie-info {
-    width: 450px;
+    width: 530px;
+    padding-left: 80px;
+
+    &.align-center {
+        width: 580px;
+    }
 }
 
 .rating {
@@ -20,12 +25,13 @@
     color: $accent-color-dark;
     display: block;
     position: absolute;
-    bottom: 78px;
-    left: -100px;
+    top: -30px;
+    left: -80px;
     z-index: -1;
 }
 
 .movie-content {
+    width: 450px; //add new
     padding-left: 100px;
 }
 
@@ -44,4 +50,18 @@
     position: absolute;
     top: 5px;
     left: -100px;
+}
+
+.movie-heroes {
+    background-image: url("../images/starwars-the-mandalorian.png"), url("../images/star-wars-rey-skywalker.png");
+    background-repeat: no-repeat, no-repeat;
+    background-position: left top, right top;
+}
+
+.align-center {
+    margin: 0 auto;
+}
+
+.reverse-block {
+    flex-direction: row-reverse;
 }
