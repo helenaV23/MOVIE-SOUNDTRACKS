@@ -1,0 +1,57 @@
+.movie-slider {
+    padding: 150px 0;
+    overflow: hidden;
+}
+
+.slider-wrapper {
+    max-width: 1030px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.movies-list {
+    display: flex;
+    margin-left: -100%;
+}
+
+.movie-item {
+    padding: 0 75px;
+    position: relative;
+}
+
+.circle {
+    width: 85px;
+    height: 85px;
+    background-color: $accent-color;
+    border-radius: 50%;
+}
+
+.btn-video {
+    @extend %absolut-center;
+
+    .triangle {
+        left: 56%;
+    }
+}
+
+.triangle {
+    @extend %absolut-center;
+    width: 0;
+	height: 0;
+	border-top: 15px solid transparent;
+	border-left: 30px solid #000;
+	border-bottom: 15px solid transparent;
+}
+
+.slider-btn-left, .slider-btn-right {
+    position: absolute;
+    top: 50%;
+}
+
+.slider-btn-left {
+    left: -30px;
+}
+
+.slider-btn-right {
+    right: -30px;
+}
