@@ -31,7 +31,7 @@
 }
 
 .movie-content {
-    width: 450px; //add new
+    width: 450px;
     padding-left: 100px;
 }
 
@@ -53,9 +53,22 @@
 }
 
 .movie-heroes {
-    background-image: url("../images/starwars-the-mandalorian.png"), url("../images/star-wars-rey-skywalker.png");
     background-repeat: no-repeat, no-repeat;
     background-position: left top, right top;
+}
+
+.star-wars-heroes {
+    background-image: url("../images/starwars-the-mandalorian.svg"), url("../images/star-wars-skywalker.svg");
+}
+
+.blade-runner-heroes {
+    background-image: url("../images/bladerunner-women.svg"), url("../images/blade-runner-man.svg");
+    background-position: left bottom, right bottom;
+}
+
+.godfather-heroes {
+    background-image: url("../images/godfather-left.svg"), url("../images/godfather-right.svg");
+    background-position: left top, right bottom;
 }
 
 .reverse-block {

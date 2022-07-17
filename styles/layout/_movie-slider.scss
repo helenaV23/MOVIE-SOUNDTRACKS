@@ -19,33 +19,33 @@
     position: relative;
 }
 
-.circle {
+.btn-video {
     width: 85px;
     height: 85px;
     background-color: $accent-color;
     border-radius: 50%;
-}
-
-.btn-video {
+    border: none;
+    cursor: pointer;
     @extend %absolut-center;
 
-    .triangle {
+    &::after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 0;
+        border-top: 15px solid transparent;
+        border-left: 30px solid $primary-bg-color;
+        border-bottom: 15px solid transparent;
+        @extend %absolut-center;
         left: 56%;
     }
 }
 
-.triangle {
-    @extend %absolut-center;
-    width: 0;
-	height: 0;
-	border-top: 15px solid transparent;
-	border-left: 30px solid #000;
-	border-bottom: 15px solid transparent;
-}
-
-.slider-btn-left, .slider-btn-right {
+.slider-btn-left,
+.slider-btn-right {
     position: absolute;
     top: 50%;
+    transform: translateY(-50%);
 }
 
 .slider-btn-left {
