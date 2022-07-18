@@ -1,0 +1,39 @@
+.sign-up {
+    background-color: $primary-bg-color;
+    padding: 100px 0
+}
+
+.sign-up h2 {
+    width: 587px;
+    font-weight: 700;
+    margin: 0 auto 60px;
+}
+
+.form {
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.email-input {
+    width: 380px;
+    color: $primary-text-color;
+    background-color: transparent;
+    border: 2px solid $accent-color;
+    padding: 18px 15px;
+    margin-right: 22px;
+    outline: none;
+
+    &::placeholder {
+        color: $dark-text-color;
+        text-transform: uppercase;
+        font-weight: 400;
+    }
+
+    &:focus {
+        box-shadow: $primary-shadow;
+    }
+}
+
+.form-btn {
+    padding: 18px 60px;
+}

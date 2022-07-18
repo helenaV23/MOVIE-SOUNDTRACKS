@@ -54,7 +54,8 @@
 
 .movie-heroes {
     background-repeat: no-repeat, no-repeat;
-    background-position: left top, right top;
+    background-position: left bottom, right bottom;
+    background-size: contain;
 }
 
 .star-wars-heroes {
@@ -63,12 +64,10 @@
 
 .blade-runner-heroes {
     background-image: url("../images/bladerunner-women.svg"), url("../images/blade-runner-man.svg");
-    background-position: left bottom, right bottom;
 }
 
 .godfather-heroes {
     background-image: url("../images/godfather-left.svg"), url("../images/godfather-right.svg");
-    background-position: left top, right bottom;
 }
 
 .reverse-block {

@@ -4,3 +4,12 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+%active-state {
+    transform: scale(1.2);
+    color: $accent-color;
+}
+
+%hover-state {
+    box-shadow: $primary-shadow;
+}

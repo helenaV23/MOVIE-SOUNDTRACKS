@@ -46,7 +46,7 @@ a {
         filter: drop-shadow($primary-shadow);
     }
 
-    & svg {
+    svg {
         stroke: $accent-color;
     }
 }
@@ -61,12 +61,11 @@ a {
     cursor: pointer;
 
     &:active {
-        transform: scale(1.2);
-        color: $accent-color;
+        @extend %active-state;
     }
 
     &:hover {
-        box-shadow: $primary-shadow;
+        @extend %hover-state;
     }
 }
 
