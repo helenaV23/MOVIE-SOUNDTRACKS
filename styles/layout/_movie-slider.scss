@@ -17,6 +17,10 @@
 .movie-item {
     padding: 0 75px;
     position: relative;
+
+    img {
+        display: block;
+    }
 }
 
 .btn-video {
@@ -55,4 +59,18 @@
 
 .slider-btn-right {
     right: -30px;
+}
+
+@media (max-width: 1200px) {
+    .slider-wrapper {
+        max-width: 930px;
+    }
+
+    .movie-item {
+        padding: 0 65px;
+
+        img {
+            width: 800px;
+        }
+    }
 }

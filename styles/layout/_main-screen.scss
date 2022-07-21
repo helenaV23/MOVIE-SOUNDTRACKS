@@ -1,5 +1,6 @@
 .main-screen {
-    background: no-repeat 100%/100% url("../images/main-screen-bg-image.svg");
+    background: no-repeat url("../images/main-screen-bg-image.svg");
+    background-size: cover;
     padding: 200px 0 80px;
 }
 

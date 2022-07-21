@@ -31,7 +31,7 @@
 }
 
 .movie-content {
-    width: 450px;
+    max-width: 450px;
     padding-left: 100px;
 }
 
@@ -72,4 +72,19 @@
 
 .reverse-block {
     flex-direction: row-reverse;
+}
+
+@media (max-width: 1200px) {
+    .about-movie img {
+        display: block;
+        width: 400px;
+    }
+
+    .movie-info {
+        width: 480px;
+    }
+
+    .rating {
+        font-size: 120px;
+    }
 }
