@@ -55,3 +55,41 @@ footer {
         @extend %hover-state;
     }
 }
+
+@media (max-width: 1024px) {
+    .social-media-icon {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    footer {
+        padding: 30px 0;
+        
+        .push-apart {
+            flex-direction: column;
+            gap: 24px;
+        }
+    }
+
+    .social-media-icon {
+        width: 45px;
+        height: 45px;
+
+        img {
+            width: 24px;
+            height: 19px;
+        }
+    }
+}
+
+@media (max-width: 375px) {
+    .policy {
+        gap: 25px;
+    }
+    
+    .policy-link {
+        font-size: 14px;
+    }
+}

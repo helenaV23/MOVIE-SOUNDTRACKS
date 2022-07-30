@@ -78,3 +78,9 @@ a {
         max-width: 960px;
     }
 }
+
+@media (max-width: 1024px) {
+    .wrapper {
+        max-width: 795px;
+    }
+}

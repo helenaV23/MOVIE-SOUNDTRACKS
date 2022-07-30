@@ -9,12 +9,15 @@ header {
     }
 }
 
+.burger-menu {
+    display: none;
+}
+
 .menu {
     display: flex;
     gap: 30px;
 
     & > li:hover {
-
         .menu-link {
             color: $accent-color;
 
@@ -42,10 +45,6 @@ header {
         height: 2px;
         background-color: $accent-color;
         transition: 0.3s ease-in;
-    }
-    
-    &:hover::after {
-        width: 100%;
     }
 }
 
@@ -97,5 +96,100 @@ header {
 
     &:active {
         @extend %active-state;
+    }
+}
+
+@media (max-width: 1024px) {
+    header {    
+        .push-apart {
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+    }
+
+    .menu-link {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .burger-menu {
+        display: block;
+    
+        a {
+            display: block;
+            padding: 10px;
+        }
+
+        span {
+            position: relative;
+            display: block;
+            width: 24px;
+            height: 1px;
+            background-color: #fff;
+
+            &::after, 
+            &::before {
+                content: "";
+                position: absolute;
+                display: block;
+                width: 24px;
+                height: 1px;
+                background-color: #fff;
+            }
+
+            &::after {
+                top: 6px;
+            }
+
+            &::before {
+                top: -6px;
+            }
+        }  
+    }
+
+    .menu-wrapper {
+        position: relative;
+    }
+
+    nav {
+        width: 100vw;
+        height: 100vh;
+        display: none;
+        position: absolute;
+        top: 20px;
+        right: -14px;
+        justify-content: center;
+        align-items: center;
+        background: $primary-bg-color;
+    }
+
+    .menu-wrapper {
+        &:hover nav {
+            display: flex;
+        }
+    }
+
+    header {
+        padding: 12px 0;
+
+        .push-apart {
+            flex-direction: row;
+        }
+    }
+
+    .menu {
+        flex-direction: column;
+        gap: 15px;
+
+        & > li:hover .menu-link::after {
+            width: 0;
+        }
+    }
+
+    .submenu {
+        top: 0;
+        left: 70px;        
     }
 }

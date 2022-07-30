@@ -5,6 +5,27 @@
 }
 
 .main-screen-description {
-    width: 545px;
+    max-width: 545px;
     margin-bottom: 75px;
+}
+
+@media (max-width: 1024px) {
+    .main-screen {
+        padding: 180px 0 60px;
+        text-align: center;
+    }
+
+    .main-screen-description {
+        margin: 0 auto 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-screen {
+        padding: 120px 0 40px;
+    }
+
+    .main-screen-description {
+        margin: 0 auto 40px;
+    }
 }

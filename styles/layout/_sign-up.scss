@@ -1,12 +1,12 @@
 .sign-up {
     background-color: $primary-bg-color;
-    padding: 100px 0
-}
+    padding: 100px 0;
 
-.sign-up h2 {
-    width: 587px;
-    font-weight: 700;
-    margin: 0 auto 60px;
+    h2 {
+        max-width: 587px;
+        font-weight: 700;
+        margin: 0 auto 60px;
+    }
 }
 
 .form {
@@ -36,4 +36,47 @@
 
 .form-btn {
     padding: 18px 60px;
+}
+
+@media (max-width: 1200px) {
+    .sign-up {
+        background-color: $primary-bg-color;
+        padding: 90px 0;
+
+        h2 {
+            margin: 0 auto 40px; 
+        }
+    }
+}
+
+@media (max-width: 1200px) {
+    .sign-up {
+        text-align: center;
+    }
+
+    .email-input {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .form-btn {
+        margin: auto;
+        display: block;
+    }
+}
+
+@media (max-width: 768px) {
+    .sign-up {
+        padding: 60px 0;
+    }
+}
+
+@media (max-width: 425px) {
+    .form {
+        width: 100%;
+    }
+
+    .email-input {
+        width: 100%;
+    }
 }

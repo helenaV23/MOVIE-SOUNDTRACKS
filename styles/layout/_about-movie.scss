@@ -11,11 +11,11 @@
 }
 
 .movie-info {
-    width: 530px;
+    max-width: 530px;
     padding-left: 80px;
 
     &.align-center {
-        width: 580px;
+        max-width: 580px;
     }
 }
 
@@ -81,10 +81,127 @@
     }
 
     .movie-info {
-        width: 480px;
+        max-width: 480px;
     }
 
     .rating {
         font-size: 120px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .about-movie {
+        padding: 100px 0;
+
+        .push-apart {
+            align-items: center;
+        }
+
+        img {
+            display: block;
+            width: 300px;
+            height: 340px;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+        }
+    }
+
+    .movie-info {
+        max-width: 390px;
+        padding-left: 50px;
+    }
+
+    .movie-description {
+        margin-bottom: 40px;
+
+        &::before {
+            width: 50px;
+            left: -60px;
+        }
+    }
+
+    .rating {
+        font-size: 100px;
+        top: -20px;
+        left: -36px;
+    }
+
+    .movie-content {
+        padding-left: 60px;
+    }
+
+    .movie-heroes {
+        background-size: auto 64%, auto 64%;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-movie {
+        padding: 50px 0;
+
+        .push-apart {
+            flex-direction: column;
+            gap: 20px; 
+        }
+
+        img {
+            width: 260px;
+            height: 295px;
+        }
+    }
+
+    .movie-info {
+       text-align: center;
+       padding-left: 0;
+    }
+
+    .movie-description::before {
+        width: 100px;
+        top: -16px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .rating {
+        font-size: 80px;
+        top: -17px;
+        left: 16%;
+    }
+
+    .movie-content {
+        padding-left: 0;
+    }
+
+    .movie-heroes {
+        background-size: auto 40%, auto 40%;
+    }
+}
+
+@media (max-width: 425px) {
+    .about-movie img {
+        width: 176px;
+        height: 200px;
+    }
+
+    .rating {
+        top: -16px;
+    }
+}
+
+@media (max-width: 375px) {
+    .about-movie img {
+        width: 176px;
+        height: 200px;
+    }
+    
+    .rating {
+        top: -16px;
+        left: 9%;
+    }
+
+    .movie-description {
+        margin-bottom: 25px;
     }
 }
