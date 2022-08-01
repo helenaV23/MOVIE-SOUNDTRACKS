@@ -253,6 +253,10 @@ header .push-apart {
   padding: 6px 20px;
   color: #fff;
 }
+.menu-wrapper input {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   header .push-apart {
     flex-direction: column;
@@ -265,21 +269,33 @@ header .push-apart {
   }
 }
 @media (max-width: 768px) {
-  .burger-menu {
-    display: block;
+  header {
+    padding: 12px 0;
   }
-  .burger-menu a {
-    display: block;
-    padding: 10px;
+  header .push-apart {
+    flex-direction: row;
   }
-  .burger-menu span {
+
+  .menu-wrapper {
+    position: relative;
+  }
+
+  .menu-btn {
+    width: 30px;
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  .menu-btn span {
     position: relative;
     display: block;
     width: 24px;
     height: 1px;
     background-color: #fff;
   }
-  .burger-menu span::after, .burger-menu span::before {
+  .menu-btn span::after, .menu-btn span::before {
     content: "";
     position: absolute;
     display: block;
@@ -287,15 +303,28 @@ header .push-apart {
     height: 1px;
     background-color: #fff;
   }
-  .burger-menu span::after {
+  .menu-btn span::after {
     top: 6px;
   }
-  .burger-menu span::before {
+  .menu-btn span::before {
     top: -6px;
   }
 
-  .menu-wrapper {
-    position: relative;
+  #menu-toggle:checked ~ nav {
+    display: flex;
+  }
+
+  #menu-toggle:checked ~ .menu-btn > span {
+    transform: rotate(45deg);
+  }
+
+  #menu-toggle:checked ~ .menu-btn > span::before {
+    top: 0;
+  }
+
+  #menu-toggle:checked ~ .menu-btn > span::after {
+    top: 0;
+    transform: rotate(90deg);
   }
 
   nav {
@@ -303,22 +332,11 @@ header .push-apart {
     height: 100vh;
     display: none;
     position: absolute;
-    top: 20px;
+    top: 28px;
     right: -14px;
     justify-content: center;
     align-items: center;
     background: #040404;
-  }
-
-  .menu-wrapper:hover nav {
-    display: flex;
-  }
-
-  header {
-    padding: 12px 0;
-  }
-  header .push-apart {
-    flex-direction: row;
   }
 
   .menu {
