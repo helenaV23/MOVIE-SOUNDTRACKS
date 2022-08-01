@@ -99,6 +99,10 @@ header {
     }
 }
 
+.menu-wrapper input {
+    display: none;
+}
+
 @media (max-width: 1024px) {
     header {    
         .push-apart {
@@ -114,14 +118,26 @@ header {
 }
 
 @media (max-width: 768px) {
-    .burger-menu {
-        display: block;
-    
-        a {
-            display: block;
-            padding: 10px;
-        }
+    header {
+        padding: 12px 0;
 
+        .push-apart {
+            flex-direction: row;
+        }
+    }
+
+    .menu-wrapper {
+        position: relative;
+    }
+
+    .menu-btn {
+        width: 30px;
+        height: 26px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        
         span {
             position: relative;
             display: block;
@@ -149,8 +165,21 @@ header {
         }  
     }
 
-    .menu-wrapper {
-        position: relative;
+    #menu-toggle:checked ~ nav {
+        display: flex;
+    }
+
+    #menu-toggle:checked ~ .menu-btn > span {
+        transform: rotate(45deg);
+    }
+    
+    #menu-toggle:checked ~ .menu-btn > span::before {
+        top: 0;
+    }
+    
+    #menu-toggle:checked ~ .menu-btn > span::after {
+        top: 0;
+        transform: rotate(90deg);
     }
 
     nav {
@@ -158,25 +187,11 @@ header {
         height: 100vh;
         display: none;
         position: absolute;
-        top: 20px;
+        top: 28px;
         right: -14px;
         justify-content: center;
         align-items: center;
         background: $primary-bg-color;
-    }
-
-    .menu-wrapper {
-        &:hover nav {
-            display: flex;
-        }
-    }
-
-    header {
-        padding: 12px 0;
-
-        .push-apart {
-            flex-direction: row;
-        }
     }
 
     .menu {
