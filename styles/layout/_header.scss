@@ -55,14 +55,12 @@ header {
     left: -13px;
 }
 
-.dropdowm {
+.dropdown {
     position: relative;
+}
 
-    &:hover {
-        .submenu {
-            display: block;
-        }
-    }
+.dropdown-show {
+    display: block;
 }
 
 .submenu-item {
