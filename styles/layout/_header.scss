@@ -116,6 +116,10 @@ header {
 }
 
 @media (max-width: 768px) {
+    .lock {
+        overflow: hidden;
+    }
+
     header {
         padding: 12px 0;
 
@@ -163,33 +167,56 @@ header {
         }  
     }
 
-    #menu-toggle:checked ~ nav {
-        display: flex;
+    .open-burger-menu {
+        display: flex;   
     }
 
-    #menu-toggle:checked ~ .menu-btn > span {
+    .menu-btn.open-burger-menu span {
         transform: rotate(45deg);
     }
-    
-    #menu-toggle:checked ~ .menu-btn > span::before {
+
+    .menu-btn.open-burger-menu span::before {
         top: 0;
     }
-    
-    #menu-toggle:checked ~ .menu-btn > span::after {
+
+    .menu-btn.open-burger-menu span::after{
         top: 0;
         transform: rotate(90deg);
     }
+
+
+    // #menu-toggle:checked ~ nav {
+    //     display: flex;
+    // }
+
+    // #menu-toggle:checked ~ .menu-btn > span {
+    //     transform: rotate(45deg);
+    // }
+    
+    // #menu-toggle:checked ~ .menu-btn > span::before {
+    //     top: 0;
+    // }
+    
+    // #menu-toggle:checked ~ .menu-btn > span::after {
+    //     top: 0;
+    //     transform: rotate(90deg);
+    // }
 
     nav {
         width: 100vw;
         height: 100vh;
         display: none;
         position: absolute;
-        top: 28px;
-        right: -14px;
+        top: 40px;
+        right: 0;
         justify-content: center;
         align-items: center;
         background: $primary-bg-color;
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 
     .menu {
