@@ -157,6 +157,10 @@
        padding-left: 0;
     }
 
+    .align-center .movie-content {
+        margin: 0 auto;
+    }
+
     .movie-description::before {
         width: 100px;
         top: -16px;

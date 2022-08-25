@@ -97,10 +97,6 @@ header {
     }
 }
 
-.menu-wrapper input {
-    display: none;
-}
-
 @media (max-width: 1024px) {
     header {    
         .push-apart {
@@ -116,20 +112,12 @@ header {
 }
 
 @media (max-width: 768px) {
-    .lock {
-        overflow: hidden;
-    }
-
     header {
         padding: 12px 0;
 
         .push-apart {
             flex-direction: row;
         }
-    }
-
-    .menu-wrapper {
-        position: relative;
     }
 
     .menu-btn {
@@ -167,44 +155,22 @@ header {
         }  
     }
 
-    .open-burger-menu {
-        display: flex;   
-    }
-
-    .menu-btn.open-burger-menu span {
+    .menu-btn-active span {
         transform: rotate(45deg);
+
+        &::before {
+            top: 0;
+        }
+
+        &::after {
+            top: 0;
+            transform: rotate(90deg);
+        }
     }
 
-    .menu-btn.open-burger-menu span::before {
-        top: 0;
-    }
-
-    .menu-btn.open-burger-menu span::after{
-        top: 0;
-        transform: rotate(90deg);
-    }
-
-
-    // #menu-toggle:checked ~ nav {
-    //     display: flex;
-    // }
-
-    // #menu-toggle:checked ~ .menu-btn > span {
-    //     transform: rotate(45deg);
-    // }
-    
-    // #menu-toggle:checked ~ .menu-btn > span::before {
-    //     top: 0;
-    // }
-    
-    // #menu-toggle:checked ~ .menu-btn > span::after {
-    //     top: 0;
-    //     transform: rotate(90deg);
-    // }
-
-    nav {
+    .menu-wrapper {
         width: 100vw;
-        height: 100vh;
+        height: calc(100vh - 40px);
         display: none;
         position: absolute;
         top: 40px;
@@ -232,4 +198,12 @@ header {
         top: 0;
         left: 70px;        
     }
+}
+
+.open-burger-menu {
+    display: flex;   
+}
+
+.lock {
+    overflow: hidden;
 }
