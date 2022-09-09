@@ -9,7 +9,7 @@ header {
     }
 }
 
-.burger-menu {
+.menu-btn {
     display: none;
 }
 
@@ -57,10 +57,10 @@ header {
 
 .dropdown {
     position: relative;
-}
 
-.dropdown-show {
-    display: block;
+    &:hover .submenu {
+        display: block;
+    }
 }
 
 .submenu-item {
@@ -126,6 +126,10 @@ header {
         display: flex;
         justify-content: center;
         align-items: center;
+        background-color: transparent;
+        padding: 0;
+        border: 0;
+        outline: none;
         cursor: pointer;
         
         span {
