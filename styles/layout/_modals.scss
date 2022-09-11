@@ -10,7 +10,7 @@
 
 .modal-container {
     width: 80%;
-    height: 75%;
+    height: 50%;
     background-color: $primary-bg-color;
     border: 1px solid $accent-color;
     box-shadow: $primary-shadow;
@@ -55,6 +55,22 @@
             transform: rotate(-90deg);
         }
     }  
+}
+
+.modal-audio-info {
+    text-align: center;
+}
+
+.modal-rating {
+    display: block;
+    font-size: 26px;
+    font-weight: 700;
+    color: $accent-color;
+    margin-top: 20px;
+}
+
+.modal-title {
+    margin-top: 16px;
 }
 
 .modal-open {

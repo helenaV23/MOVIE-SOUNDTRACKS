@@ -29,4 +29,14 @@ $(function () {
             $('body').removeClass('lock');
         });
     }
+
+    $('.js-listen').on('click', function () {
+        var filmTitle = $(this).closest('div').prev('h2');
+        var ratingInfo = filmTitle.children('span').text();
+        var movieInfo = filmTitle.clone().children().remove().end().text();
+        $('.modal-rating').text(ratingInfo);
+        $('.modal-title').text(movieInfo);
+            
+    });
+
 });
