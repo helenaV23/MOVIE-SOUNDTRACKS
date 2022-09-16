@@ -31,13 +31,11 @@ $(function () {
     }
 
     $('.js-listen').on('click', function () {
-        var filmTitle = $(this).closest('div').prev('h2').text();
-        var filetredTitle = filmTitle
-            .split('\n')
-            .map(function (el) { return el.trim(); })
-            .filter(function (el) { return el !== ""; });
-        
-        $('.modal-rating').text(filetredTitle[0]);
-        $('.modal-title').text(filetredTitle[1]);  
+        var currentFilmSection = $(this).closest('section');
+        var filmTitle = currentFilmSection.data('title');
+        var filmRating = currentFilmSection.data('rating');
+
+        $('.modal-rating').text(filmRating);
+        $('.modal-title').text(filmTitle);  
     });
 });
