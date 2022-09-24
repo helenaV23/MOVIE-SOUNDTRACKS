@@ -23,7 +23,7 @@
     }
 }
 
-.btn-video {
+.btn-play {
     width: 85px;
     height: 85px;
     background-color: $accent-color;
@@ -43,6 +43,31 @@
         border-bottom: 15px solid transparent;
         @extend %absolut-center;
         left: 56%;
+    }
+}
+
+.btn-pause.btn-play {
+    &::after {
+        content: "";
+        display: block;
+        border-top: none;
+        border-left: none;
+        border-bottom: none;
+        background-color: black;
+        width: 6px;
+        height: 32px;
+        left: 40%;
+        @extend %absolut-center;
+    }
+
+    &::before {
+        content: "";
+        display: block;
+        width: 6px;
+        height: 32px;
+        left: 60%;
+        background-color: black;
+        @extend %absolut-center;
     }
 }
 
@@ -97,7 +122,7 @@
         }
     }
 
-    .btn-video {
+    .btn-play {
         width: 70px;
         height: 70px;
     
@@ -166,7 +191,7 @@
         right: -12px;
     }
 
-    .btn-video {
+    .btn-play {
         width: 60px;
         height: 60px;
     

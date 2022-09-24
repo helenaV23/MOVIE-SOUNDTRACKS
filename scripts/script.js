@@ -27,6 +27,8 @@ $(function () {
         $(selector).on('click', function () {
             $('.modal-overlay').removeClass('modal-open');
             $('body').removeClass('lock');
+            $('.modal-audio')[0].pause();
+            $('.js-modal-play').removeClass('btn-pause');
         });
     }
 
@@ -34,8 +36,21 @@ $(function () {
         var currentFilmSection = $(this).closest('section');
         var filmTitle = currentFilmSection.data('title');
         var filmRating = currentFilmSection.data('rating');
+        var audio = currentFilmSection.data('audio');
 
         $('.modal-rating').text(filmRating);
-        $('.modal-title').text(filmTitle);  
+        $('.modal-title').text(filmTitle); 
+        $('.modal-audio').attr('src', 'audios/' + audio);
+    });
+
+    $('.js-modal-play').on('click', function () {
+        var currentBtn = $(this);
+        currentBtn.toggleClass('btn-pause');
+
+        if (currentBtn.hasClass('btn-pause')) {
+            $('.modal-audio')[0].play(); 
+        } else {
+            $('.modal-audio')[0].pause();
+        }
     });
 });
