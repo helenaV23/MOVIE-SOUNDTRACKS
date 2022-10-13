@@ -81,6 +81,10 @@
         width: 60px;
         height: 43px;
     }
+
+    &:active {
+        transform: translateY(-50%) scale(1.2);
+    }
 }
 
 .slider-btn-left {

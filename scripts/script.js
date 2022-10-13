@@ -53,4 +53,26 @@ $(function () {
             $('.modal-audio')[0].pause();
         }
     });
+
+    $('.btn-link').on('click', function (e) {
+        e.preventDefault();
+        var parent = $(this).parent().closest('div').find('ul');
+        $('.movies-list').hide();
+        var margin = parent.css('margin-left');
+        $('.movies-list').show();
+        var marginNumber = parseInt(margin);
+        var btnLink = $(e.target).parent();
+
+        if (btnLink.hasClass('slider-btn-left')){
+            parent.css('margin-left', `${marginNumber + 100}%`);
+            if (marginNumber >= 0) {
+                parent.css('margin-left', '0');
+            }
+        } else {
+            parent.css('margin-left', `${marginNumber - 100}%`); 
+            if (marginNumber <= -200) {
+                parent.css('margin-left', '-200%');
+            }
+        }
+    }); 
 });
