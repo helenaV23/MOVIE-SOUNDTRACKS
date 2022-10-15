@@ -56,22 +56,24 @@ $(function () {
 
     $('.btn-link').on('click', function (e) {
         e.preventDefault();
-        var parent = $(this).parent().closest('div').find('ul');
-        $('.movies-list').hide();
-        var margin = parent.css('margin-left');
-        $('.movies-list').show();
-        var marginNumber = parseInt(margin);
-        var btnLink = $(e.target).parent();
 
-        if (btnLink.hasClass('slider-btn-left')){
-            parent.css('margin-left', `${marginNumber + 100}%`);
-            if (marginNumber >= 0) {
-                parent.css('margin-left', '0');
+        var btnLink = $(this);
+        var moviesList = btnLink.closest('div').find('ul');
+
+        // hack to get margin percantage
+        moviesList.hide();
+        var margin = moviesList.css('margin-left');
+        moviesList.show();
+
+        var marginNumber = parseInt(margin);
+
+        if (btnLink.hasClass('slider-btn-left')) {
+            if (marginNumber < 0) {
+                moviesList.css('margin-left', (marginNumber + 100) + '%');
             }
         } else {
-            parent.css('margin-left', `${marginNumber - 100}%`); 
-            if (marginNumber <= -200) {
-                parent.css('margin-left', '-200%');
+            if (marginNumber > -200) {
+                moviesList.css('margin-left', (marginNumber - 100) + '%'); 
             }
         }
     }); 
