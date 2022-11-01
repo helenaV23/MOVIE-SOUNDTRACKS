@@ -53,7 +53,7 @@ $(function () {
             $('.modal-audio')[0].pause();
         }
     });
-
+    
     initSliders(1);
 });
 
