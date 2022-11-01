@@ -110,8 +110,9 @@ function initSliders(initialSlide) {
                 moveSlide(moviesList, currentSlide);
             }
         });
-        function moveSlide(element, slide) { // TODO: move this function into initSliders, not for each slider
-            element.css('margin-left', (slide * SLIDE_STEP) + '%');
-        }
     });
+    
+    function moveSlide(element, slide) { // TODO: move this function into initSliders, not for each slider
+        element.css('margin-left', (slide * SLIDE_STEP) + '%');
+    }
 }
