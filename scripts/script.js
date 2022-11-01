@@ -54,27 +54,63 @@ $(function () {
         }
     });
 
-    $('.btn-link').on('click', function (e) {
-        e.preventDefault();
+    // $('.btn-link').on('click', function (e) {
+    //     e.preventDefault();
 
-        var btnLink = $(this);
-        var moviesList = btnLink.closest('div').find('ul');
+    //     var btnLink = $(this);
+    //     var moviesList = btnLink.closest('div').find('ul');
 
-        // hack to get margin percantage
-        moviesList.hide();
-        var margin = moviesList.css('margin-left');
-        moviesList.show();
+    //     // hack to get margin percantage
+    //     moviesList.hide();
+    //     var margin = moviesList.css('margin-left');
+    //     moviesList.show();
 
-        var marginNumber = parseInt(margin);
+    //     var marginNumber = parseInt(margin);
 
-        if (btnLink.hasClass('slider-btn-left')) {
-            if (marginNumber < 0) {
-                moviesList.css('margin-left', (marginNumber + 100) + '%');
-            }
-        } else {
-            if (marginNumber > -200) {
-                moviesList.css('margin-left', (marginNumber - 100) + '%'); 
-            }
-        }
-    }); 
+    //     if (btnLink.hasClass('slider-btn-left')) {
+    //         if (marginNumber < 0) {
+    //             moviesList.css('margin-left', (marginNumber + 100) + '%');
+    //         }
+    //     } else {
+    //         if (marginNumber > -200) {
+    //             moviesList.css('margin-left', (marginNumber - 100) + '%'); 
+    //         }
+    //     }
+    // });
+
+    initSliders(1);
 });
+
+function initSliders(initialSlide) {
+    $('.slider-wrapper').each(function (_index, sliderWrapperElem) {
+        var currentSlide = initialSlide;
+        var SLIDE_STEP = -100;
+        var sliderWrapper = $(sliderWrapperElem);
+        var moviesList = sliderWrapper.find('.movies-list');
+        var lastSlideIndex = moviesList.find('.movie-item').length - 1;
+
+        moveSlide(moviesList, currentSlide, SLIDE_STEP);
+
+        sliderWrapper.find('.slider-btn-right').on('click', function (e) {
+            e.preventDefault();
+            
+            if (currentSlide < lastSlideIndex) {
+                currentSlide++;
+                moveSlide(moviesList, currentSlide, SLIDE_STEP);
+            }
+        })
+
+        sliderWrapper.find('.slider-btn-left').on('click', function (e) {
+            e.preventDefault();
+
+            if (currentSlide > 0) {
+                currentSlide--;
+                moveSlide(moviesList, currentSlide, SLIDE_STEP);
+            }
+        })   
+    });  
+}
+
+function moveSlide(element, slide, step) {
+    element.css('margin-left', (slide * step) + '%');
+}
