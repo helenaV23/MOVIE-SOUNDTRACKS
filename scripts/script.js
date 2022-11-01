@@ -83,7 +83,7 @@ $(function () {
 });
 
 function initSliders(initialSlide) {
-    var SLIDE_STEP = -100; // TODO: move this variable directly in initSliders
+    var SLIDE_STEP = -100;
 
     $('.slider-wrapper').each(function (_index, sliderWrapperElem) {
         var currentSlide = initialSlide;
@@ -100,7 +100,7 @@ function initSliders(initialSlide) {
                 currentSlide++;
                 moveSlide(moviesList, currentSlide);
             }
-        }); // TODO: semicolon
+        });
 
         sliderWrapper.find('.slider-btn-left').on('click', function (e) {
             e.preventDefault();
@@ -109,9 +109,9 @@ function initSliders(initialSlide) {
                 currentSlide--;
                 moveSlide(moviesList, currentSlide);
             }
-        }); // TODO: semicolon
-        function moveSlide(element, slide) { // TODO: move this function into initSliders
-            element.css('margin-left', (slide * SLIDE_STEP) + '%'); // TODO: after SLIDE_STEP moved - remove 'step' argument and get the value from variable from closure
+        });
+        function moveSlide(element, slide) { // TODO: move this function into initSliders, not for each slider
+            element.css('margin-left', (slide * SLIDE_STEP) + '%');
         }
     });
 }
