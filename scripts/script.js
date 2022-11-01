@@ -53,7 +53,7 @@ $(function () {
             $('.modal-audio')[0].pause();
         }
     });
-    
+
     initSliders(1);
 });
 
@@ -86,8 +86,8 @@ function initSliders(initialSlide) {
             }
         });
     });
-    
-    function moveSlide(element, slide) { // TODO: move this function into initSliders, not for each slider
+
+    function moveSlide(element, slide) {
         element.css('margin-left', (slide * SLIDE_STEP) + '%');
     }
 }
