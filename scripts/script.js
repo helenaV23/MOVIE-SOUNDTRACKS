@@ -54,31 +54,6 @@ $(function () {
         }
     });
 
-    // TODO: remove
-    // $('.btn-link').on('click', function (e) {
-    //     e.preventDefault();
-
-    //     var btnLink = $(this);
-    //     var moviesList = btnLink.closest('div').find('ul');
-
-    //     // hack to get margin percantage
-    //     moviesList.hide();
-    //     var margin = moviesList.css('margin-left');
-    //     moviesList.show();
-
-    //     var marginNumber = parseInt(margin);
-
-    //     if (btnLink.hasClass('slider-btn-left')) {
-    //         if (marginNumber < 0) {
-    //             moviesList.css('margin-left', (marginNumber + 100) + '%');
-    //         }
-    //     } else {
-    //         if (marginNumber > -200) {
-    //             moviesList.css('margin-left', (marginNumber - 100) + '%');
-    //         }
-    //     }
-    // });
-
     initSliders(1);
 });
 
