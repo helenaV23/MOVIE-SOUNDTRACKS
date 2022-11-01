@@ -11,7 +11,7 @@
 
 .movies-list {
     display: flex;
-    // margin-left: -100%;
+    // margin-left: -100%; // TODO: remove
     transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -130,7 +130,7 @@
     .btn-play {
         width: 70px;
         height: 70px;
-    
+
         &::after {
             border-top-width: 13px;
             border-left-width: 26px;
@@ -156,7 +156,7 @@
         }
     }
 
-    .slider-btn-left svg, 
+    .slider-btn-left svg,
     .slider-btn-right svg {
         width: 40px;
         height: 28px;
@@ -165,7 +165,7 @@
     .slider-btn-left {
         left: -22px;
     }
-    
+
     .slider-btn-right {
         right: -22px;
     }
@@ -191,7 +191,7 @@
     .slider-btn-left {
         left: -12px;
     }
-    
+
     .slider-btn-right {
         right: -12px;
     }
@@ -199,7 +199,7 @@
     .btn-play {
         width: 60px;
         height: 60px;
-    
+
         &::after {
             border-top-width: 11px;
             border-left-width: 22px;
@@ -225,7 +225,7 @@
         }
     }
 
-    .slider-btn-left svg, 
+    .slider-btn-left svg,
     .slider-btn-right svg {
         width: 30px;
     }
@@ -233,7 +233,7 @@
     .slider-btn-left {
         left: -15px;
     }
-    
+
     .slider-btn-right {
         right: -15px;
     }

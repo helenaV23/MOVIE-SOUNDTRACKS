@@ -39,7 +39,7 @@ $(function () {
         var audio = currentFilmSection.data('audio');
 
         $('.modal-rating').text(filmRating);
-        $('.modal-title').text(filmTitle); 
+        $('.modal-title').text(filmTitle);
         $('.modal-audio').attr('src', 'audios/' + audio);
     });
 
@@ -48,12 +48,13 @@ $(function () {
         currentBtn.toggleClass('btn-pause');
 
         if (currentBtn.hasClass('btn-pause')) {
-            $('.modal-audio')[0].play(); 
+            $('.modal-audio')[0].play();
         } else {
             $('.modal-audio')[0].pause();
         }
     });
 
+    // TODO: remove
     // $('.btn-link').on('click', function (e) {
     //     e.preventDefault();
 
@@ -73,7 +74,7 @@ $(function () {
     //         }
     //     } else {
     //         if (marginNumber > -200) {
-    //             moviesList.css('margin-left', (marginNumber - 100) + '%'); 
+    //             moviesList.css('margin-left', (marginNumber - 100) + '%');
     //         }
     //     }
     // });
@@ -84,7 +85,7 @@ $(function () {
 function initSliders(initialSlide) {
     $('.slider-wrapper').each(function (_index, sliderWrapperElem) {
         var currentSlide = initialSlide;
-        var SLIDE_STEP = -100;
+        var SLIDE_STEP = -100; // TODO: move this variable directly in initSliders
         var sliderWrapper = $(sliderWrapperElem);
         var moviesList = sliderWrapper.find('.movies-list');
         var lastSlideIndex = moviesList.find('.movie-item').length - 1;
@@ -93,12 +94,12 @@ function initSliders(initialSlide) {
 
         sliderWrapper.find('.slider-btn-right').on('click', function (e) {
             e.preventDefault();
-            
+
             if (currentSlide < lastSlideIndex) {
                 currentSlide++;
                 moveSlide(moviesList, currentSlide, SLIDE_STEP);
             }
-        })
+        }) // TODO: semicolon
 
         sliderWrapper.find('.slider-btn-left').on('click', function (e) {
             e.preventDefault();
@@ -107,10 +108,12 @@ function initSliders(initialSlide) {
                 currentSlide--;
                 moveSlide(moviesList, currentSlide, SLIDE_STEP);
             }
-        })   
-    });  
+        }) // TODO: semicolon
+    });
 }
 
+// TODO: move this function into initSliders
+// TODO: after SLIDE_STEP moved - remove 'step' argument and get the value from variable from closure
 function moveSlide(element, slide, step) {
     element.css('margin-left', (slide * step) + '%');
 }
