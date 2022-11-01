@@ -83,37 +83,35 @@ $(function () {
 });
 
 function initSliders(initialSlide) {
+    var SLIDE_STEP = -100; // TODO: move this variable directly in initSliders
+
     $('.slider-wrapper').each(function (_index, sliderWrapperElem) {
         var currentSlide = initialSlide;
-        var SLIDE_STEP = -100; // TODO: move this variable directly in initSliders
         var sliderWrapper = $(sliderWrapperElem);
         var moviesList = sliderWrapper.find('.movies-list');
         var lastSlideIndex = moviesList.find('.movie-item').length - 1;
 
-        moveSlide(moviesList, currentSlide, SLIDE_STEP);
+        moveSlide(moviesList, currentSlide);
 
         sliderWrapper.find('.slider-btn-right').on('click', function (e) {
             e.preventDefault();
 
             if (currentSlide < lastSlideIndex) {
                 currentSlide++;
-                moveSlide(moviesList, currentSlide, SLIDE_STEP);
+                moveSlide(moviesList, currentSlide);
             }
-        }) // TODO: semicolon
+        }); // TODO: semicolon
 
         sliderWrapper.find('.slider-btn-left').on('click', function (e) {
             e.preventDefault();
 
             if (currentSlide > 0) {
                 currentSlide--;
-                moveSlide(moviesList, currentSlide, SLIDE_STEP);
+                moveSlide(moviesList, currentSlide);
             }
-        }) // TODO: semicolon
+        }); // TODO: semicolon
+        function moveSlide(element, slide) { // TODO: move this function into initSliders
+            element.css('margin-left', (slide * SLIDE_STEP) + '%'); // TODO: after SLIDE_STEP moved - remove 'step' argument and get the value from variable from closure
+        }
     });
-}
-
-// TODO: move this function into initSliders
-// TODO: after SLIDE_STEP moved - remove 'step' argument and get the value from variable from closure
-function moveSlide(element, slide, step) {
-    element.css('margin-left', (slide * step) + '%');
 }
