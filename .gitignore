@@ -1,2 +1,4 @@
 styles/style.css
 styles/style.css.map
+node_modules/
+scripts/jquery.min.js

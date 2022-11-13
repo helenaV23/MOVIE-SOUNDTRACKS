@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "styles": "sass --watch styles/style.scss:styles/style.css"
+    "styles": "sass --watch styles/style.scss:styles/style.css",
+    "build": "cp node_modules/jquery/dist/jquery.min.js scripts/"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/helenaV23/Movie-Soundtracks/issues"
   },
-  "homepage": "https://github.com/helenaV23/Movie-Soundtracks#readme"
+  "homepage": "https://github.com/helenaV23/Movie-Soundtracks#readme",
+  "dependencies": {
+    "jquery": "^3.6.1"
+  },
+  "devDependencies": {
+    "sass": "^1.56.1"
+  }
 }
