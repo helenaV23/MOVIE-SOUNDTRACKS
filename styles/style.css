@@ -13,7 +13,7 @@
   src: url("../fonts/Mont-Bold.ttf");
   font-weight: 800;
 }
-.btn-video::after, .btn-video {
+.btn-pause.btn-play::before, .btn-pause.btn-play::after, .btn-play::after, .btn-play {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -124,12 +124,17 @@ h2 {
   text-transform: uppercase;
 }
 
+h3 {
+  font-size: 20px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
 @media (max-width: 1200px) {
   h1 {
     font-size: 60px;
     line-height: 80px;
   }
-
   h2 {
     font-size: 36px;
     line-height: 46px;
@@ -140,7 +145,6 @@ h2 {
     font-size: 50px;
     line-height: 65px;
   }
-
   h2 {
     font-size: 30px;
     line-height: 40px;
@@ -151,7 +155,6 @@ h2 {
     font-size: 42px;
     line-height: 55px;
   }
-
   h2 {
     font-size: 28px;
   }
@@ -161,7 +164,6 @@ h2 {
     font-size: 34px;
     line-height: 48px;
   }
-
   h2 {
     font-size: 26px;
     line-height: 36px;
@@ -183,7 +185,7 @@ header .push-apart {
   align-items: center;
 }
 
-.burger-menu {
+.menu-btn {
   display: none;
 }
 
@@ -223,10 +225,10 @@ header .push-apart {
   left: -13px;
 }
 
-.dropdowm {
+.dropdown {
   position: relative;
 }
-.dropdowm:hover .submenu {
+.dropdown:hover .submenu {
   display: block;
 }
 
@@ -253,17 +255,12 @@ header .push-apart {
   padding: 6px 20px;
   color: #fff;
 }
-.menu-wrapper input {
-  display: none;
-}
-
 @media (max-width: 1024px) {
   header .push-apart {
     flex-direction: column;
     align-items: center;
     gap: 30px;
   }
-
   .menu-link {
     font-size: 16px;
   }
@@ -275,17 +272,16 @@ header .push-apart {
   header .push-apart {
     flex-direction: row;
   }
-
-  .menu-wrapper {
-    position: relative;
-  }
-
   .menu-btn {
     width: 30px;
     height: 26px;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: transparent;
+    padding: 0;
+    border: 0;
+    outline: none;
     cursor: pointer;
   }
   .menu-btn span {
@@ -309,36 +305,31 @@ header .push-apart {
   .menu-btn span::before {
     top: -6px;
   }
-
-  #menu-toggle:checked ~ nav {
-    display: flex;
-  }
-
-  #menu-toggle:checked ~ .menu-btn > span {
+  .menu-btn-active span {
     transform: rotate(45deg);
   }
-
-  #menu-toggle:checked ~ .menu-btn > span::before {
+  .menu-btn-active span::before {
     top: 0;
   }
-
-  #menu-toggle:checked ~ .menu-btn > span::after {
+  .menu-btn-active span::after {
     top: 0;
     transform: rotate(90deg);
   }
-
-  nav {
+  .menu-wrapper {
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh - 40px);
     display: none;
     position: absolute;
-    top: 28px;
-    right: -14px;
+    top: 40px;
+    right: 0;
     justify-content: center;
     align-items: center;
     background: #040404;
+    overflow-y: scroll;
   }
-
+  .menu-wrapper::-webkit-scrollbar {
+    display: none;
+  }
   .menu {
     flex-direction: column;
     gap: 15px;
@@ -346,12 +337,19 @@ header .push-apart {
   .menu > li:hover .menu-link::after {
     width: 0;
   }
-
   .submenu {
     top: 0;
     left: 70px;
   }
 }
+.open-burger-menu {
+  display: flex;
+}
+
+.lock {
+  overflow: hidden;
+}
+
 .main-screen {
   background: no-repeat url("../images/main-screen-bg-image.svg");
   background-size: cover;
@@ -368,7 +366,6 @@ header .push-apart {
     padding: 180px 0 60px;
     text-align: center;
   }
-
   .main-screen-description {
     margin: 0 auto 60px;
   }
@@ -377,7 +374,6 @@ header .push-apart {
   .main-screen {
     padding: 120px 0 40px;
   }
-
   .main-screen-description {
     margin: 0 auto 40px;
   }
@@ -461,11 +457,9 @@ header .push-apart {
     display: block;
     width: 400px;
   }
-
   .movie-info {
     max-width: 480px;
   }
-
   .rating {
     font-size: 120px;
   }
@@ -485,12 +479,10 @@ header .push-apart {
   .about-movie h2 {
     margin-bottom: 30px;
   }
-
   .movie-info {
     max-width: 390px;
     padding-left: 50px;
   }
-
   .movie-description {
     margin-bottom: 40px;
   }
@@ -498,17 +490,14 @@ header .push-apart {
     width: 50px;
     left: -60px;
   }
-
   .rating {
     font-size: 100px;
     top: -20px;
     left: -36px;
   }
-
   .movie-content {
     padding-left: 60px;
   }
-
   .movie-heroes {
     background-size: auto 64%, auto 64%;
   }
@@ -525,29 +514,27 @@ header .push-apart {
     width: 260px;
     height: 295px;
   }
-
   .movie-info {
     text-align: center;
     padding-left: 0;
   }
-
+  .align-center .movie-content {
+    margin: 0 auto;
+  }
   .movie-description::before {
     width: 100px;
     top: -16px;
     left: 50%;
     transform: translateX(-50%);
   }
-
   .rating {
     font-size: 80px;
     top: -17px;
     left: 16%;
   }
-
   .movie-content {
     padding-left: 0;
   }
-
   .movie-heroes {
     background-size: auto 40%, auto 40%;
   }
@@ -557,7 +544,6 @@ header .push-apart {
     width: 176px;
     height: 200px;
   }
-
   .rating {
     top: -16px;
   }
@@ -567,12 +553,10 @@ header .push-apart {
     width: 176px;
     height: 200px;
   }
-
   .rating {
     top: -16px;
     left: 9%;
   }
-
   .movie-description {
     margin-bottom: 25px;
   }
@@ -590,7 +574,7 @@ header .push-apart {
 
 .movies-list {
   display: flex;
-  margin-left: -100%;
+  transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .movie-item {
@@ -601,7 +585,7 @@ header .push-apart {
   display: block;
 }
 
-.btn-video {
+.btn-play {
   width: 85px;
   height: 85px;
   background-color: #00a3ff;
@@ -610,7 +594,7 @@ header .push-apart {
   padding: 0;
   cursor: pointer;
 }
-.btn-video::after {
+.btn-play::after {
   content: "";
   display: block;
   width: 0;
@@ -619,6 +603,26 @@ header .push-apart {
   border-left: 30px solid #040404;
   border-bottom: 15px solid transparent;
   left: 56%;
+}
+
+.btn-pause.btn-play::after {
+  content: "";
+  display: block;
+  border-top: none;
+  border-left: none;
+  border-bottom: none;
+  background-color: black;
+  width: 6px;
+  height: 32px;
+  left: 40%;
+}
+.btn-pause.btn-play::before {
+  content: "";
+  display: block;
+  width: 6px;
+  height: 32px;
+  left: 60%;
+  background-color: black;
 }
 
 .slider-btn-left,
@@ -631,6 +635,10 @@ header .push-apart {
 .slider-btn-right svg {
   width: 60px;
   height: 43px;
+}
+.slider-btn-left:active,
+.slider-btn-right:active {
+  transform: translateY(-50%) scale(1.2);
 }
 
 .slider-btn-left {
@@ -645,7 +653,6 @@ header .push-apart {
   .slider-wrapper {
     max-width: 930px;
   }
-
   .movie-item {
     padding: 0 65px;
   }
@@ -657,23 +664,20 @@ header .push-apart {
   .movie-slider {
     padding: 100px 0;
   }
-
   .slider-wrapper {
     max-width: 600px;
   }
-
   .movie-item {
     padding: 0 50px;
   }
   .movie-item img {
     width: 500px;
   }
-
-  .btn-video {
+  .btn-play {
     width: 70px;
     height: 70px;
   }
-  .btn-video::after {
+  .btn-play::after {
     border-top-width: 13px;
     border-left-width: 26px;
     border-bottom-width: 13px;
@@ -683,28 +687,23 @@ header .push-apart {
   .movie-slider {
     padding: 80px 0;
   }
-
   .slider-wrapper {
     max-width: 480px;
   }
-
   .movie-item {
     padding: 0 40px;
   }
   .movie-item img {
     width: 400px;
   }
-
   .slider-btn-left svg,
 .slider-btn-right svg {
     width: 40px;
     height: 28px;
   }
-
   .slider-btn-left {
     left: -22px;
   }
-
   .slider-btn-right {
     right: -22px;
   }
@@ -713,31 +712,26 @@ header .push-apart {
   .movie-slider {
     padding: 60px 0;
   }
-
   .slider-wrapper {
     max-width: 380px;
   }
-
   .movie-item {
     padding: 0 40px;
   }
   .movie-item img {
     width: 300px;
   }
-
   .slider-btn-left {
     left: -12px;
   }
-
   .slider-btn-right {
     right: -12px;
   }
-
-  .btn-video {
+  .btn-play {
     width: 60px;
     height: 60px;
   }
-  .btn-video::after {
+  .btn-play::after {
     border-top-width: 11px;
     border-left-width: 22px;
     border-bottom-width: 11px;
@@ -747,27 +741,22 @@ header .push-apart {
   .movie-slider {
     padding: 40px 0;
   }
-
   .slider-wrapper {
     max-width: 290px;
   }
-
   .movie-item {
     padding: 0 25px;
   }
   .movie-item img {
     width: 240px;
   }
-
   .slider-btn-left svg,
 .slider-btn-right svg {
     width: 30px;
   }
-
   .slider-btn-left {
     left: -15px;
   }
-
   .slider-btn-right {
     right: -15px;
   }
@@ -776,11 +765,9 @@ header .push-apart {
   .movie-slider {
     padding: 40px 0;
   }
-
   .slider-wrapper {
     max-width: 275px;
   }
-
   .movie-item img {
     width: 225px;
   }
@@ -835,12 +822,10 @@ header .push-apart {
   .sign-up {
     text-align: center;
   }
-
   .email-input {
     margin-right: 0;
     margin-bottom: 15px;
   }
-
   .form-btn {
     margin: auto;
     display: block;
@@ -855,7 +840,6 @@ header .push-apart {
   .form {
     width: 100%;
   }
-
   .email-input {
     width: 100%;
   }
@@ -916,7 +900,6 @@ footer .push-apart {
     flex-direction: column;
     gap: 24px;
   }
-
   .social-media-icon {
     width: 45px;
     height: 45px;
@@ -930,9 +913,91 @@ footer .push-apart {
   .policy {
     gap: 25px;
   }
-
   .policy-link {
     font-size: 14px;
+  }
+}
+.modal-overlay {
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  background-color: rgba(4, 4, 4, 0.5);
+  position: fixed;
+  top: 0;
+  z-index: 9;
+}
+
+.modal-container {
+  width: 80%;
+  height: 50%;
+  background-color: #040404;
+  border: 1px solid #00a3ff;
+  box-shadow: 0px 2px 6px rgba(0, 163, 255, 0.8);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+}
+
+.modal-close-btn {
+  width: 30px;
+  height: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  padding: 0;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+}
+.modal-close-btn span {
+  position: relative;
+  display: block;
+  width: 24px;
+  height: 1px;
+  background-color: #fff;
+  transform: rotate(45deg);
+}
+.modal-close-btn span::before {
+  content: "";
+  position: absolute;
+  display: block;
+  top: 0;
+  width: 24px;
+  height: 1px;
+  background-color: #fff;
+  transform: rotate(-90deg);
+}
+
+.modal-audio-info {
+  text-align: center;
+}
+
+.modal-rating {
+  display: block;
+  font-size: 26px;
+  font-weight: 700;
+  color: #00a3ff;
+  margin-top: 20px;
+}
+
+.modal-title {
+  margin-top: 16px;
+}
+
+.modal-open {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .modal-container {
+    width: 85%;
+    height: 45%;
   }
 }
 
