@@ -54,6 +54,36 @@ $(function () {
         }
     });
 
+    $('.js-video-play').on('click', function () {
+        var currentBtn = $(this);
+        var movieItem = currentBtn.parent('.movie-item');
+        var video = movieItem.find('.movie-video');
+        var videoImage = movieItem.find('.movie-item-image')
+
+        currentBtn.toggleClass('btn-pause');
+        videoImage.addClass('image-hide');
+        video.addClass('movie-video-active');
+
+        if (currentBtn.hasClass('btn-pause')) {
+            video[0].play();
+        } else {
+            video[0].pause();
+        }
+
+        closeVideo('.slider-btn-left');
+        closeVideo('.slider-btn-right');
+        closeVideo('.js-listen');
+
+        function closeVideo(selector) {
+            $(selector).on('click', function () {
+                videoImage.removeClass('image-hide');
+                video.removeClass('movie-video-active');
+                currentBtn.removeClass('btn-pause');
+                video[0].pause();
+            })
+        }
+    });
+
     initSliders(1);
 });
 
@@ -79,7 +109,7 @@ function initSliders(initialSlide) {
 
         sliderWrapper.find('.slider-btn-left').on('click', function (e) {
             e.preventDefault();
-
+        
             if (currentSlide > 0) {
                 currentSlide--;
                 moveSlide(moviesList, currentSlide);

@@ -17,10 +17,10 @@
 .movie-item {
     padding: 0 75px;
     position: relative;
+}
 
-    img {
-        display: block;
-    }
+.movie-item-image {
+    display: block;
 }
 
 .btn-play {
@@ -93,6 +93,21 @@
 
 .slider-btn-right {
     right: -30px;
+}
+
+.movie-video {
+    width: 880px;
+    height: 540px;
+    display: none;
+    object-fit: cover;
+}
+
+.movie-video-active {
+    display: block;
+}
+
+.image-hide {
+    display: none;
 }
 
 @media (max-width: 1200px) {
