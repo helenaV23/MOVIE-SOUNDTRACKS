@@ -58,17 +58,25 @@ $(function () {
         var currentBtn = $(this);
         var movieItem = currentBtn.parent('.movie-item');
         var video = movieItem.find('.movie-video');
-        var videoImage = movieItem.find('.movie-item-image')
+        var videoImage = movieItem.find('.movie-item-image');
 
         currentBtn.toggleClass('btn-pause');
-        videoImage.addClass('image-hide');
-        video.addClass('movie-video-active');
+        videoImage.toggleClass('image-video-hide');
 
+        
         if (currentBtn.hasClass('btn-pause')) {
             video[0].play();
         } else {
             video[0].pause();
         }
+        
+        movieItem.on('mouseleave', function () {
+            $('.btn-pause.btn-play').fadeOut();
+        });
+
+        movieItem.on('mouseenter', function () {
+            $('.btn-pause.btn-play').fadeIn();
+        });
 
         closeVideo('.slider-btn-left');
         closeVideo('.slider-btn-right');
@@ -76,8 +84,8 @@ $(function () {
 
         function closeVideo(selector) {
             $(selector).on('click', function () {
-                videoImage.removeClass('image-hide');
-                video.removeClass('movie-video-active');
+                $('.btn-pause.btn-play').fadeIn();
+                videoImage.removeClass('image-video-hide');
                 currentBtn.removeClass('btn-pause');
                 video[0].pause();
             })
