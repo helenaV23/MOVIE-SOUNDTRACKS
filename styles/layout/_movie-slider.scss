@@ -114,8 +114,10 @@
     background-color: $primary-bg-color;
 }
 
-.image-video-hide {
-    display: none;
+.movie-item.image-video-hide {
+    img {
+        display: none;
+    }      
 }
 
 .movie-item:hover .btn-pause {

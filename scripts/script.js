@@ -58,11 +58,10 @@ $(function () {
         var currentBtn = $(this);
         var movieItem = currentBtn.parent('.movie-item');
         var video = movieItem.find('.movie-video');
-        var videoImage = movieItem.find('.movie-item-image');
         var allVideos = $('.movie-video');
 
         currentBtn.toggleClass('btn-pause');
-        videoImage.toggleClass('image-video-hide');
+        movieItem.toggleClass('image-video-hide');
         
         if (currentBtn.hasClass('btn-pause')) {
             video[0].play();
@@ -73,7 +72,7 @@ $(function () {
         
         allVideos.not(video).each(function (_index, element) {
             $(element)[0].pause();
-            $(element).siblings('.movie-item-image').removeClass('image-video-hide');
+            $(element).parent('.movie-item').removeClass('image-video-hide');
             $(element).siblings('.js-video-play').removeClass('btn-pause');
         });
 
@@ -83,7 +82,7 @@ $(function () {
 
         function closeVideo(selector) {
             $(selector).on('click', function () {
-                videoImage.removeClass('image-video-hide');
+                movieItem.removeClass('image-video-hide');
                 currentBtn.removeClass('btn-pause');
                 video[0].pause();
             })
