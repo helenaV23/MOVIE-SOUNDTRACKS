@@ -1,4 +1,6 @@
 $(function () {
+
+    // Opening/closing burger menu 
     $('.menu-btn').on('click', function () {
         $('.menu-wrapper').toggleClass('open-burger-menu');
         $('.menu-btn').toggleClass('menu-btn-active');
@@ -11,36 +13,23 @@ $(function () {
         $('.menu-btn').removeClass('menu-btn-active');
     });
 
-    $('.js-listen').on('click', function () {
-        $('.modal-overlay').addClass('modal-open');
-        $('body').addClass('lock');
-    });
-
-    closeModal('.modal-overlay');
-    closeModal('.modal-close-btn');
-
-    $('.modal-container').on('click', function (e) {
-        e.stopPropagation();
-    });
-
-    function closeModal(selector) {
-        $(selector).on('click', function () {
-            $('.modal-overlay').removeClass('modal-open');
-            $('body').removeClass('lock');
-            $('.modal-audio')[0].pause();
-            $('.js-modal-play').removeClass('btn-pause');
-        });
-    }
-
+    // Opening/closing modal window with audio playing by clicking on "Listen" button
     $('.js-listen').on('click', function () {
         var currentFilmSection = $(this).closest('section');
         var filmTitle = currentFilmSection.data('title');
         var filmRating = currentFilmSection.data('rating');
         var audio = currentFilmSection.data('audio');
 
+        $('.modal-overlay').addClass('modal-open');
+        $('body').addClass('lock');
+
         $('.modal-rating').text(filmRating);
         $('.modal-title').text(filmTitle);
         $('.modal-audio').attr('src', 'audios/' + audio);
+    });
+
+    $('.modal-container').on('click', function (e) {
+        e.stopPropagation();
     });
 
     $('.js-modal-play').on('click', function () {
@@ -54,6 +43,10 @@ $(function () {
         }
     });
 
+    closeModal('.modal-overlay');
+    closeModal('.modal-close-btn');
+
+    // Interacting with videos in movie sliders
     $('.js-video-play').on('click', function () {
         var currentBtn = $(this);
         var movieItem = currentBtn.parent('.movie-item');
@@ -84,6 +77,15 @@ $(function () {
     closeVideo('.slider-btn-right');
     closeVideo('.js-listen');
 });
+
+function closeModal(selector) {
+    $(selector).on('click', function () {
+        $('.modal-overlay').removeClass('modal-open');
+        $('body').removeClass('lock');
+        $('.modal-audio')[0].pause();
+        $('.js-modal-play').removeClass('btn-pause');
+    });
+}
 
 function closeVideo(selector) {
     $(selector).on('click', function () {
