@@ -71,27 +71,30 @@ $(function () {
         }
         
         allVideos.not(video).each(function (_index, element) {
-            $(element)[0].pause();
-            $(element).parent('.movie-item').removeClass('movie-item-playing');
-            $(element).siblings('.js-video-play').removeClass('btn-pause');
+            var elementObject = $(element);
+            element.pause();
+            elementObject.parent('.movie-item').removeClass('movie-item-playing');
+            elementObject.siblings('.js-video-play').removeClass('btn-pause');
         });
 
         closeVideo('.slider-btn-left');
         closeVideo('.slider-btn-right');
         closeVideo('.js-listen');
-
-        function closeVideo(selector) {
-            $(selector).on('click', function () {
-                movieItem.removeClass('movie-item-playing');
-                currentBtn.removeClass('btn-pause');
-                video[0].pause();
-            })
-        }
     });
 
     initSliders(1);
-
+    
 });
+
+function closeVideo(selector) {
+    $(selector).on('click', function () {
+        $('.movie-item').removeClass('movie-item-playing');
+        $('.js-video-play').removeClass('btn-pause');
+        $('.movie-video').each(function() {
+            this.pause();
+        });
+    });
+}
 
 function initSliders(initialSlide) {
     var SLIDE_STEP = -100;
