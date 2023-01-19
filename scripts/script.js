@@ -76,22 +76,22 @@ $(function () {
             elementObject.parent('.movie-item').removeClass('movie-item-playing');
             elementObject.siblings('.js-video-play').removeClass('btn-pause');
         });
-
-        closeVideo('.slider-btn-left', movieItem, currentBtn, video);
-        closeVideo('.slider-btn-right', movieItem, currentBtn, video);
-        closeVideo('.js-listen', movieItem, currentBtn, video);
     });
 
     initSliders(1);
 
+    closeVideo('.slider-btn-left');
+    closeVideo('.slider-btn-right');
+    closeVideo('.js-listen');
 });
 
-
-function closeVideo(selector, movieItem, currentBtn, video) {
+function closeVideo(selector) {
     $(selector).on('click', function () {
-        movieItem.removeClass('movie-item-playing');
-        currentBtn.removeClass('btn-pause');
-        video[0].pause();
+        $('.movie-item').removeClass('movie-item-playing');
+        $('.js-video-play').removeClass('btn-pause');
+        $('.movie-video').each(function() {
+            this.pause();
+        });
     });
 }
 
