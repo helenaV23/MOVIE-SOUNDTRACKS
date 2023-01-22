@@ -78,7 +78,7 @@ $(function () {
     closeVideo('.js-listen');
 
     makeSmoothScroll('.submenu-link');
-    makeSmoothScroll('.main-screen .btn-link');
+    makeSmoothScroll('.js-scroll-link');
 });
 
 function closeModal(selector) {
@@ -138,11 +138,9 @@ function initSliders(initialSlide) {
 function makeSmoothScroll(selector) {
     $(selector).on('click', function () {
         var scrollName = $(this).attr('href');
-        console.log(scrollName);
-        var scrollElement = $(scrollName);
-        var scrollTop = scrollElement.offset().top;
+        var scrollTop = $(scrollName).offset().top;
 
-        $('html, body').animate({
+        $('html').animate({
             scrollTop: scrollTop
         }, 500);
     });
