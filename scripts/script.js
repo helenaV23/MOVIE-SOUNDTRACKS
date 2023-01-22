@@ -76,6 +76,9 @@ $(function () {
     closeVideo('.slider-btn-left');
     closeVideo('.slider-btn-right');
     closeVideo('.js-listen');
+
+    makeSmoothScroll('.submenu-link');
+    makeSmoothScroll('.main-screen .btn-link');
 });
 
 function closeModal(selector) {
@@ -130,4 +133,17 @@ function initSliders(initialSlide) {
     function moveSlide(element, slide) {
         element.css('margin-left', (slide * SLIDE_STEP) + '%');
     }
+}
+
+function makeSmoothScroll(selector) {
+    $(selector).on('click', function () {
+        var scrollName = $(this).attr('href');
+        console.log(scrollName);
+        var scrollElement = $(scrollName);
+        var scrollTop = scrollElement.offset().top;
+
+        $('html, body').animate({
+            scrollTop: scrollTop
+        }, 500);
+    });
 }
