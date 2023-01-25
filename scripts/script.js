@@ -80,8 +80,8 @@ $(function () {
     makeSmoothScroll('.submenu-link');
     makeSmoothScroll('.js-scroll-link');
 
-    showMediaDuration('.movie-video', '.video-duration');
-    showMediaDuration('.modal-audio', '.audio-duration');
+    showMediaDuration('.movie-video');
+    showMediaDuration('.modal-audio');
 });
 
 function closeModal(selector) {
@@ -149,14 +149,13 @@ function makeSmoothScroll(selector) {
     });
 }
 
-function showMediaDuration(selector, mediaTag) {
+function showMediaDuration(selector) {
     $(selector).each(function (_index, element) {
+        var elementObj = $(element);
 
-        $(element).on('loadedmetadata', function () {
-            var mediaDuration = element.duration;
-            var time = (formatTime(mediaDuration));
-            var spanElem = $(element).siblings(mediaTag);
-            $(spanElem).text(time);
+        elementObj.on('loadedmetadata', function () {
+            var time = formatTime(element.duration);
+            elementObj.siblings('.media-duration').text(time);
         });
     });
 }
@@ -165,6 +164,6 @@ function formatTime(time) {
     var minutes = Math.floor(time / 60);
     var seconds = Math.floor(time - minutes * 60);
   
-    return  (minutes < 10 ? '0' + minutes : minutes) + ':' +
+    return  (minutes < 10 ? minutes : minutes) + ':' +
             (seconds < 10 ? '0' + seconds : seconds);
 }
