@@ -73,12 +73,20 @@ a {
     margin: 0 auto;
 }
 
-.media-duration {
+.media-duration, 
+.current-time {
     position: absolute;
     bottom: 5%;
     color: $accent-color;
-    padding: 4px 6px;
     font-size: 16px;
+}
+
+.media-duration {
+    right: 5%;   
+}
+
+.current-time {
+    left: 5%;
 }
 
 @media (max-width: 1200px) {

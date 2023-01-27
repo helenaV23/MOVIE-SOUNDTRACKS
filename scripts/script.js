@@ -71,6 +71,9 @@ $(function () {
         });
     });
 
+    var currentMediaTime = 0;
+    $('.current-time').text(formatTime(currentMediaTime));
+
     initSliders(1);
 
     closeVideo('.slider-btn-left');
@@ -164,6 +167,6 @@ function formatTime(time) {
     var minutes = Math.floor(time / 60);
     var seconds = Math.floor(time - minutes * 60);
   
-    return  (minutes < 10 ? minutes : minutes) + ':' +
+    return  minutes + ':' +
             (seconds < 10 ? '0' + seconds : seconds);
 }
