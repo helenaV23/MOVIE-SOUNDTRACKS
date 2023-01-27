@@ -71,9 +71,6 @@ $(function () {
         });
     });
 
-    var currentMediaTime = 0;
-    $('.current-time').text(formatTime(currentMediaTime));
-
     initSliders(1);
 
     closeVideo('.slider-btn-left');
@@ -83,8 +80,8 @@ $(function () {
     makeSmoothScroll('.submenu-link');
     makeSmoothScroll('.js-scroll-link');
 
-    showMediaDuration('.movie-video');
-    showMediaDuration('.modal-audio');
+    showMediaTime('.movie-video');
+    showMediaTime('.modal-audio');
 });
 
 function closeModal(selector) {
@@ -152,13 +149,14 @@ function makeSmoothScroll(selector) {
     });
 }
 
-function showMediaDuration(selector) {
+function showMediaTime(selector) {
     $(selector).each(function (_index, element) {
         var elementObj = $(element);
 
         elementObj.on('loadedmetadata', function () {
             var time = formatTime(element.duration);
             elementObj.siblings('.media-duration').text(time);
+            elementObj.siblings('.current-time').text(formatTime(0));
         });
     });
 }
