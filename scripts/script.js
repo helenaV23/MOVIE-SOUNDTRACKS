@@ -152,12 +152,17 @@ function makeSmoothScroll(selector) {
 function showMediaTime(selector) {
     $(selector).each(function (_index, element) {
         var elementObj = $(element);
+        var currentTimeElem = elementObj.siblings('.current-time');
 
         elementObj.on('loadedmetadata', function () {
             var time = formatTime(element.duration);
             elementObj.siblings('.media-duration').text(time);
-            elementObj.siblings('.current-time').text(formatTime(0));
+            currentTimeElem.text(formatTime(0));
         });
+
+        elementObj.on('timeupdate', function () {
+            currentTimeElem.text(formatTime(element.currentTime));
+        })
     });
 }
 
