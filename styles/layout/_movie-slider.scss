@@ -21,18 +21,21 @@
     position: relative;
     flex-shrink: 0;
 
+    .timeline {
+        display: none;
+        @extend %transparent-transition;
+    }
+
     .current-time,
     .media-duration {
         background-color: $primary-bg-color;
-        padding: 4px 6px;
+        padding: 0 2px;
         display: none;
+        @extend %transparent-transition;
     }
 
-    .btn-pause.btn-play,
-    .media-duration,
-    .current-time {
-        opacity: 0;
-        transition: 0.3s ease-in;
+    .btn-pause.btn-play {
+        @extend %transparent-transition;
     }
 
     &.movie-item-playing  {
@@ -44,11 +47,16 @@
         .current-time {
             display: inline-block;
         }
+
+        .timeline {
+            display: block;
+        } 
     }
 
     &:hover .btn-pause,
     &:hover .media-duration,
-    &:hover .current-time{
+    &:hover .current-time,
+    &:hover .timeline {
         opacity: 1;
     }
 }
@@ -168,11 +176,6 @@
         width: 500px;
         height: 307px;
         margin: 0 50px;
-
-        .media-duration {
-            padding: 2px 6px;
-            font-size: 14px;
-        }
     }
 
     .btn-play {
@@ -230,11 +233,6 @@
         width: 300px;
         height: 185px;
         margin: 0 40px;
-
-        .media-duration {
-            padding: 0 6px;
-            font-size: 12px;
-        }
     }
 
     .slider-btn-left {
@@ -270,6 +268,10 @@
         width: 240px;
         height: 148px;
         margin: 0 25px;
+
+        .timeline {
+            width: 64%;
+        }
     }
 
     .slider-btn-left svg,

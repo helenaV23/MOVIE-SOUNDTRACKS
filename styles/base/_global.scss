@@ -77,8 +77,9 @@ a {
 .current-time {
     position: absolute;
     bottom: 5%;
-    color: $accent-color;
+    color: $primary-text-color;
     font-size: 16px;
+    line-height: normal;
 }
 
 .media-duration {
@@ -87,6 +88,23 @@ a {
 
 .current-time {
     left: 5%;
+}
+
+.timeline {
+    width: 80%;
+    height: 12px;
+    background-color: $primary-bg-color-transparent;
+    border: 1px solid $accent-color;
+    position: absolute;
+    margin: 6px 0;
+    bottom: 5%;
+    left: 50%;
+    transform: translate(-50%); 
+}   
+
+.timeline-progress {
+    height: 100%;
+    background-color: $accent-color;
 }
 
 @media (max-width: 1200px) {
@@ -98,5 +116,15 @@ a {
 @media (max-width: 1024px) {
     .wrapper {
         max-width: 795px;
+    }
+
+    .timeline {
+        width: 68%;
+        margin: 3px 0;
+    }
+
+    .media-duration, 
+    .current-time {
+        font-size: 12px;
     }
 }
