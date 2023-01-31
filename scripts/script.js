@@ -152,11 +152,11 @@ function makeSmoothScroll(selector) {
 function showMediaTime(selector) {
     $(selector).each(function (_index, element) {
         var elementObj = $(element);
-        var currentTimeElem = elementObj.siblings('.current-time');
+        var mediaTimeElem = elementObj.siblings('.media-time');
+        var currentTimeElem = mediaTimeElem.find('.current-time');
 
         elementObj.on('loadedmetadata', function () {
-            var time = formatTime(element.duration);
-            elementObj.siblings('.media-duration').text(time);
+            mediaTimeElem.find('.media-duration').text(formatTime(element.duration));
             currentTimeElem.text(formatTime(0));
         });
 

@@ -73,21 +73,22 @@ a {
     margin: 0 auto;
 }
 
-.media-duration, 
-.current-time {
+.media-time {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2%;
     position: absolute;
     bottom: 5%;
+    left: 0;
+}
+
+.media-duration, 
+.current-time {
     color: $primary-text-color;
     font-size: 16px;
     line-height: normal;
-}
-
-.media-duration {
-    right: 5%;   
-}
-
-.current-time {
-    left: 5%;
 }
 
 .timeline {
@@ -95,11 +96,6 @@ a {
     height: 12px;
     background-color: $primary-bg-color-transparent;
     border: 1px solid $accent-color;
-    position: absolute;
-    margin: 6px 0;
-    bottom: 5%;
-    left: 50%;
-    transform: translate(-50%); 
 }   
 
 .timeline-progress {
@@ -120,7 +116,6 @@ a {
 
     .timeline {
         width: 68%;
-        margin: 3px 0;
     }
 
     .media-duration, 
