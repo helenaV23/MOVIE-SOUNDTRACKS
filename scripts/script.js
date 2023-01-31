@@ -161,8 +161,13 @@ function showMediaTime(selector) {
         });
 
         elementObj.on('timeupdate', function () {
-            currentTimeElem.text(formatTime(element.currentTime));
-        })
+            var currTime = element.currentTime;
+            var progress = Math.round((currTime / element.duration) * 100);
+
+            currentTimeElem.text(formatTime(currTime));
+
+            mediaTimeElem.find('.timeline-progress').css('width', progress + '%');
+        })  
     });
 }
 
