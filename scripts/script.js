@@ -86,9 +86,12 @@ $(function () {
 
 function closeModal(selector) {
     $(selector).on('click', function () {
+        var audio = $('.modal-audio')[0];
+        audio.pause();
+        audio.currentTime = 0;
+
         $('.modal-overlay').removeClass('modal-open');
         $('body').removeClass('lock');
-        $('.modal-audio')[0].pause();
         $('.js-modal-play').removeClass('btn-pause');
     });
 }
@@ -99,6 +102,7 @@ function closeVideo(selector) {
         $('.js-video-play').removeClass('btn-pause');
         $('.movie-video').each(function() {
             this.pause();
+            this.currentTime = 0;
         });
     });
 }
@@ -162,12 +166,11 @@ function showMediaTime(selector) {
 
         elementObj.on('timeupdate', function () {
             var currTime = element.currentTime;
-            var progress = Math.round((currTime / element.duration) * 100);
+            var progress = (currTime / element.duration) * 100;
 
             currentTimeElem.text(formatTime(currTime));
-
-            mediaTimeElem.find('.timeline-progress').css('width', progress + '%');
-        })  
+            mediaTimeElem.find('.timeline-progress').width(progress + '%');
+        }) 
     });
 }
 
