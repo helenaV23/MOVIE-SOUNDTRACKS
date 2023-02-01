@@ -88,7 +88,6 @@ function closeModal(selector) {
     $(selector).on('click', function () {
         var audio = $('.modal-audio')[0];
         audio.pause();
-        audio.currentTime = 0;
 
         $('.modal-overlay').removeClass('modal-open');
         $('body').removeClass('lock');
@@ -102,7 +101,6 @@ function closeVideo(selector) {
         $('.js-video-play').removeClass('btn-pause');
         $('.movie-video').each(function() {
             this.pause();
-            this.currentTime = 0;
         });
     });
 }
@@ -166,10 +164,12 @@ function showMediaTime(selector) {
 
         elementObj.on('timeupdate', function () {
             var currTime = element.currentTime;
+            var timeLineElem = mediaTimeElem.find('.timeline-progress');
             var progress = (currTime / element.duration) * 100;
-
+           
+            timeLineElem.width(currTime + '%');
             currentTimeElem.text(formatTime(currTime));
-            mediaTimeElem.find('.timeline-progress').width(progress + '%');
+            timeLineElem.width(progress + '%');
         }) 
     });
 }
