@@ -86,9 +86,7 @@ $(function () {
 
 function closeModal(selector) {
     $(selector).on('click', function () {
-        var audio = $('.modal-audio')[0];
-        audio.pause();
-
+        $('.modal-audio')[0].pause();
         $('.modal-overlay').removeClass('modal-open');
         $('body').removeClass('lock');
         $('.js-modal-play').removeClass('btn-pause');
@@ -156,18 +154,18 @@ function showMediaTime(selector) {
         var elementObj = $(element);
         var mediaTimeElem = elementObj.siblings('.media-time');
         var currentTimeElem = mediaTimeElem.find('.current-time');
+        var timeLineElem = mediaTimeElem.find('.timeline-progress');
 
         elementObj.on('loadedmetadata', function () {
             mediaTimeElem.find('.media-duration').text(formatTime(element.duration));
             currentTimeElem.text(formatTime(0));
+            timeLineElem.width(0);
         });
 
         elementObj.on('timeupdate', function () {
             var currTime = element.currentTime;
-            var timeLineElem = mediaTimeElem.find('.timeline-progress');
             var progress = (currTime / element.duration) * 100;
-           
-            timeLineElem.width(currTime + '%');
+
             currentTimeElem.text(formatTime(currTime));
             timeLineElem.width(progress + '%');
         }) 
