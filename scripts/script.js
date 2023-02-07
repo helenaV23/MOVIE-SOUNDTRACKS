@@ -162,20 +162,24 @@ function showMediaTime(selector) {
             timeLineElem.width(0);
         });
 
-        let timer = setInterval(function() {
-            if (!element.paused) {
+        elementObj.on('play', function () {
+            var timer = setInterval(function() {
                 var currTime = element.currentTime;
                 currentTimeElem.text(formatTime(currTime));
                 var progress = (currTime / element.duration) * 100;
-        
+
                 if (progress >= 0.1) {
                     timeLineElem.width(progress + '%');
                 } else if (progress >= 100){
                     clearInterval(timer);
                 }
-            }
-        }, 40);      
-    });
+            }, 40);  
+            
+            elementObj.on('pause', function () {
+                clearInterval(timer);
+            });
+        });   
+    });  
 }
 
 function formatTime(time) {
