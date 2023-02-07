@@ -155,6 +155,7 @@ function showMediaTime(selector) {
         var mediaTimeElem = elementObj.siblings('.media-time');
         var currentTimeElem = mediaTimeElem.find('.current-time');
         var timeLineElem = mediaTimeElem.find('.timeline-progress');
+        var timer = 0;
 
         elementObj.on('loadedmetadata', function () {
             mediaTimeElem.find('.media-duration').text(formatTime(element.duration));
@@ -163,7 +164,7 @@ function showMediaTime(selector) {
         });
 
         elementObj.on('play', function () {
-            var timer = setInterval(function() {
+            timer = setInterval(function() {
                 var currTime = element.currentTime;
                 currentTimeElem.text(formatTime(currTime));
                 var progress = (currTime / element.duration) * 100;
@@ -173,12 +174,12 @@ function showMediaTime(selector) {
                 } else if (progress >= 100){
                     clearInterval(timer);
                 }
-            }, 40);  
-            
-            elementObj.on('pause', function () {
-                clearInterval(timer);
-            });
-        });   
+            }, 40);    
+        });  
+
+        elementObj.on('pause', function () {
+            clearInterval(timer);
+        });
     });  
 }
 
