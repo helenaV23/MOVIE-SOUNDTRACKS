@@ -1,3 +1,6 @@
+const fps = 25;
+const delay = 1000 / fps;
+
 $(function () {
 
     // Opening/closing burger menu 
@@ -167,14 +170,11 @@ function showMediaTime(selector) {
             timer = setInterval(function() {
                 var currTime = element.currentTime;
                 currentTimeElem.text(formatTime(currTime));
-                var progress = (currTime / element.duration) * 100;
 
-                if (progress >= 0.1) {
-                    timeLineElem.width(progress + '%');
-                } else if (progress >= 100){
-                    clearInterval(timer);
-                }
-            }, 40);    
+                var progress = (currTime / element.duration) * 100;
+                timeLineElem.width(progress + '%');
+                console.log(progress);
+            }, delay);    
         });  
 
         elementObj.on('pause', function () {
