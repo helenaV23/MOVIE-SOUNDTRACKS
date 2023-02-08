@@ -1,5 +1,5 @@
-const fps = 25;
-const delay = 1000 / fps;
+var FPS = 25;
+var MS_PER_FRAME = 1000 / FPS;
 
 $(function () {
 
@@ -173,7 +173,7 @@ function showMediaTime(selector) {
 
                 var progress = (currTime / element.duration) * 100;
                 timeLineElem.width(progress + '%');
-            }, delay);    
+            }, MS_PER_FRAME);    
         });  
 
         elementObj.on('pause', function () {
