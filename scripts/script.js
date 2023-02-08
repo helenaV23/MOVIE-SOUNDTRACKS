@@ -173,7 +173,6 @@ function showMediaTime(selector) {
 
                 var progress = (currTime / element.duration) * 100;
                 timeLineElem.width(progress + '%');
-                console.log(progress);
             }, delay);    
         });  
 
