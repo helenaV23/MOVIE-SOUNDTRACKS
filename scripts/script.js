@@ -1,4 +1,4 @@
-var FPS = 25;
+var FPS = 60;
 var MS_PER_FRAME = 1000 / FPS;
 
 $(function () {
@@ -167,17 +167,19 @@ function showMediaTime(selector) {
         });
 
         elementObj.on('play', function () {
-            timer = setInterval(function() {
+            timer = setTimeout(function showProgress() {
                 var currTime = element.currentTime;
                 currentTimeElem.text(formatTime(currTime));
 
                 var progress = (currTime / element.duration) * 100;
                 timeLineElem.width(progress + '%');
+
+                timer = setTimeout(showProgress, MS_PER_FRAME);
             }, MS_PER_FRAME);    
         });  
-
+        
         elementObj.on('pause', function () {
-            clearInterval(timer);
+            clearTimeout(timer);
         });
     });  
 }
