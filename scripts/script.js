@@ -164,26 +164,26 @@ function showMediaTime(selector) {
             mediaTimeElem.find('.media-duration').text(formatTime(element.duration));
             currentTimeElem.text(formatTime(0));
             timeLineElem.width(0);
-        });
+        });  
 
         elementObj.on('play', function () {
-            function showProgress() {
-                var currTime = element.currentTime;
-                currentTimeElem.text(formatTime(currTime));
-
-                var progress = (currTime / element.duration) * 100;
-                timeLineElem.width(progress + '%');
-
-                timer = setTimeout(showProgress, MS_PER_FRAME);
-            };  
-            
             showProgress();
-        });  
+        });
         
         elementObj.on('pause', function () {
             clearTimeout(timer);
         });
-    });  
+
+        function showProgress() {
+            var currTime = element.currentTime;
+            currentTimeElem.text(formatTime(currTime));
+
+            var progress = (currTime / element.duration) * 100;
+            timeLineElem.width(progress + '%');
+
+            timer = setTimeout(showProgress, MS_PER_FRAME);
+        }
+    }); 
 }
 
 function formatTime(time) {
