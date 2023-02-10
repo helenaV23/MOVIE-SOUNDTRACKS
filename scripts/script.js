@@ -167,7 +167,7 @@ function showMediaTime(selector) {
         });
 
         elementObj.on('play', function () {
-            timer = function showProgress() {
+            function showProgress() {
                 var currTime = element.currentTime;
                 currentTimeElem.text(formatTime(currTime));
 
@@ -177,7 +177,7 @@ function showMediaTime(selector) {
                 timer = setTimeout(showProgress, MS_PER_FRAME);
             };  
             
-            timer();
+            showProgress();
         });  
         
         elementObj.on('pause', function () {
