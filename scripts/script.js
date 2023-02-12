@@ -1,6 +1,3 @@
-var FPS = 60;
-var MS_PER_FRAME = 1000 / FPS;
-
 $(function () {
 
     // Opening/closing burger menu 
@@ -171,7 +168,7 @@ function showMediaTime(selector) {
         });
         
         elementObj.on('pause', function () {
-            clearTimeout(timer);
+            cancelAnimationFrame(timer);
         });
 
         function showProgress() {
@@ -181,7 +178,7 @@ function showMediaTime(selector) {
             var progress = (currTime / element.duration) * 100;
             timeLineElem.width(progress + '%');
 
-            timer = setTimeout(showProgress, MS_PER_FRAME);
+            timer = requestAnimationFrame(showProgress);
         }
     }); 
 }
