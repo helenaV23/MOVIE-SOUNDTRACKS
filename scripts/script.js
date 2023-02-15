@@ -154,13 +154,14 @@ function showMediaTime(selector) {
         var elementObj = $(element);
         var mediaTimeElem = elementObj.siblings('.media-time');
         var currentTimeElem = mediaTimeElem.find('.current-time');
-        var timeLineElem = mediaTimeElem.find('.timeline-progress');
+        var timeLineElem = mediaTimeElem.find('.timeline');
+        var timeProgressElem = mediaTimeElem.find('.timeline-progress');
         var timer = 0;
 
         elementObj.on('loadedmetadata', function () {
             mediaTimeElem.find('.media-duration').text(formatTime(element.duration));
             currentTimeElem.text(formatTime(0));
-            timeLineElem.width(0);
+            timeProgressElem.width(0);
         });  
 
         elementObj.on('play', function () {
@@ -176,10 +177,21 @@ function showMediaTime(selector) {
             currentTimeElem.text(formatTime(currTime));
 
             var progress = (currTime / element.duration) * 100;
-            timeLineElem.width(progress + '%');
+            timeProgressElem.width(progress + '%');
 
             timer = requestAnimationFrame(showProgress);
         }
+
+        timeLineElem.on('click', function (e) {
+            var progressPosition = e.offsetX / $(this).width();
+            var progressOnClick = progressPosition  * 100;
+            var newCurrentTime = progressPosition * element.duration;
+            
+            element.currentTime = newCurrentTime;
+
+            currentTimeElem.text(formatTime(newCurrentTime));
+            timeProgressElem.width(progressOnClick + '%');    
+        });
     }); 
 }
 
