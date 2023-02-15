@@ -183,14 +183,13 @@ function showMediaTime(selector) {
         }
 
         timeLineElem.on('click', function (e) {
-            var progressPosition = e.offsetX / $(this).width();
-            var progressOnClick = progressPosition  * 100;
-            var newCurrentTime = progressPosition * element.duration;
-            
+            var progress = e.offsetX / $(this).width();
+            var newCurrentTime = progress * element.duration;
+
             element.currentTime = newCurrentTime;
 
             currentTimeElem.text(formatTime(newCurrentTime));
-            timeProgressElem.width(progressOnClick + '%');    
+            timeProgressElem.width(progress * 100 + '%');    
         });
     }); 
 }
