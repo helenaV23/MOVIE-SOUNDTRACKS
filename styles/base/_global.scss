@@ -73,7 +73,7 @@ a {
     margin: 0 auto;
 }
 
-.media-time {
+.media-controls {
     width: 100%;
     display: flex;
     align-items: center;
@@ -81,7 +81,14 @@ a {
     gap: 2%;
     position: absolute;
     bottom: 5%;
-    left: 0;
+    left: 0;   
+}
+
+.media-time {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    gap: 2%;
 }
 
 .media-duration, 
@@ -92,7 +99,7 @@ a {
 }
 
 .timeline {
-    width: 80%;
+    width: 100%;
     height: 12px;
     background-color: $primary-bg-color-transparent;
     border: 1px solid $accent-color;
@@ -101,6 +108,25 @@ a {
 
 .timeline-progress {
     width: 0;
+    height: 100%;
+    background-color: $accent-color;
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.volume-range {
+    width: 60px;
+    height: 6px;
+    background-color: $accent-color-transparent;
+    cursor: pointer;
+}
+
+.volume {
+    width: 100%;
     height: 100%;
     background-color: $accent-color;
 }
@@ -116,12 +142,30 @@ a {
         max-width: 795px;
     }
 
-    .timeline {
-        width: 68%;
+    .volume-icon {
+        width: 20px;
     }
 
     .media-duration, 
     .current-time {
         font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .media-controls {
+        flex-direction: column;
+    }
+
+    .media-time {
+        margin-bottom: 2px;
+    }
+
+    .volume-icon {
+        width: 20px;
+    }
+
+    .volume-range {
+        height: 8px;
     }
 }

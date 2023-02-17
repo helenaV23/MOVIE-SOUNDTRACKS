@@ -152,7 +152,7 @@ function makeSmoothScroll(selector) {
 function showMediaTime(selector) {
     $(selector).each(function (_index, element) {
         var elementObj = $(element);
-        var mediaTimeElem = elementObj.siblings('.media-time');
+        var mediaTimeElem = elementObj.siblings('.media-controls').find('.media-time');
         var currentTimeElem = mediaTimeElem.find('.current-time');
         var timeLineElem = mediaTimeElem.find('.timeline');
         var timeProgressElem = mediaTimeElem.find('.timeline-progress');
