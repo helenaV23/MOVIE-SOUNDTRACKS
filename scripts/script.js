@@ -172,6 +172,16 @@ function showMediaTime(selector) {
             cancelAnimationFrame(timer);
         });
 
+        elementObj.on('ended', function () {
+            elementObj.siblings('.btn-play').removeClass('btn-pause');
+            currentTimeElem.text(formatTime(0));
+            timeProgressElem.width(0);
+
+            if (selector == '.movie-video') {
+                $('.movie-item').removeClass('movie-item-playing');
+            }
+        });
+
         function showProgress() {
             var currTime = element.currentTime;
             currentTimeElem.text(formatTime(currTime));
