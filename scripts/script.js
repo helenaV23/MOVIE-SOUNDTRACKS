@@ -86,6 +86,7 @@ $(function () {
 
             if (volumeValue <= 0) {
                 volumeIcon.attr('src', 'images/player/mute.svg');
+                volume = 0;
             } else if (volumeValue > 100) {
                 volumeValue = 100; 
             } else {
