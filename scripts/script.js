@@ -71,6 +71,41 @@ $(function () {
         });
     });
 
+    // Adjusting media volume when volume is being dragged
+    $('.volume-range').on('mousedown', function() {
+        var volumeRangeObj = $(this);
+        var volumeRangeWidth = volumeRangeObj.width();
+        var volumeElement = volumeRangeObj.find('.volume');
+        var volumeIcon = volumeRangeObj.siblings('.volume-icon');
+        var grandparentElement = volumeRangeObj.parent('.volume-control').parent('.media-controls').parent();
+
+        $(window).on('mousemove', function(e) {
+            var x = e.pageX - volumeRangeObj.offset().left;
+            var volume = x / volumeRangeWidth;
+            var volumeValue = Math.floor(volume * 100);
+
+            if (volumeValue <= 0) {
+                volumeIcon.attr('src', 'images/player/mute.svg');
+            } else if (volumeValue > 100) {
+                volumeValue = 100; 
+            } else {
+                volumeIcon.attr('src', 'images/player/volume.svg');
+            }
+
+            volumeElement.css('width', volumeValue + '%');
+
+            if (grandparentElement.hasClass('movie-item')) {
+                $(grandparentElement).find('.movie-video').prop('volume', volume);
+            } else {
+                $(grandparentElement).find('.modal-audio').prop('volume', volume);
+            }
+        });
+    
+        $(document).on('mouseup', function() {
+            $(window).off('mousemove');
+        });
+    });
+
     initSliders(1);
 
     closeVideo('.slider-btn-left');
@@ -90,6 +125,7 @@ function closeModal(selector) {
         $('.modal-overlay').removeClass('modal-open');
         $('body').removeClass('lock');
         $('.js-modal-play').removeClass('btn-pause');
+        $('.volume').width('100%');
     });
 }
 
