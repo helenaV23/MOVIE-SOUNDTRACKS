@@ -72,37 +72,16 @@ $(function () {
     });
 
     // Adjusting media volume when volume is being dragged
-    $('.volume-range').on('mousedown', function() {
+    $('.volume-range').on('mousedown', function(e) {
         var volumeRangeObj = $(this);
-        var volumeRangeWidth = volumeRangeObj.width();
-        var volumeElement = volumeRangeObj.find('.volume');
-        var volumeIcon = volumeRangeObj.siblings('.volume-icon');
-        var grandparentElement = volumeRangeObj.parent('.volume-control').parent('.media-controls').parent();
 
-        $(window).on('mousemove', function(e) {
-            var x = e.pageX - volumeRangeObj.offset().left;
-            var volume = x / volumeRangeWidth;
-            var volumeValue = Math.floor(volume * 100);
-
-            if (volumeValue <= 0) {
-                volumeIcon.attr('src', 'images/player/mute.svg');
-                volume = 0;
-            } else if (volumeValue > 100) {
-                volumeValue = 100; 
-            } else {
-                volumeIcon.attr('src', 'images/player/volume.svg');
-            }
-
-            volumeElement.css('width', volumeValue + '%');
-
-            if (grandparentElement.hasClass('movie-item')) {
-                $(grandparentElement).find('.movie-video').prop('volume', volume);
-            } else {
-                $(grandparentElement).find('.modal-audio').prop('volume', volume);
-            }
+        setVolume(volumeRangeObj, e);
+        
+        $(window).on('mousemove', function (e) {
+            setVolume(volumeRangeObj, e);
         });
     
-        $(document).on('mouseup', function() {
+        $(document).one('mouseup', function() {
             $(window).off('mousemove');
         });
     });
@@ -247,4 +226,31 @@ function formatTime(time) {
   
     return  minutes + ':' +
             (seconds < 10 ? '0' + seconds : seconds);
+}
+
+function setVolume (element, e) {
+    var volumeRangeWidth = element.width();
+    var volumeRangeLeftPostion = element.offset().left;
+    var volumeElement = element.find('.volume');
+    var volumeIcon = element.siblings('.volume-icon');
+    var grandparentElement = element.parent('.volume-control').parent('.media-controls').parent();
+    var x = e.pageX - volumeRangeLeftPostion;
+    var volume = x / volumeRangeWidth;
+    var volumeValue = volume * 100;
+
+    if (volumeValue <= 0) {
+        volumeIcon.attr('src', 'images/player/mute.svg');
+        volumeValue = 0;
+        volume = 0;
+    } else if (volumeValue > 100) {
+        volume = 1;
+        volumeValue = 100; 
+    } else {
+        volumeIcon.attr('src', 'images/player/volume.svg');
+    }
+
+    volumeElement.css('width', volumeValue + '%');
+
+    var mediaSelector = grandparentElement.hasClass('movie-item') ? '.movie-video' : '.modal-audio';        
+    grandparentElement.find(mediaSelector).prop('volume', volume);
 }
