@@ -238,17 +238,16 @@ function setVolume(element, eventXPosition) {
     var volumeValue = volume * 100;
 
     if (volume <= 0) {
-        volumeIcon.attr('src', 'images/player/mute.svg');
         volumeValue = 0;
         volume = 0;
     } else if (volume > 1) {
         volume = 1;
         volumeValue = 100; 
-    } else {
-        volumeIcon.attr('src', 'images/player/volume.svg');
     }
 
     volumeElement.css('width', volumeValue + '%');
+
+    volume <= 0 ? volumeIcon.attr('src', 'images/player/mute.svg') : volumeIcon.attr('src', 'images/player/volume.svg');
 
     var mediaSelector = grandparentElement.hasClass('movie-item') ? '.movie-video' : '.modal-audio';        
     grandparentElement.find(mediaSelector).prop('volume', volume);
