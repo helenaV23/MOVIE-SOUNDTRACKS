@@ -75,10 +75,10 @@ $(function () {
     $('.volume-range').on('mousedown', function(e) {
         var volumeRangeObj = $(this);
 
-        setVolume(volumeRangeObj, e);
+        setVolume(volumeRangeObj, e.pageX);
         
         $(window).on('mousemove', function (e) {
-            setVolume(volumeRangeObj, e);
+            setVolume(volumeRangeObj, e.pageX);
         });
     
         $(document).one('mouseup', function() {
@@ -105,7 +105,6 @@ function closeModal(selector) {
         $('.modal-overlay').removeClass('modal-open');
         $('body').removeClass('lock');
         $('.js-modal-play').removeClass('btn-pause');
-        $('.volume').width('100%');
     });
 }
 
@@ -228,21 +227,21 @@ function formatTime(time) {
             (seconds < 10 ? '0' + seconds : seconds);
 }
 
-function setVolume (element, e) {
+function setVolume(element, eventXPosition) {
     var volumeRangeWidth = element.width();
     var volumeRangeLeftPostion = element.offset().left;
     var volumeElement = element.find('.volume');
     var volumeIcon = element.siblings('.volume-icon');
     var grandparentElement = element.parent('.volume-control').parent('.media-controls').parent();
-    var x = e.pageX - volumeRangeLeftPostion;
+    var x = eventXPosition - volumeRangeLeftPostion;
     var volume = x / volumeRangeWidth;
     var volumeValue = volume * 100;
 
-    if (volumeValue <= 0) {
+    if (volume <= 0) {
         volumeIcon.attr('src', 'images/player/mute.svg');
         volumeValue = 0;
         volume = 0;
-    } else if (volumeValue > 100) {
+    } else if (volume > 1) {
         volume = 1;
         volumeValue = 100; 
     } else {
