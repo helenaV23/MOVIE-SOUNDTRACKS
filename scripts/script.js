@@ -246,8 +246,9 @@ function setVolume(element, eventXPosition) {
     }
 
     volumeElement.css('width', volumeValue + '%');
-
-    volume <= 0 ? volumeIcon.attr('src', 'images/player/mute.svg') : volumeIcon.attr('src', 'images/player/volume.svg');
+    
+    var icon = volume <= 0 ? 'images/player/mute.svg' : 'images/player/volume.svg';
+    volumeIcon.attr('src', icon);
 
     var mediaSelector = grandparentElement.hasClass('movie-item') ? '.movie-video' : '.modal-audio';        
     grandparentElement.find(mediaSelector).prop('volume', volume);
