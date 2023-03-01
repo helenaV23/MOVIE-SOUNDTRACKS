@@ -1,27 +1,24 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener('DOMContentLoaded', function() {
     
-    var MENU_BTN = document.querySelector('.menu-btn');
-    var MENU_WRAPPER = document.querySelector('.menu-wrapper');
-    var BODY = document.querySelector('body');
-    var SUBMENU_LINKS = document.querySelectorAll('.submenu-link');
+    var menuBtn = document.querySelector('.menu-btn');
+    var menuWrapper = document.querySelector('.menu-wrapper');
+    var body = document.body;
+    var submenuLinks = document.querySelectorAll('.submenu-link');
 
     // Opening/closing burger menu 
-    MENU_BTN.addEventListener('click', function() {
-        MENU_WRAPPER.classList.toggle('open-burger-menu');
-        MENU_BTN.classList.toggle('menu-btn-active');
-        BODY.classList.toggle('lock');
+    menuBtn.addEventListener('click', function() {
+        menuWrapper.classList.toggle('open-burger-menu');
+        menuBtn.classList.toggle('menu-btn-active');
+        body.classList.toggle('lock');
     });
 
-    SUBMENU_LINKS.forEach(function (submenuLink) {
+    submenuLinks.forEach(function (submenuLink) {
         submenuLink.addEventListener('click', function() {
-            BODY.classList.remove('lock');
-            MENU_WRAPPER.classList.remove('open-burger-menu');
-            MENU_BTN.classList.remove('menu-btn-active');
+            body.classList.remove('lock');
+            menuWrapper.classList.remove('open-burger-menu');
+            menuBtn.classList.remove('menu-btn-active');
         });
     });
-});
-
-$(function () {
 
     // Opening/closing modal window with audio playing by clicking on "Listen" button
     $('.js-listen').on('click', function () {
