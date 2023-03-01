@@ -1,17 +1,27 @@
-$(function () {
+document.addEventListener("DOMContentLoaded", function() {
+    
+    var MENU_BTN = document.querySelector('.menu-btn');
+    var MENU_WRAPPER = document.querySelector('.menu-wrapper');
+    var BODY = document.querySelector('body');
+    var SUBMENU_LINKS = document.querySelectorAll('.submenu-link');
 
     // Opening/closing burger menu 
-    $('.menu-btn').on('click', function () {
-        $('.menu-wrapper').toggleClass('open-burger-menu');
-        $('.menu-btn').toggleClass('menu-btn-active');
-        $('body').toggleClass('lock');
+    MENU_BTN.addEventListener('click', function() {
+        MENU_WRAPPER.classList.toggle('open-burger-menu');
+        MENU_BTN.classList.toggle('menu-btn-active');
+        BODY.classList.toggle('lock');
     });
 
-    $('.submenu-link').on('click', function () {
-        $('body').removeClass('lock');
-        $('.menu-wrapper').removeClass('open-burger-menu');
-        $('.menu-btn').removeClass('menu-btn-active');
+    SUBMENU_LINKS.forEach(function (submenuLink) {
+        submenuLink.addEventListener('click', function() {
+            BODY.classList.remove('lock');
+            MENU_WRAPPER.classList.remove('open-burger-menu');
+            MENU_BTN.classList.remove('menu-btn-active');
+        });
     });
+});
+
+$(function () {
 
     // Opening/closing modal window with audio playing by clicking on "Listen" button
     $('.js-listen').on('click', function () {
