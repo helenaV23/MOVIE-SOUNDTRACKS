@@ -4,6 +4,13 @@ document.addEventListener('DOMContentLoaded', function() {
     var menuWrapper = document.querySelector('.menu-wrapper');
     var body = document.body;
     var submenuLinks = document.querySelectorAll('.submenu-link');
+    var jsListenButtons = document.querySelectorAll('.js-listen');
+    var modalOverlay = document.querySelector('.modal-overlay');
+    var modalRating = document.querySelector('.modal-rating');
+    var modalTitle = document.querySelector('.modal-title');
+    var modalAudio = document.querySelector('.modal-audio');
+    var modalContainer = document.querySelector('.modal-container');
+    var jsModalPlayBtns = document.querySelectorAll('.js-modal-play');
 
     // Opening/closing burger menu 
     menuBtn.addEventListener('click', function() {
@@ -21,33 +28,36 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Opening/closing modal window with audio playing by clicking on "Listen" button
-    $('.js-listen').on('click', function () {
-        var currentFilmSection = $(this).closest('section');
-        var filmTitle = currentFilmSection.data('title');
-        var filmRating = currentFilmSection.data('rating');
-        var audio = currentFilmSection.data('audio');
+    jsListenButtons.forEach(function (jsListenButton) {
+        jsListenButton.addEventListener('click', function() {
+            var currentFilmSection = jsListenButton.closest('section');
+            var filmTitle = currentFilmSection.dataset.title;
+            var filmRating = currentFilmSection.dataset.rating;
+            var audio = currentFilmSection.dataset.audio;
 
-        $('.modal-overlay').addClass('modal-open');
-        $('body').addClass('lock');
+            modalOverlay.classList.add('modal-open');
+            body.classList.add('lock');
 
-        $('.modal-rating').text(filmRating);
-        $('.modal-title').text(filmTitle);
-        $('.modal-audio').attr('src', 'audios/' + audio);
+            modalRating.textContent = filmRating;
+            modalTitle.textContent = filmTitle;
+            modalAudio.setAttribute('src', 'audios/' + audio);  
+        });
     });
 
-    $('.modal-container').on('click', function (e) {
+    modalContainer.addEventListener('click', function (e) {
         e.stopPropagation();
     });
 
-    $('.js-modal-play').on('click', function () {
-        var currentBtn = $(this);
-        currentBtn.toggleClass('btn-pause');
+    jsModalPlayBtns.forEach(function (jsModalPlayBtn) {
+        jsModalPlayBtn.addEventListener('click', function() {
+            jsModalPlayBtn.classList.toggle('btn-pause');
 
-        if (currentBtn.hasClass('btn-pause')) {
-            $('.modal-audio')[0].play();
-        } else {
-            $('.modal-audio')[0].pause();
-        }
+            if (jsModalPlayBtn.classList.contains('btn-pause')) {
+                modalAudio.play();
+            } else {
+                modalAudio.pause();
+            }
+        });
     });
 
     closeModal('.modal-overlay');
