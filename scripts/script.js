@@ -1,25 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    var menuBtn = document.querySelector('.menu-btn');
-    var menuWrapper = document.querySelector('.menu-wrapper');
     var body = document.body;
-    var submenuLinks = document.querySelectorAll('.submenu-link');
     var jsListenButtons = document.querySelectorAll('.js-listen');
-    var modalOverlay = document.querySelector('.modal-overlay');
-    var modalRating = document.querySelector('.modal-rating');
-    var modalTitle = document.querySelector('.modal-title');
     var modalAudio = document.querySelector('.modal-audio');
-    var modalContainer = document.querySelector('.modal-container');
     var jsModalPlayBtns = document.querySelectorAll('.js-modal-play');
+    var jsVideoPlayBtns = document.querySelectorAll('.js-video-play');
 
     // Opening/closing burger menu 
-    menuBtn.addEventListener('click', function() {
-        menuWrapper.classList.toggle('open-burger-menu');
+    document.querySelector('.menu-btn').addEventListener('click', function() {
+        document.querySelector('.menu-wrapper').classList.toggle('open-burger-menu');
         menuBtn.classList.toggle('menu-btn-active');
         body.classList.toggle('lock');
     });
 
-    submenuLinks.forEach(function (submenuLink) {
+    document.querySelectorAll('.submenu-link').forEach(function (submenuLink) {
         submenuLink.addEventListener('click', function() {
             body.classList.remove('lock');
             menuWrapper.classList.remove('open-burger-menu');
@@ -35,16 +29,16 @@ document.addEventListener('DOMContentLoaded', function() {
             var filmRating = currentFilmSection.dataset.rating;
             var audio = currentFilmSection.dataset.audio;
 
-            modalOverlay.classList.add('modal-open');
+            document.querySelector('.modal-overlay').classList.add('modal-open');
             body.classList.add('lock');
 
-            modalRating.textContent = filmRating;
-            modalTitle.textContent = filmTitle;
+            document.querySelector('.modal-rating').textContent = filmRating;
+            document.querySelector('.modal-title').textContent = filmTitle;
             modalAudio.setAttribute('src', 'audios/' + audio);  
         });
     });
 
-    modalContainer.addEventListener('click', function (e) {
+    document.querySelector('.modal-container').addEventListener('click', function (e) {
         e.stopPropagation();
     });
 
@@ -63,44 +57,48 @@ document.addEventListener('DOMContentLoaded', function() {
     closeModal('.modal-overlay');
     closeModal('.modal-close-btn');
 
+
     // Interacting with videos in movie sliders
-    $('.js-video-play').on('click', function () {
-        var currentBtn = $(this);
-        var movieItem = currentBtn.parent('.movie-item');
-        var video = movieItem.find('.movie-video');
-        var allVideos = $('.movie-video');
+    jsVideoPlayBtns.forEach(function (jsVideoPlayBtn) {
+        jsVideoPlayBtn.addEventListener('click', function() {
+            var movieItem = jsVideoPlayBtn.closest('.movie-item');
+            var video = movieItem.querySelector('.movie-video');
+            var allVideos = document.querySelectorAll('.movie-video');
 
-        currentBtn.toggleClass('btn-pause');
-        movieItem.toggleClass('movie-item-playing');
-        
-        if (currentBtn.hasClass('btn-pause')) {
-            video[0].play();
+            jsVideoPlayBtn.classList.toggle('btn-pause');
+            movieItem.classList.toggle('movie-item-playing');
 
-        } else {
-            video[0].pause();
-        }
-        
-        allVideos.not(video).each(function (_index, element) {
-            var elementObject = $(element);
-            element.pause();
-            elementObject.parent('.movie-item').removeClass('movie-item-playing');
-            elementObject.siblings('.js-video-play').removeClass('btn-pause');
-        });
+            if (jsVideoPlayBtn.classList.contains('btn-pause')) {
+                video.play();
+            } else {
+                video.pause();
+            }
+
+            allVideos.forEach(function (videoElem) {
+                if (videoElem !== video) {
+                    videoElem.pause();
+                    videoElem.closest('.movie-item').classList.remove('movie-item-playing');
+                    videoElem.nextElementSibling.classList.remove('btn-pause');
+                }
+            });
+        });   
     });
 
     // Adjusting media volume when volume is being dragged
-    $('.volume-range').on('mousedown', function(e) {
-        var volumeRangeObj = $(this);
+    document.querySelectorAll('.volume-range').forEach(function (volumeRange) {
+        volumeRange.addEventListener('mousedown', function (e) {
+            setVolume(volumeRange, e.pageX);
 
-        setVolume(volumeRangeObj, e.pageX);
-        
-        $(window).on('mousemove', function (e) {
-            setVolume(volumeRangeObj, e.pageX);
+            window.addEventListener('mousemove', handleMouseMove);
+
+            document.addEventListener('mouseup', function() {
+                window.removeEventListener('mousemove', handleMouseMove);
+            });
         });
-    
-        $(document).one('mouseup', function() {
-            $(window).off('mousemove');
-        });
+
+        function handleMouseMove(e) {
+            setVolume(volumeRange, e.pageX);
+        }
     });
 
     initSliders(1);
@@ -245,11 +243,12 @@ function formatTime(time) {
 }
 
 function setVolume(element, eventXPosition) {
-    var volumeRangeWidth = element.width();
-    var volumeRangeLeftPostion = element.offset().left;
-    var volumeElement = element.find('.volume');
-    var volumeIcon = element.siblings('.volume-icon');
-    var grandparentElement = element.parent('.volume-control').parent('.media-controls').parent();
+    var elementObj = $(element)
+    var volumeRangeWidth = elementObj.width();
+    var volumeRangeLeftPostion = elementObj.offset().left;
+    var volumeElement = elementObj.find('.volume');
+    var volumeIcon = elementObj.siblings('.volume-icon');
+    var grandparentElement = elementObj.parent('.volume-control').parent('.media-controls').parent();
     var x = eventXPosition - volumeRangeLeftPostion;
     var volume = x / volumeRangeWidth;
     var volumeValue = volume * 100;
