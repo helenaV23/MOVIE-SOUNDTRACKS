@@ -92,11 +92,10 @@ document.addEventListener('DOMContentLoaded', function() {
             window.addEventListener('mousemove', handleMouseMove);
 
             document.addEventListener('mouseup', function() {
-                console.log('fnfn');
                 window.removeEventListener('mousemove', handleMouseMove);
             }, { once: true });
         });
-        
+
         function handleMouseMove(e) {
             setVolume(volumeRange, e.pageX);
         }
