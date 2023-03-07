@@ -5,18 +5,19 @@ document.addEventListener('DOMContentLoaded', function() {
     var modalAudio = document.querySelector('.modal-audio');
     var jsModalPlayBtns = document.querySelectorAll('.js-modal-play');
     var jsVideoPlayBtns = document.querySelectorAll('.js-video-play');
+    var menuBtn = document.querySelector('.menu-btn');
 
     // Opening/closing burger menu 
-    document.querySelector('.menu-btn').addEventListener('click', function() {
+    menuBtn.addEventListener('click', function() {
         document.querySelector('.menu-wrapper').classList.toggle('open-burger-menu');
-        this.classList.toggle('menu-btn-active');
+        menuBtn.classList.toggle('menu-btn-active');
         body.classList.toggle('lock');
     });
 
     document.querySelectorAll('.submenu-link').forEach(function (submenuLink) {
         submenuLink.addEventListener('click', function() {
             body.classList.remove('lock');
-            menuWrapper.classList.remove('open-burger-menu');
+            document.querySelector('.menu-wrapper').classList.remove('open-burger-menu');
             menuBtn.classList.remove('menu-btn-active');
         });
     });
