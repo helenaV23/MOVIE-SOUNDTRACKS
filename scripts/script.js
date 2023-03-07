@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Opening/closing burger menu 
     document.querySelector('.menu-btn').addEventListener('click', function() {
         document.querySelector('.menu-wrapper').classList.toggle('open-burger-menu');
-        menuBtn.classList.toggle('menu-btn-active');
+        this.classList.toggle('menu-btn-active');
         body.classList.toggle('lock');
     });
 
