@@ -181,70 +181,78 @@ function initSliders(initialSlide) {
 }
 
 function makeSmoothScroll(selector) {
-    $(selector).on('click', function () {
-        var scrollName = $(this).attr('href');
-        var scrollTop = $(scrollName).offset().top;
+    var elements = document.querySelectorAll(selector);
+    elements.forEach(function (element) {
+        element.addEventListener('click', function (e) {
+            e.preventDefault();
+            var elementHref = element.getAttribute('href');
+            var offsetTop = document.querySelector(elementHref).offsetTop;
 
-        $('html').animate({
-            scrollTop: scrollTop
-        }, 500);
+            scroll({
+                top: offsetTop,
+                behavior: 'smooth'
+            });
+        });
     });
 }
 
 function showMediaTime(selector) {
-    $(selector).each(function (_index, element) {
-        var elementObj = $(element);
-        var mediaTimeElem = elementObj.siblings('.media-controls').find('.media-time');
-        var currentTimeElem = mediaTimeElem.find('.current-time');
-        var timeLineElem = mediaTimeElem.find('.timeline');
-        var timeProgressElem = mediaTimeElem.find('.timeline-progress');
+    var elements = document.querySelectorAll(selector);
+    elements.forEach(function (element) {
+        var mediaControlsElement = element.parentNode.querySelector('.media-controls');
+        var mediaTimeElem = mediaControlsElement.querySelector('.media-time');
+        var currentTimeElem = mediaTimeElem.querySelector('.current-time');
+        var timeLineElem = mediaTimeElem.querySelector('.timeline');
+        var timeProgressElem = mediaTimeElem.querySelector('.timeline-progress');
         var timer = 0;
 
-        elementObj.on('loadedmetadata', function () {
-            mediaTimeElem.find('.media-duration').text(formatTime(element.duration));
-            currentTimeElem.text(formatTime(0));
-            timeProgressElem.width(0);
-        });  
+        element.addEventListener('loadedmetadata', function () {
+            var mediaDuration = mediaTimeElem.querySelector('.media-controls .media-duration');
+            
+            mediaDuration.textContent = formatTime(element.duration);
+            currentTimeElem.textContent = formatTime(0);
+            timeProgressElem.style.width = '0';
 
-        elementObj.on('play', function () {
-            showProgress();
-        });
+            element.addEventListener('play', function () {
+                showProgress();
+            });
         
-        elementObj.on('pause', function () {
-            cancelAnimationFrame(timer);
-        });
+            element.addEventListener('pause', function () {
+                cancelAnimationFrame(timer);
+            });
 
-        elementObj.on('ended', function () {
-            elementObj.siblings('.btn-play').removeClass('btn-pause');
-            currentTimeElem.text(formatTime(0));
-            timeProgressElem.width(0);
+            element.addEventListener('ended', function () {
+                element.nextElementSibling.classList.remove('btn-pause');
+                currentTimeElem.textContent = formatTime(0);
+                timeProgressElem.style.width = '0';
 
-            if (selector == '.movie-video') {
-                $('.movie-item').removeClass('movie-item-playing');
+                if (selector == '.movie-video') {
+                    document.querySelector('.movie-item').classList.remove('movie-item-playing');
+                }
+            });
+
+            function showProgress() {
+                var currTime = element.currentTime;
+                currentTimeElem.textContent = formatTime(currTime);
+    
+                var progress = (currTime / element.duration) * 100;
+                timeProgressElem.style.width = progress + '%';
+    
+                timer = requestAnimationFrame(showProgress);
             }
-        });
 
-        function showProgress() {
-            var currTime = element.currentTime;
-            currentTimeElem.text(formatTime(currTime));
-
-            var progress = (currTime / element.duration) * 100;
-            timeProgressElem.width(progress + '%');
-
-            timer = requestAnimationFrame(showProgress);
-        }
-
-        timeLineElem.on('click', function (e) {
-            var progress = e.offsetX / $(this).width();
-            var newCurrentTime = progress * element.duration;
-
-            element.currentTime = newCurrentTime;
-
-            currentTimeElem.text(formatTime(newCurrentTime));
-            timeProgressElem.width(progress * 100 + '%');    
+            timeLineElem.addEventListener('click', function (e) {
+                var progress = e.offsetX / this.offsetWidth;
+                var newCurrentTime = progress * element.duration;
+    
+                element.currentTime = newCurrentTime;
+    
+                currentTimeElem.textContent = formatTime(newCurrentTime);
+                timeProgressElem.style.width = (progress * 100) + '%';    
+            });
         });
     }); 
-}
+};
 
 function formatTime(time) {
     var minutes = Math.floor(time / 60);
