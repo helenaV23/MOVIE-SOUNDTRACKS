@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (videoElem !== video) {
                     videoElem.pause();
                     videoElem.closest('.movie-item').classList.remove('movie-item-playing');
-                    videoElem.nextElementSibling.classList.remove('btn-pause');
+                    videoElem.parentNode.querySelector('.js-video-play').classList.remove('btn-pause');
                 }
             });
         });   
@@ -207,7 +207,7 @@ function showMediaTime(selector) {
         var timer = 0;
 
         element.addEventListener('loadedmetadata', function () {
-            var mediaDuration = mediaTimeElem.querySelector('.media-controls .media-duration');
+            var mediaDuration = mediaTimeElem.querySelector('.media-duration');
             
             mediaDuration.textContent = formatTime(element.duration);
             currentTimeElem.textContent = formatTime(0);
@@ -222,12 +222,12 @@ function showMediaTime(selector) {
             });
 
             element.addEventListener('ended', function () {
-                element.nextElementSibling.classList.remove('btn-pause');
+                element.parentNode.querySelector('.btn-play').classList.remove('btn-pause');
                 currentTimeElem.textContent = formatTime(0);
                 timeProgressElem.style.width = '0';
 
                 if (selector == '.movie-video') {
-                    document.querySelector('.movie-item').classList.remove('movie-item-playing');
+                    element.closest('.movie-item').classList.remove('movie-item-playing');
                 }
             });
 
@@ -263,12 +263,11 @@ function formatTime(time) {
 }
 
 function setVolume(element, eventXPosition) {
-    var elementObj = $(element)
-    var volumeRangeWidth = elementObj.width();
-    var volumeRangeLeftPostion = elementObj.offset().left;
-    var volumeElement = elementObj.find('.volume');
-    var volumeIcon = elementObj.siblings('.volume-icon');
-    var grandparentElement = elementObj.parent('.volume-control').parent('.media-controls').parent();
+    var volumeRangeWidth = element.offsetWidth;
+    var volumeRangeLeftPostion = element.getBoundingClientRect().left;
+    var volumeElement = element.querySelector('.volume');
+    var volumeIcon = element.parentNode.querySelector('.volume-icon');
+    var grandparentElement = element.parentElement.parentElement.parentElement;
     var x = eventXPosition - volumeRangeLeftPostion;
     var volume = x / volumeRangeWidth;
     var volumeValue = volume * 100;
@@ -281,11 +280,10 @@ function setVolume(element, eventXPosition) {
         volumeValue = 100; 
     }
 
-    volumeElement.css('width', volumeValue + '%');
-    
+    volumeElement.style.width = volumeValue + '%';
     var icon = volume <= 0 ? 'images/player/mute.svg' : 'images/player/volume.svg';
-    volumeIcon.attr('src', icon);
+    volumeIcon.setAttribute('src', icon);
 
-    var mediaSelector = grandparentElement.hasClass('movie-item') ? '.movie-video' : '.modal-audio';        
-    grandparentElement.find(mediaSelector).prop('volume', volume);
+    var mediaSelector = grandparentElement.classList.contains('movie-item') ? '.movie-video' : '.modal-audio';        
+    grandparentElement.querySelector(mediaSelector).volume = volume;  
 }
