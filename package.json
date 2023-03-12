@@ -17,9 +17,6 @@
     "url": "https://github.com/helenaV23/Movie-Soundtracks/issues"
   },
   "homepage": "https://github.com/helenaV23/Movie-Soundtracks#readme",
-  "dependencies": {
-    "jquery": "^3.6.1"
-  },
   "devDependencies": {
     "sass": "^1.56.1"
   }
