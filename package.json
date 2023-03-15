@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "styles": "sass --watch styles/style.scss:styles/style.css",
-    "build": "cp node_modules/jquery/dist/jquery.min.js scripts/"
+    "styles": "sass --watch styles/style.scss:styles/style.css"
   },
   "repository": {
     "type": "git",
