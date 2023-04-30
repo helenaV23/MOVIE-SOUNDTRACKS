@@ -1,14 +1,39 @@
-document.addEventListener('DOMContentLoaded', function() {
-    
+function PlayButtonComponent(action) {
+    this.action = action;
+}
+
+PlayButtonComponent.prototype.render = function () {
+    var button = document.createElement('button');
+
+    button.classList.add('btn-play', 'js-modal-play');
+    button.addEventListener('click', this.action);
+
+    return button;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
     var jsListenButtons = document.querySelectorAll('.js-listen');
     var modalAudio = document.querySelector('.modal-audio');
-    var jsModalPlayBtns = document.querySelectorAll('.js-modal-play');
     var jsVideoPlayBtns = document.querySelectorAll('.js-video-play');
     var menuBtn = document.querySelector('.menu-btn');
+    
+    var modalPlayButton = new PlayButtonComponent(function () {
+        this.classList.toggle('btn-pause');
+
+        if (this.classList.contains('btn-pause')) {
+            modalAudio.play();
+        } else {
+            modalAudio.pause();
+        }
+    });
+
+    var renderedButton = modalPlayButton.render();
+    document.querySelector('.modal-container').appendChild(renderedButton);
+    
 
     // Opening/closing burger menu 
-    menuBtn.addEventListener('click', function() {
+    menuBtn.addEventListener('click', function () {
         document.querySelector('.menu-wrapper').classList.toggle('open-burger-menu');
         menuBtn.classList.toggle('menu-btn-active');
         body.classList.toggle('lock');
@@ -41,18 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelector('.modal-container').addEventListener('click', function (e) {
         e.stopPropagation();
-    });
-
-    jsModalPlayBtns.forEach(function (jsModalPlayBtn) {
-        jsModalPlayBtn.addEventListener('click', function() {
-            jsModalPlayBtn.classList.toggle('btn-pause');
-
-            if (jsModalPlayBtn.classList.contains('btn-pause')) {
-                modalAudio.play();
-            } else {
-                modalAudio.pause();
-            }
-        });
     });
 
     closeModal('.modal-overlay');
