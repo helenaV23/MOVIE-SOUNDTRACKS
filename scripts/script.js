@@ -1,12 +1,22 @@
-function PlayButtonComponent(action) {
-    this.action = action;
+function PlayButtonComponent(audio) {
+    this._audio = audio;
 }
 
 PlayButtonComponent.prototype.render = function () {
     var button = document.createElement('button');
+    var self = this;
 
     button.classList.add('btn-play', 'js-modal-play');
-    button.addEventListener('click', this.action);
+    
+    button.addEventListener('click', function () {
+        button.classList.toggle('btn-pause');
+
+        if (button.classList.contains('btn-pause')) {
+            self._audio.play();
+        } else {
+            self._audio.pause();
+        }
+    });
 
     return button;
 }
@@ -18,15 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var jsVideoPlayBtns = document.querySelectorAll('.js-video-play');
     var menuBtn = document.querySelector('.menu-btn');
     
-    var modalPlayButton = new PlayButtonComponent(function () {
-        this.classList.toggle('btn-pause');
-
-        if (this.classList.contains('btn-pause')) {
-            modalAudio.play();
-        } else {
-            modalAudio.pause();
-        }
-    });
+    var modalPlayButton = new PlayButtonComponent(modalAudio); //instance
 
     var renderedButton = modalPlayButton.render();
     document.querySelector('.modal-container').appendChild(renderedButton);
