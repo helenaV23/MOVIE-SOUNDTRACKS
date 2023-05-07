@@ -1,25 +1,29 @@
-function PlayButtonComponent(audio) {
-    this._audio = audio;
+function PlayButtonComponent(buttonClick) {
+    this._buttonClick = buttonClick;
 }
 
 PlayButtonComponent.prototype.render = function () {
-    var button = document.createElement('button');
+    this._button = document.createElement('button');
     var self = this;
 
-    button.classList.add('btn-play', 'js-modal-play');
+    this._button.classList.add('btn-play', 'js-modal-play');
     
-    button.addEventListener('click', function () {
-        button.classList.toggle('btn-pause');
+    this._button.addEventListener('click', function () {
+        self._button.classList.toggle('btn-pause');
 
-        if (button.classList.contains('btn-pause')) {
-            self._audio.play();
+        if (self._button.classList.contains('btn-pause')) {
+            self._buttonClick(true);
         } else {
-            self._audio.pause();
+            self._buttonClick(false);
         }
     });
 
-    return button;
-}
+    return this._button;
+};
+
+PlayButtonComponent.prototype.reset = function () {
+    this._button.classList.remove('btn-pause');
+};
 
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
@@ -28,12 +32,17 @@ document.addEventListener('DOMContentLoaded', function () {
     var jsVideoPlayBtns = document.querySelectorAll('.js-video-play');
     var menuBtn = document.querySelector('.menu-btn');
     
-    var modalPlayButton = new PlayButtonComponent(modalAudio); //instance
+    var modalPlayButton = new PlayButtonComponent(function (playing) {
+        if (playing) {
+            modalAudio.play();
+        } else {
+            modalAudio.pause();
+        }
+    }); //instance
 
     var renderedButton = modalPlayButton.render();
     document.querySelector('.modal-container').appendChild(renderedButton);
     
-
     // Opening/closing burger menu 
     menuBtn.addEventListener('click', function () {
         document.querySelector('.menu-wrapper').classList.toggle('open-burger-menu');
@@ -70,8 +79,8 @@ document.addEventListener('DOMContentLoaded', function () {
         e.stopPropagation();
     });
 
-    closeModal('.modal-overlay');
-    closeModal('.modal-close-btn');
+    closeModal('.modal-overlay', modalPlayButton);
+    closeModal('.modal-close-btn', modalPlayButton);
 
 
     // Interacting with videos in movie sliders
@@ -130,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
     showMediaTime('.modal-audio');
 });
 
-function closeModal(selector) {
+function closeModal(selector, button) {
     var elements = document.querySelectorAll(selector);
 
     elements.forEach(function (element) {
@@ -138,7 +147,7 @@ function closeModal(selector) {
             document.querySelector('.modal-audio').pause();
             document.querySelector('.modal-overlay').classList.remove('modal-open');
             document.body.classList.remove('lock');
-            document.querySelector('.js-modal-play').classList.remove('btn-pause');
+            button.reset();
         });
     });   
 }
