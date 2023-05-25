@@ -11,11 +11,9 @@ PlayButtonComponent.prototype.render = function () {
     this._button.addEventListener('click', function () {
         self._button.classList.toggle('btn-pause');
 
-        if (self._button.classList.contains('btn-pause')) {
-            self._buttonClick(true);
-        } else {
-            self._buttonClick(false);
-        }
+        var playing = self._button.classList.contains('btn-pause');
+
+        self._buttonClick(playing);
     });
 
     return this._button;
@@ -25,13 +23,80 @@ PlayButtonComponent.prototype.reset = function () {
     this._button.classList.remove('btn-pause');
 };
 
+function VolumeControlComponent(volumeChange) {
+    this._volumeChange = volumeChange;
+}
+
+VolumeControlComponent.prototype.render = function () {
+    var volumeControlDiv = document.createElement('div');
+    volumeControlDiv.classList.add('volume-control');
+
+    this._volumeIcon = document.createElement('img');
+    this._volumeIcon.classList.add('volume-icon');
+    this._volumeIcon.setAttribute('src', 'images/player/volume.svg');
+    this._volumeIcon.setAttribute('alt', 'volume-icon');
+
+    var volumeRange = this._createVolumeRange();
+    
+    this._volume = document.createElement('div');
+    this._volume.classList.add('volume');
+    volumeRange.appendChild(this._volume);
+
+    volumeControlDiv.appendChild(this._volumeIcon);
+    volumeControlDiv.appendChild(volumeRange);
+
+    return volumeControlDiv;
+}
+
+VolumeControlComponent.prototype._createVolumeRange = function () {
+    var self = this;
+    var volumeRange = document.createElement('div');
+    volumeRange.classList.add('volume-range');
+    volumeRange.addEventListener('mousedown', function (e) {
+        self.setVolume(volumeRange, e.pageX);
+
+        window.addEventListener('mousemove', handleMouseMove);
+
+        document.addEventListener('mouseup', function() {
+            window.removeEventListener('mousemove', handleMouseMove);
+        }, { once: true });
+    });
+
+    function handleMouseMove(e) {
+        self.setVolume(volumeRange, e.pageX);
+    }
+
+    return volumeRange;
+}
+
+VolumeControlComponent.prototype.setVolume = function (element, eventXPosition) {
+    var volumeRangeWidth = element.offsetWidth;
+    var volumeRangeLeftPostion = element.getBoundingClientRect().left;
+    var x = eventXPosition - volumeRangeLeftPostion;
+    var volume = x / volumeRangeWidth;
+
+    if (volume <= 0) {
+        volume = 0;
+    } else if (volume > 1) {
+        volume = 1;
+    }
+
+    this._volume.style.width = volume * 100 + '%';
+    var icon = volume <= 0 ? 'images/player/mute.svg' : 'images/player/volume.svg';
+    this._volumeIcon.setAttribute('src', icon);
+ 
+    this._volumeChange(volume);  
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
     var jsListenButtons = document.querySelectorAll('.js-listen');
     var modalAudio = document.querySelector('.modal-audio');
     var jsVideoPlayBtns = document.querySelectorAll('.js-video-play');
     var menuBtn = document.querySelector('.menu-btn');
-    
+    var modalMediaControls = document.querySelector('.modal-container').querySelector('.media-controls');
+
+
     var modalPlayButton = new PlayButtonComponent(function (playing) {
         if (playing) {
             modalAudio.play();
@@ -42,6 +107,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var renderedButton = modalPlayButton.render();
     document.querySelector('.modal-container').appendChild(renderedButton);
+
+    var volumeControlElement = new VolumeControlComponent(function (volume) {
+        modalAudio.volume = volume;
+    });
+
+    var renderedVolumeControlElement = volumeControlElement.render();
+
+    modalMediaControls.appendChild(renderedVolumeControlElement);
+
     
     // Opening/closing burger menu 
     menuBtn.addEventListener('click', function () {
@@ -110,7 +184,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Adjusting media volume when volume is being dragged
-    document.querySelectorAll('.volume-range').forEach(function (volumeRange) {
+    document.querySelectorAll('.movie-item').forEach(function (movieItem) {
+        var volumeRange = movieItem.querySelector('.volume-control').querySelector('.volume-range');
         volumeRange.addEventListener('mousedown', function (e) {
             setVolume(volumeRange, e.pageX);
 
@@ -120,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 window.removeEventListener('mousemove', handleMouseMove);
             }, { once: true });
         });
-
+        
         function handleMouseMove(e) {
             setVolume(volumeRange, e.pageX);
         }
