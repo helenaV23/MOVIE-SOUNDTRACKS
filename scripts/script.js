@@ -200,7 +200,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var progressControlElem = new ProgressControlComponent(renderedButton, modalAudio);
     var renderedProgressControlElement = progressControlElem.render();
     modalMediaControls.appendChild(renderedProgressControlElement);
-    // progressControlElem.showMediaTime(modalAudio);
 
     //Volume
     var volumeControlElement = new VolumeControlComponent(function (volume) {
@@ -305,7 +304,6 @@ document.addEventListener('DOMContentLoaded', function () {
     makeSmoothScroll('.js-scroll-link');
 
     showMediaTime('.movie-video');
-    // showMediaTime('.modal-audio');
 });
 
 function closeModal(selector, button) {
