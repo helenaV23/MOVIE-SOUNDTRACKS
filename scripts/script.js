@@ -140,7 +140,7 @@ ProgressControlComponent.prototype._showMediaTime = function () {
         });
 
         self._media.addEventListener('ended', function () {
-            self._mediaPlayButton.classList.remove('btn-pause');
+            self._mediaPlayButton.reset();
             self._currentTime.textContent = self._formatTime(0);
             self._timeLineProgress.style.width = '0';
         });
@@ -175,14 +175,38 @@ ProgressControlComponent.prototype._formatTime = function (time) {
             (seconds < 10 ? '0' + seconds : seconds);
 }
 
+function MediaControlsComponent(modalPlayButton, modalAudio) {
+    this._modalButton = modalPlayButton;
+    this._modalAudio = modalAudio;
+}
+
+MediaControlsComponent.prototype.render = function () {
+    var self = this;
+    var mediaControls = document.createElement('div');
+    mediaControls.classList.add('media-controls');
+
+    var progressControlElem = new ProgressControlComponent(this._modalButton, this._modalAudio);
+    var renderedProgressControlElement = progressControlElem.render();
+
+    var volumeControlElement = new VolumeControlComponent(function (volume) {
+        self._modalAudio.volume = volume;
+    });
+
+    var renderedVolumeControlElement = volumeControlElement.render();
+
+    mediaControls.appendChild(renderedProgressControlElement);
+    mediaControls.appendChild(renderedVolumeControlElement);
+
+    return mediaControls;
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
     var jsListenButtons = document.querySelectorAll('.js-listen');
     var modalAudio = document.querySelector('.modal-audio');
     var jsVideoPlayBtns = document.querySelectorAll('.js-video-play');
     var menuBtn = document.querySelector('.menu-btn');
-    var modalMediaControls = document.querySelector('.modal-container').querySelector('.media-controls');
-
+    var modalContainer = document.querySelector('.modal-container');
 
     var modalPlayButton = new PlayButtonComponent(function (playing) {
         if (playing) {
@@ -196,20 +220,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var renderedButton = modalPlayButton.render();
     document.querySelector('.modal-container').appendChild(renderedButton);
 
-    //ProgressControlElem
-    var progressControlElem = new ProgressControlComponent(renderedButton, modalAudio);
-    var renderedProgressControlElement = progressControlElem.render();
-    modalMediaControls.appendChild(renderedProgressControlElement);
+    var mediaControlElement = new MediaControlsComponent(modalPlayButton, modalAudio);
+    var renderedMediaControlElement = mediaControlElement.render();
+    modalContainer.appendChild(renderedMediaControlElement);
 
-    //Volume
-    var volumeControlElement = new VolumeControlComponent(function (volume) {
-        modalAudio.volume = volume;
-    });
-
-    var renderedVolumeControlElement = volumeControlElement.render();
-    modalMediaControls.appendChild(renderedVolumeControlElement);
-
-    
     // Opening/closing burger menu 
     menuBtn.addEventListener('click', function () {
         document.querySelector('.menu-wrapper').classList.toggle('open-burger-menu');
