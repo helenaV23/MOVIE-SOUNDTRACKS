@@ -200,29 +200,89 @@ MediaControlsComponent.prototype.render = function () {
     return mediaControls;
 }
 
+function ModalComponent() {
+
+}
+
+ModalComponent.prototype.render = function () {
+    var self = this;
+
+    this._modalOverlay = document.createElement('div');
+    this._modalOverlay.classList.add('modal-overlay');
+
+    var modalContainer = document.createElement('div');
+    modalContainer.classList.add('modal-container');
+
+    var modalAudioInfo = document.createElement('div');
+    modalAudioInfo.classList.add('modal-audio-info');
+
+    var modalRating = document.createElement('span');
+    modalRating.classList.add('modal-rating');
+
+    var modalTitle = document.createElement('h3');
+    modalTitle.classList.add('modal-title');
+
+    modalContainer.appendChild(modalAudioInfo);
+    modalAudioInfo.appendChild(modalRating);
+    modalAudioInfo.appendChild(modalTitle);
+
+    var modalCloseBtn = document.createElement('button');
+    modalCloseBtn.classList.add('modal-close-btn');
+
+    var modalCloseBtnSpan = document.createElement('span');
+
+    modalCloseBtn.appendChild(modalCloseBtnSpan);
+
+    this._modalAudio = document.createElement('audio');
+    this._modalAudio.classList.add('modal-audio');
+
+    this._modalOverlay.appendChild(modalContainer);
+    modalContainer.appendChild(modalCloseBtn);
+    modalContainer.appendChild(this._modalAudio);
+
+    this._modalPlayButton = new PlayButtonComponent(function (playing) {
+        if (playing) {
+            self._modalAudio.play();
+        } else {
+            self._modalAudio.pause();
+        }
+    });
+
+    var renderedButton = this._modalPlayButton.render();
+    modalContainer.appendChild(renderedButton);
+
+    var mediaControlElement = new MediaControlsComponent(this._modalPlayButton, this._modalAudio);
+    var renderedMediaControlElement = mediaControlElement.render();
+    modalContainer.appendChild(renderedMediaControlElement);
+
+    this._closeModal(this._modalOverlay);
+    this._closeModal(modalCloseBtn);
+
+    return this._modalOverlay;
+}
+
+ModalComponent.prototype._closeModal = function (element) {
+    var self = this;
+
+    element.addEventListener('click', function () {
+        self._modalAudio.pause();
+        self._modalOverlay.classList.remove('modal-open');
+        document.body.classList.remove('lock');
+        self._modalPlayButton.reset();
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
     var jsListenButtons = document.querySelectorAll('.js-listen');
-    var modalAudio = document.querySelector('.modal-audio');
     var jsVideoPlayBtns = document.querySelectorAll('.js-video-play');
     var menuBtn = document.querySelector('.menu-btn');
-    var modalContainer = document.querySelector('.modal-container');
 
-    var modalPlayButton = new PlayButtonComponent(function (playing) {
-        if (playing) {
-            modalAudio.play();
-        } else {
-            modalAudio.pause();
-        }
-    }); //instance
+    var modalComponent = new ModalComponent();
+    var renderedModalComponent = modalComponent.render();
+    body.appendChild(renderedModalComponent);
 
-    //modalPlayButton
-    var renderedButton = modalPlayButton.render();
-    document.querySelector('.modal-container').appendChild(renderedButton);
-
-    var mediaControlElement = new MediaControlsComponent(modalPlayButton, modalAudio);
-    var renderedMediaControlElement = mediaControlElement.render();
-    modalContainer.appendChild(renderedMediaControlElement);
+    var modalAudio = document.querySelector('.modal-audio');
 
     // Opening/closing burger menu 
     menuBtn.addEventListener('click', function () {
@@ -259,10 +319,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('.modal-container').addEventListener('click', function (e) {
         e.stopPropagation();
     });
-
-    closeModal('.modal-overlay', modalPlayButton);
-    closeModal('.modal-close-btn', modalPlayButton);
-
 
     // Interacting with videos in movie sliders
     jsVideoPlayBtns.forEach(function (jsVideoPlayBtn) {
@@ -319,19 +375,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     showMediaTime('.movie-video');
 });
-
-function closeModal(selector, button) {
-    var elements = document.querySelectorAll(selector);
-
-    elements.forEach(function (element) {
-        element.addEventListener('click', function () {
-            document.querySelector('.modal-audio').pause();
-            document.querySelector('.modal-overlay').classList.remove('modal-open');
-            document.body.classList.remove('lock');
-            button.reset();
-        });
-    });   
-}
 
 function closeVideo(selector) {
     var elements = document.querySelectorAll(selector);
