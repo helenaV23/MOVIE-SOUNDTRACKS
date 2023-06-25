@@ -200,28 +200,37 @@ MediaControlsComponent.prototype.render = function () {
     return mediaControls;
 }
 
-function ModalComponent() {
-
+function ModalComponent(filmTitle, filmRating, audio) {
+    this._filmTitle = filmTitle;
+    this._filmRating = filmRating;
+    this._audio = audio;
 }
 
 ModalComponent.prototype.render = function () {
     var self = this;
 
+    document.body.classList.add('lock');
     this._modalOverlay = document.createElement('div');
     this._modalOverlay.classList.add('modal-overlay');
 
     var modalContainer = document.createElement('div');
     modalContainer.classList.add('modal-container');
 
+    modalContainer.addEventListener('click', function (e) {
+        e.stopPropagation();
+    });
+
     var modalAudioInfo = document.createElement('div');
     modalAudioInfo.classList.add('modal-audio-info');
-
+    
     var modalRating = document.createElement('span');
     modalRating.classList.add('modal-rating');
+    modalRating.textContent = this._filmRating;
 
     var modalTitle = document.createElement('h3');
     modalTitle.classList.add('modal-title');
-
+    modalTitle.textContent = this._filmTitle;
+    
     modalContainer.appendChild(modalAudioInfo);
     modalAudioInfo.appendChild(modalRating);
     modalAudioInfo.appendChild(modalTitle);
@@ -230,11 +239,12 @@ ModalComponent.prototype.render = function () {
     modalCloseBtn.classList.add('modal-close-btn');
 
     var modalCloseBtnSpan = document.createElement('span');
-
+    
     modalCloseBtn.appendChild(modalCloseBtnSpan);
 
     this._modalAudio = document.createElement('audio');
     this._modalAudio.classList.add('modal-audio');
+    this._modalAudio.setAttribute('src', 'audios/' + this._audio);
 
     this._modalOverlay.appendChild(modalContainer);
     modalContainer.appendChild(modalCloseBtn);
@@ -265,10 +275,8 @@ ModalComponent.prototype._closeModal = function (element) {
     var self = this;
 
     element.addEventListener('click', function () {
-        self._modalAudio.pause();
-        self._modalOverlay.classList.remove('modal-open');
         document.body.classList.remove('lock');
-        self._modalPlayButton.reset();
+        self._modalOverlay.remove();
     });
 }
 
@@ -278,11 +286,18 @@ document.addEventListener('DOMContentLoaded', function () {
     var jsVideoPlayBtns = document.querySelectorAll('.js-video-play');
     var menuBtn = document.querySelector('.menu-btn');
 
-    var modalComponent = new ModalComponent();
-    var renderedModalComponent = modalComponent.render();
-    body.appendChild(renderedModalComponent);
+    jsListenButtons.forEach(function (jsListenButton) {
+        jsListenButton.addEventListener('click', function() {
+            var currentFilmSection = jsListenButton.closest('section');
+            var filmTitle = currentFilmSection.dataset.title;
+            var filmRating = currentFilmSection.dataset.rating;
+            var audio = currentFilmSection.dataset.audio;
 
-    var modalAudio = document.querySelector('.modal-audio');
+            var modalComponent = new ModalComponent(filmTitle, filmRating, audio);
+            var renderedModalComponent = modalComponent.render();
+            body.appendChild(renderedModalComponent);
+        });
+    });
 
     // Opening/closing burger menu 
     menuBtn.addEventListener('click', function () {
@@ -297,27 +312,6 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelector('.menu-wrapper').classList.remove('open-burger-menu');
             menuBtn.classList.remove('menu-btn-active');
         });
-    });
-
-    // Opening/closing modal window with audio playing by clicking on "Listen" button
-    jsListenButtons.forEach(function (jsListenButton) {
-        jsListenButton.addEventListener('click', function() {
-            var currentFilmSection = jsListenButton.closest('section');
-            var filmTitle = currentFilmSection.dataset.title;
-            var filmRating = currentFilmSection.dataset.rating;
-            var audio = currentFilmSection.dataset.audio;
-
-            document.querySelector('.modal-overlay').classList.add('modal-open');
-            body.classList.add('lock');
-
-            document.querySelector('.modal-rating').textContent = filmRating;
-            document.querySelector('.modal-title').textContent = filmTitle;
-            modalAudio.setAttribute('src', 'audios/' + audio);  
-        });
-    });
-
-    document.querySelector('.modal-container').addEventListener('click', function (e) {
-        e.stopPropagation();
     });
 
     // Interacting with videos in movie sliders
