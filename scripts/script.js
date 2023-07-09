@@ -1,9 +1,11 @@
 class PlayButtonComponent {
     #buttonClick;
     #button;
+    #playing;
 
     constructor(buttonClick) {
         this.#buttonClick = buttonClick;
+        this.#playing = false;
     }
 
     render() {
@@ -11,11 +13,15 @@ class PlayButtonComponent {
         this.#button.classList.add('btn-play');
     
         this.#button.addEventListener('click', () => {
-            this.#button.classList.toggle('btn-pause');
+            this.#playing = !this.#playing;
+    
+            if (this.#playing) {
+                this.#button.classList.add('btn-pause');
+            } else {
+                this.#button.classList.remove('btn-pause');
+            }
 
-            const playing = this.#button.classList.contains('btn-pause');
-
-            this.#buttonClick(playing);
+            this.#buttonClick(this.#playing);
         });
 
         return this.#button;
