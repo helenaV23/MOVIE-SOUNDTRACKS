@@ -1,9 +1,11 @@
 class PlayButtonComponent {
     #buttonClick;
     #button;
+    #playing;
 
     constructor(buttonClick) {
         this.#buttonClick = buttonClick;
+        this.#playing = false;
     }
 
     render() {
@@ -11,11 +13,15 @@ class PlayButtonComponent {
         this.#button.classList.add('btn-play');
     
         this.#button.addEventListener('click', () => {
-            this.#button.classList.toggle('btn-pause');
+            this.#playing = !this.#playing;
+    
+            if (this.#playing) {
+                this.#button.classList.add('btn-pause');
+            } else {
+                this.#button.classList.remove('btn-pause');
+            }
 
-            const playing = this.#button.classList.contains('btn-pause');
-
-            this.#buttonClick(playing);
+            this.#buttonClick(this.#playing);
         });
 
         return this.#button;
@@ -308,8 +314,8 @@ class ModalComponent {
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
     var jsListenButtons = document.querySelectorAll('.js-listen');
-    var jsVideoPlayBtns = document.querySelectorAll('.js-video-play');
     var menuBtn = document.querySelector('.menu-btn');
+    var movieItemElements = document.querySelectorAll('.movie-item');
 
     jsListenButtons.forEach(function (jsListenButton) {
         jsListenButton.addEventListener('click', function() {
@@ -322,6 +328,33 @@ document.addEventListener('DOMContentLoaded', function () {
             var renderedModalComponent = modalComponent.render();
             body.appendChild(renderedModalComponent);
         });
+    });
+
+    movieItemElements.forEach(function (movieItemElem) {
+        var movieVideo = movieItemElem.querySelector('.movie-video');
+        var moviePlayBtn = new PlayButtonComponent (function (playing) {
+            if (playing) {
+
+                movieItemElem.classList.add('movie-item-playing');
+                movieVideo.play();
+        
+            } else {
+                movieItemElem.classList.remove('movie-item-playing');
+                movieVideo.pause();
+            }
+
+            var allVideos = document.querySelectorAll('.movie-video');
+            allVideos.forEach(function (videoElem) {
+                if (videoElem !== movieVideo) {
+                    videoElem.pause();
+                    videoElem.closest('.movie-item').classList.remove('movie-item-playing');
+                    videoElem.parentNode.querySelector('.btn-play').classList.remove('btn-pause');
+                }
+            });
+        });
+
+        var renderedMoviePlayButton = moviePlayBtn.render();
+        movieItemElem.appendChild(renderedMoviePlayButton);        
     });
 
     // Opening/closing burger menu 
@@ -337,32 +370,6 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelector('.menu-wrapper').classList.remove('open-burger-menu');
             menuBtn.classList.remove('menu-btn-active');
         });
-    });
-
-    // Interacting with videos in movie sliders
-    jsVideoPlayBtns.forEach(function (jsVideoPlayBtn) {
-        jsVideoPlayBtn.addEventListener('click', function() {
-            var movieItem = jsVideoPlayBtn.closest('.movie-item');
-            var video = movieItem.querySelector('.movie-video');
-            var allVideos = document.querySelectorAll('.movie-video');
-
-            jsVideoPlayBtn.classList.toggle('btn-pause');
-            movieItem.classList.toggle('movie-item-playing');
-
-            if (jsVideoPlayBtn.classList.contains('btn-pause')) {
-                video.play();
-            } else {
-                video.pause();
-            }
-
-            allVideos.forEach(function (videoElem) {
-                if (videoElem !== video) {
-                    videoElem.pause();
-                    videoElem.closest('.movie-item').classList.remove('movie-item-playing');
-                    videoElem.parentNode.querySelector('.js-video-play').classList.remove('btn-pause');
-                }
-            });
-        });   
     });
 
     // Adjusting media volume when volume is being dragged
@@ -406,7 +413,7 @@ function closeVideo(selector) {
             document.querySelectorAll('.movie-item').forEach(function (movieItemElem) {
                 movieItemElem.classList.remove('movie-item-playing');
             });
-            document.querySelectorAll('.js-video-play').forEach(function (jsVideoPlayElem) {
+            document.querySelectorAll('.btn-play').forEach(function (jsVideoPlayElem) {
                 jsVideoPlayElem.classList.remove('btn-pause');
             });
         });
