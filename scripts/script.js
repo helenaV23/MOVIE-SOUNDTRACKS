@@ -359,7 +359,13 @@ document.addEventListener('DOMContentLoaded', function () {
         var progressControlElemSlider = new ProgressControlComponent(moviePlayBtn, movieVideo);
         var renderedProgressControlElemSlider = progressControlElemSlider.render();
 
-        movieItemElem.querySelector('.media-controls').insertBefore(renderedProgressControlElemSlider, movieItemElem.querySelector('.volume-control'));
+        var volumeControlElement = new VolumeControlComponent((volume) => {
+            movieVideo.volume = volume;
+        });
+        var renderedVolumeControlElement = volumeControlElement.render();
+
+        movieItemElem.querySelector('.media-controls').appendChild(renderedProgressControlElemSlider);
+        movieItemElem.querySelector('.media-controls').appendChild(renderedVolumeControlElement);
     });
 
     // Opening/closing burger menu 
