@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     movieItemElements.forEach(function (movieItemElem) {
         var movieVideo = movieItemElem.querySelector('.movie-video');
-        var moviePlayBtn = new PlayButtonComponent (function (playing) {
+        var moviePlayBtn = new PlayButtonComponent(function (playing) {
             if (playing) {
 
                 movieItemElem.classList.add('movie-item-playing');
@@ -355,6 +355,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var renderedMoviePlayButton = moviePlayBtn.render();
         movieItemElem.appendChild(renderedMoviePlayButton);        
+        
+        var progressControlElemSlider = new ProgressControlComponent(moviePlayBtn, movieVideo);
+        var renderedProgressControlElemSlider = progressControlElemSlider.render();
+
+        movieItemElem.querySelector('.media-controls').insertBefore(renderedProgressControlElemSlider, movieItemElem.querySelector('.volume-control'));
     });
 
     // Opening/closing burger menu 
