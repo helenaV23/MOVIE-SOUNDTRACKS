@@ -197,23 +197,23 @@ class ProgressControlComponent {
 }
 
 class MediaControlsComponent {
-    #modalButton;
-    #modalAudio;
+    #playButton;
+    #media;
 
-    constructor(modalPlayButton, modalAudio) {
-        this.#modalButton = modalPlayButton;
-        this.#modalAudio = modalAudio;
+    constructor(playButton, media) {
+        this.#playButton = playButton;
+        this.#media = media;
     }
 
     render() {
         const mediaControls = document.createElement('div');
         mediaControls.classList.add('media-controls');
     
-        const progressControlElem = new ProgressControlComponent(this.#modalButton, this.#modalAudio);
+        const progressControlElem = new ProgressControlComponent(this.#playButton, this.#media);
         const renderedProgressControlElement = progressControlElem.render();
     
         const volumeControlElement = new VolumeControlComponent((volume) => {
-            this.#modalAudio.volume = volume;
+            this.#media.volume = volume;
         });
     
         const renderedVolumeControlElement = volumeControlElement.render();
@@ -354,18 +354,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         var renderedMoviePlayButton = moviePlayBtn.render();
-        movieItemElem.appendChild(renderedMoviePlayButton);        
+        movieItemElem.appendChild(renderedMoviePlayButton);
         
-        var progressControlElemSlider = new ProgressControlComponent(moviePlayBtn, movieVideo);
-        var renderedProgressControlElemSlider = progressControlElemSlider.render();
+        var mediaControlElement = new MediaControlsComponent(moviePlayBtn, movieVideo);
+        var renderedMediaControlElement = mediaControlElement.render();
 
-        var volumeControlElement = new VolumeControlComponent((volume) => {
-            movieVideo.volume = volume;
-        });
-        var renderedVolumeControlElement = volumeControlElement.render();
-
-        movieItemElem.querySelector('.media-controls').appendChild(renderedProgressControlElemSlider);
-        movieItemElem.querySelector('.media-controls').appendChild(renderedVolumeControlElement);
+        movieItemElem.appendChild(renderedMediaControlElement);
     });
 
     // Opening/closing burger menu 
@@ -409,8 +403,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     makeSmoothScroll('.submenu-link');
     makeSmoothScroll('.js-scroll-link');
-
-    showMediaTime('.movie-video');
 });
 
 function closeVideo(selector) {
@@ -496,96 +488,4 @@ function makeSmoothScroll(selector) {
             });
         });
     });
-}
-
-function showMediaTime(selector) {
-    var elements = document.querySelectorAll(selector);
-    elements.forEach(function (element) {
-        var mediaControlsElement = element.parentNode.querySelector('.media-controls');
-        var mediaTimeElem = mediaControlsElement.querySelector('.media-time');
-        var currentTimeElem = mediaTimeElem.querySelector('.current-time');
-        var timeLineElem = mediaTimeElem.querySelector('.timeline');
-        var timeProgressElem = mediaTimeElem.querySelector('.timeline-progress');
-        var timer = 0;
-
-        element.addEventListener('loadedmetadata', function () {
-            var mediaDuration = mediaTimeElem.querySelector('.media-duration');
-            
-            mediaDuration.textContent = formatTime(element.duration);
-            currentTimeElem.textContent = formatTime(0);
-            timeProgressElem.style.width = '0';
-
-            element.addEventListener('play', function () {
-                showProgress();
-            });
-        
-            element.addEventListener('pause', function () {
-                cancelAnimationFrame(timer);
-            });
-
-            element.addEventListener('ended', function () {
-                element.parentNode.querySelector('.btn-play').classList.remove('btn-pause');
-                currentTimeElem.textContent = formatTime(0);
-                timeProgressElem.style.width = '0';
-
-                if (selector == '.movie-video') {
-                    element.closest('.movie-item').classList.remove('movie-item-playing');
-                }
-            });
-
-            function showProgress() {
-                var currTime = element.currentTime;
-                currentTimeElem.textContent = formatTime(currTime);
-    
-                var progress = (currTime / element.duration) * 100;
-                timeProgressElem.style.width = progress + '%';
-    
-                timer = requestAnimationFrame(showProgress);
-            }
-
-            timeLineElem.addEventListener('click', function (e) {
-                var progress = e.offsetX / this.offsetWidth;
-                var newCurrentTime = progress * element.duration;
-    
-                element.currentTime = newCurrentTime;
-    
-                currentTimeElem.textContent = formatTime(newCurrentTime);
-                timeProgressElem.style.width = (progress * 100) + '%';    
-            });
-        });
-    }); 
-};
-
-function formatTime(time) {
-    var minutes = Math.floor(time / 60);
-    var seconds = Math.floor(time - minutes * 60);
-  
-    return  minutes + ':' +
-            (seconds < 10 ? '0' + seconds : seconds);
-}
-
-function setVolume(element, eventXPosition) {
-    var volumeRangeWidth = element.offsetWidth;
-    var volumeRangeLeftPostion = element.getBoundingClientRect().left;
-    var volumeElement = element.querySelector('.volume');
-    var volumeIcon = element.parentNode.querySelector('.volume-icon');
-    var grandparentElement = element.parentElement.parentElement.parentElement;
-    var x = eventXPosition - volumeRangeLeftPostion;
-    var volume = x / volumeRangeWidth;
-    var volumeValue = volume * 100;
-
-    if (volume <= 0) {
-        volumeValue = 0;
-        volume = 0;
-    } else if (volume > 1) {
-        volume = 1;
-        volumeValue = 100; 
-    }
-
-    volumeElement.style.width = volumeValue + '%';
-    var icon = volume <= 0 ? 'images/player/mute.svg' : 'images/player/volume.svg';
-    volumeIcon.setAttribute('src', icon);
-
-    var mediaSelector = grandparentElement.classList.contains('movie-item') ? '.movie-video' : '.modal-audio';        
-    grandparentElement.querySelector(mediaSelector).volume = volume;  
 }
