@@ -311,11 +311,68 @@ class ModalComponent {
     } 
 }
 
+class SlideComponent {
+    #imageSrc;
+    #imageAlt;
+    #videoSrc;
+
+    constructor(imageSrc, imageAlt, videoSrc) {
+        this.#imageSrc = imageSrc;
+        this.#imageAlt = imageAlt;
+        this.#videoSrc = videoSrc;
+    }
+
+    render() {
+        const movieItem = document.createElement('li');
+        movieItem.classList.add('movie-item');
+
+        const movieItemImage = document.createElement('img');
+        movieItemImage.classList.add('movie-item-image');
+        movieItemImage.src = this.#imageSrc;
+        movieItemImage.alt = this.#imageAlt;
+
+        const movieVideo = document.createElement('video');
+        movieVideo.classList.add('movie-video');
+        movieVideo.src = this.#videoSrc;
+
+        const playButton = new PlayButtonComponent((playing) => {
+            if (playing) {
+                movieItem.classList.add('movie-item-playing');
+                movieVideo.play();
+            } else {
+                movieItem.classList.remove('movie-item-playing');
+                movieVideo.pause();
+            }
+        });
+
+        const renderedPlayButton = playButton.render();
+
+        const allVideos = document.querySelectorAll('.movie-video');
+        allVideos.forEach((videoElem) => {
+            if (videoElem !== movieVideo) {
+                videoElem.pause();
+                videoElem.closest('.movie-item').classList.remove('movie-item-playing');
+                videoElem.parentNode.querySelector('.btn-play').classList.remove('btn-pause');
+            }
+        });
+
+        const mediaControlsComponent = new MediaControlsComponent(playButton, movieVideo);
+        const mediaControlsElement = mediaControlsComponent.render();
+
+        movieItem.appendChild(movieItemImage);
+        movieItem.appendChild(movieVideo);
+        movieItem.appendChild(renderedPlayButton);
+        movieItem.appendChild(mediaControlsElement);
+
+
+        return movieItem;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
     var jsListenButtons = document.querySelectorAll('.js-listen');
     var menuBtn = document.querySelector('.menu-btn');
-    var movieItemElements = document.querySelectorAll('.movie-item');
 
     jsListenButtons.forEach(function (jsListenButton) {
         jsListenButton.addEventListener('click', function() {
@@ -330,37 +387,85 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    movieItemElements.forEach(function (movieItemElem) {
-        var movieVideo = movieItemElem.querySelector('.movie-video');
-        var moviePlayBtn = new PlayButtonComponent(function (playing) {
-            if (playing) {
+    var slidersData = [
+        [
+            {
+                imageSrc: 'guardians-video.png',
+                imageAlt: 'guardians',
+                videoSrc: 'guardinas-of-the-galaxy-vol-2.mp4',
+            },
 
-                movieItemElem.classList.add('movie-item-playing');
-                movieVideo.play();
-        
-            } else {
-                movieItemElem.classList.remove('movie-item-playing');
-                movieVideo.pause();
-            }
+            {
+                imageSrc: 'the-lost-world-jurassic-park-video.png',
+                imageAlt: 'jurassic-park',
+                videoSrc: 'jurassic-park.mp4',
+            },
 
-            var allVideos = document.querySelectorAll('.movie-video');
-            allVideos.forEach(function (videoElem) {
-                if (videoElem !== movieVideo) {
-                    videoElem.pause();
-                    videoElem.closest('.movie-item').classList.remove('movie-item-playing');
-                    videoElem.parentNode.querySelector('.btn-play').classList.remove('btn-pause');
-                }
-            });
-        });
+            {
+                imageSrc: 'star-wars-video.png',
+                imageAlt: 'star-wars',
+                videoSrc: 'star-wars-a-new-hope.mp4',
+            },
+        ],
 
-        var renderedMoviePlayButton = moviePlayBtn.render();
-        movieItemElem.appendChild(renderedMoviePlayButton);
-        
-        var mediaControlElement = new MediaControlsComponent(moviePlayBtn, movieVideo);
-        var renderedMediaControlElement = mediaControlElement.render();
+        [ 
+            {
+                imageSrc: 'baby-driver-video.png',
+                imageAlt: 'baby-driver',
+                videoSrc: 'baby-driver.mp4',
+            },
 
-        movieItemElem.appendChild(renderedMediaControlElement);
-    });
+            {
+                imageSrc: 'goodfellas-video.png',
+                imageAlt: 'goodfellas',
+                videoSrc: 'goodfellas.mp4',
+            },
+
+            {
+                imageSrc: 'culture-bladerunner.png',
+                imageAlt: 'blade-runner',
+                videoSrc: 'blade-runner.mp4',
+            },
+        ],
+
+        [
+            {
+                imageSrc: 'o-brother-video.png',
+                imageAlt: 'o-brother-where-art-thou',
+                videoSrc: 'o-brother-where-art-thou.mp4',
+            },
+
+            {
+                imageSrc: 'odyssey-video.png',
+                imageAlt: 'a-space-odyssey',
+                videoSrc: '2001-a-space-odyssey.mp4',
+            },
+
+            {
+                imageSrc: 'godfather-video.png',
+                imageAlt: 'the-godfather',
+                videoSrc: 'the-godfather.mp4',
+            },
+        ],
+    ]; 
+
+    var sliderWrappers = document.querySelectorAll('.slider-wrapper');
+
+    for (var i = 0; i < sliderWrappers.length; i++) {
+        var sliderData = slidersData[i];
+    
+        for (var itemData of sliderData) {
+            var imageSrc = `images/slider/${itemData.imageSrc}`;
+            var imageAlt = itemData.imageAlt;
+            var videoSrc = `videos/${itemData.videoSrc}`;
+    
+            var slideComponent = new SlideComponent(imageSrc, imageAlt, videoSrc);
+            var renderedSlideComponent = slideComponent.render();
+    
+            var moviesList = sliderWrappers[i].querySelector('.movies-list');
+            moviesList.appendChild(renderedSlideComponent);
+        }
+    }
 
     // Opening/closing burger menu 
     menuBtn.addEventListener('click', function () {
