@@ -197,23 +197,23 @@ class ProgressControlComponent {
 }
 
 class MediaControlsComponent {
-    #modalButton;
-    #modalAudio;
+    #playButton;
+    #media;
 
-    constructor(modalPlayButton, modalAudio) {
-        this.#modalButton = modalPlayButton;
-        this.#modalAudio = modalAudio;
+    constructor(playButton, media) {
+        this.#playButton = playButton;
+        this.#media = media;
     }
 
     render() {
         const mediaControls = document.createElement('div');
         mediaControls.classList.add('media-controls');
     
-        const progressControlElem = new ProgressControlComponent(this.#modalButton, this.#modalAudio);
+        const progressControlElem = new ProgressControlComponent(this.#playButton, this.#media);
         const renderedProgressControlElement = progressControlElem.render();
     
         const volumeControlElement = new VolumeControlComponent((volume) => {
-            this.#modalAudio.volume = volume;
+            this.#media.volume = volume;
         });
     
         const renderedVolumeControlElement = volumeControlElement.render();
@@ -311,11 +311,123 @@ class ModalComponent {
     } 
 }
 
+class SlideComponent {
+    #imageSrc;
+    #imageAlt;
+    #videoSrc;
+
+    constructor(imageSrc, imageAlt, videoSrc) {
+        this.#imageSrc = imageSrc;
+        this.#imageAlt = imageAlt;
+        this.#videoSrc = videoSrc;
+    }
+
+    render() {
+        const movieItem = document.createElement('li');
+        movieItem.classList.add('movie-item');
+
+        const movieItemImage = document.createElement('img');
+        movieItemImage.classList.add('movie-item-image');
+        movieItemImage.src = this.#imageSrc;
+        movieItemImage.alt = this.#imageAlt;
+
+        const movieVideo = document.createElement('video');
+        movieVideo.classList.add('movie-video');
+        movieVideo.src = this.#videoSrc;
+
+        const playButton = new PlayButtonComponent((playing) => {
+            if (playing) {
+                movieItem.classList.add('movie-item-playing');
+                movieVideo.play();
+            } else {
+                movieItem.classList.remove('movie-item-playing');
+                movieVideo.pause();
+            }
+        });
+
+        const renderedPlayButton = playButton.render();
+
+        const allVideos = document.querySelectorAll('.movie-video');
+        allVideos.forEach((videoElem) => {
+            if (videoElem !== movieVideo) {
+                videoElem.pause();
+                videoElem.closest('.movie-item').classList.remove('movie-item-playing');
+                videoElem.parentNode.querySelector('.btn-play').classList.remove('btn-pause');
+            }
+        });
+
+        const mediaControlsComponent = new MediaControlsComponent(playButton, movieVideo);
+        const mediaControlsElement = mediaControlsComponent.render();
+
+        movieItem.appendChild(movieItemImage);
+        movieItem.appendChild(movieVideo);
+        movieItem.appendChild(renderedPlayButton);
+        movieItem.appendChild(mediaControlsElement);
+
+
+        return movieItem;
+    }
+}
+
+class SliderComponent {
+    
+    constructor(slidesData) {
+        this.slidesData = slidesData;
+    }
+
+    render() {
+        const sliderWrapper = document.createElement('div');
+        sliderWrapper.classList.add('slider-wrapper');
+
+        const moviesList = document.createElement('ul');
+        moviesList.classList.add('movies-list');
+
+        for (var itemData of this.slidesData) {
+            var imageSrc = `images/slider/${itemData.imageSrc}`;
+            var imageAlt = itemData.imageAlt;
+            var videoSrc = `videos/${itemData.videoSrc}`;
+
+            var slideComponent = new SlideComponent(imageSrc, imageAlt, videoSrc);
+            var renderedSlideComponent = slideComponent.render();
+
+            moviesList.appendChild(renderedSlideComponent);
+        }
+
+        const leftButton = document.createElement('a');
+        leftButton.classList.add('btn-link', 'slider-btn-left');
+        leftButton.href = '#';
+
+        const leftButtonSvg = `
+            <svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2"/>
+            </svg>
+        `;
+
+        leftButton.innerHTML = leftButtonSvg;
+
+        const rightButton = document.createElement('a');
+        rightButton.classList.add('btn-link', 'slider-btn-right');
+        rightButton.href = '#';
+
+        const rightButtonSvg = `
+            <svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2"/>
+            </svg> 
+        `
+        rightButton.innerHTML = rightButtonSvg;
+
+        sliderWrapper.appendChild(moviesList);
+        sliderWrapper.appendChild(leftButton);
+        sliderWrapper.appendChild(rightButton);
+
+        return sliderWrapper;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
     var jsListenButtons = document.querySelectorAll('.js-listen');
     var menuBtn = document.querySelector('.menu-btn');
-    var movieItemElements = document.querySelectorAll('.movie-item');
 
     jsListenButtons.forEach(function (jsListenButton) {
         jsListenButton.addEventListener('click', function() {
@@ -330,32 +442,77 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    movieItemElements.forEach(function (movieItemElem) {
-        var movieVideo = movieItemElem.querySelector('.movie-video');
-        var moviePlayBtn = new PlayButtonComponent (function (playing) {
-            if (playing) {
+    var slidersData = [
+        [
+            {
+                imageSrc: 'guardians-video.png',
+                imageAlt: 'guardians',
+                videoSrc: 'guardinas-of-the-galaxy-vol-2.mp4',
+            },
 
-                movieItemElem.classList.add('movie-item-playing');
-                movieVideo.play();
-        
-            } else {
-                movieItemElem.classList.remove('movie-item-playing');
-                movieVideo.pause();
-            }
+            {
+                imageSrc: 'the-lost-world-jurassic-park-video.png',
+                imageAlt: 'jurassic-park',
+                videoSrc: 'jurassic-park.mp4',
+            },
 
-            var allVideos = document.querySelectorAll('.movie-video');
-            allVideos.forEach(function (videoElem) {
-                if (videoElem !== movieVideo) {
-                    videoElem.pause();
-                    videoElem.closest('.movie-item').classList.remove('movie-item-playing');
-                    videoElem.parentNode.querySelector('.btn-play').classList.remove('btn-pause');
-                }
-            });
-        });
+            {
+                imageSrc: 'star-wars-video.png',
+                imageAlt: 'star-wars',
+                videoSrc: 'star-wars-a-new-hope.mp4',
+            },
+        ],
 
-        var renderedMoviePlayButton = moviePlayBtn.render();
-        movieItemElem.appendChild(renderedMoviePlayButton);        
-    });
+        [ 
+            {
+                imageSrc: 'baby-driver-video.png',
+                imageAlt: 'baby-driver',
+                videoSrc: 'baby-driver.mp4',
+            },
+
+            {
+                imageSrc: 'goodfellas-video.png',
+                imageAlt: 'goodfellas',
+                videoSrc: 'goodfellas.mp4',
+            },
+
+            {
+                imageSrc: 'culture-bladerunner.png',
+                imageAlt: 'blade-runner',
+                videoSrc: 'blade-runner.mp4',
+            },
+        ],
+
+        [
+            {
+                imageSrc: 'o-brother-video.png',
+                imageAlt: 'o-brother-where-art-thou',
+                videoSrc: 'o-brother-where-art-thou.mp4',
+            },
+
+            {
+                imageSrc: 'odyssey-video.png',
+                imageAlt: 'a-space-odyssey',
+                videoSrc: '2001-a-space-odyssey.mp4',
+            },
+
+            {
+                imageSrc: 'godfather-video.png',
+                imageAlt: 'the-godfather',
+                videoSrc: 'the-godfather.mp4',
+            },
+        ],
+    ]; 
+
+    var sliderSections = document.querySelectorAll('.movie-slider');
+
+    sliderSections.forEach(function (sliderSectionElem, index) {
+        var sliderData = slidersData[index];
+        var sliderWrapperComponent = new SliderComponent(sliderData);
+        var renderedsliderWrapperComponent = sliderWrapperComponent.render();
+ 
+        sliderSectionElem.querySelector('.wrapper').appendChild(renderedsliderWrapperComponent);
+     });
 
     // Opening/closing burger menu 
     menuBtn.addEventListener('click', function () {
@@ -398,8 +555,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     makeSmoothScroll('.submenu-link');
     makeSmoothScroll('.js-scroll-link');
-
-    showMediaTime('.movie-video');
 });
 
 function closeVideo(selector) {
@@ -485,96 +640,4 @@ function makeSmoothScroll(selector) {
             });
         });
     });
-}
-
-function showMediaTime(selector) {
-    var elements = document.querySelectorAll(selector);
-    elements.forEach(function (element) {
-        var mediaControlsElement = element.parentNode.querySelector('.media-controls');
-        var mediaTimeElem = mediaControlsElement.querySelector('.media-time');
-        var currentTimeElem = mediaTimeElem.querySelector('.current-time');
-        var timeLineElem = mediaTimeElem.querySelector('.timeline');
-        var timeProgressElem = mediaTimeElem.querySelector('.timeline-progress');
-        var timer = 0;
-
-        element.addEventListener('loadedmetadata', function () {
-            var mediaDuration = mediaTimeElem.querySelector('.media-duration');
-            
-            mediaDuration.textContent = formatTime(element.duration);
-            currentTimeElem.textContent = formatTime(0);
-            timeProgressElem.style.width = '0';
-
-            element.addEventListener('play', function () {
-                showProgress();
-            });
-        
-            element.addEventListener('pause', function () {
-                cancelAnimationFrame(timer);
-            });
-
-            element.addEventListener('ended', function () {
-                element.parentNode.querySelector('.btn-play').classList.remove('btn-pause');
-                currentTimeElem.textContent = formatTime(0);
-                timeProgressElem.style.width = '0';
-
-                if (selector == '.movie-video') {
-                    element.closest('.movie-item').classList.remove('movie-item-playing');
-                }
-            });
-
-            function showProgress() {
-                var currTime = element.currentTime;
-                currentTimeElem.textContent = formatTime(currTime);
-    
-                var progress = (currTime / element.duration) * 100;
-                timeProgressElem.style.width = progress + '%';
-    
-                timer = requestAnimationFrame(showProgress);
-            }
-
-            timeLineElem.addEventListener('click', function (e) {
-                var progress = e.offsetX / this.offsetWidth;
-                var newCurrentTime = progress * element.duration;
-    
-                element.currentTime = newCurrentTime;
-    
-                currentTimeElem.textContent = formatTime(newCurrentTime);
-                timeProgressElem.style.width = (progress * 100) + '%';    
-            });
-        });
-    }); 
-};
-
-function formatTime(time) {
-    var minutes = Math.floor(time / 60);
-    var seconds = Math.floor(time - minutes * 60);
-  
-    return  minutes + ':' +
-            (seconds < 10 ? '0' + seconds : seconds);
-}
-
-function setVolume(element, eventXPosition) {
-    var volumeRangeWidth = element.offsetWidth;
-    var volumeRangeLeftPostion = element.getBoundingClientRect().left;
-    var volumeElement = element.querySelector('.volume');
-    var volumeIcon = element.parentNode.querySelector('.volume-icon');
-    var grandparentElement = element.parentElement.parentElement.parentElement;
-    var x = eventXPosition - volumeRangeLeftPostion;
-    var volume = x / volumeRangeWidth;
-    var volumeValue = volume * 100;
-
-    if (volume <= 0) {
-        volumeValue = 0;
-        volume = 0;
-    } else if (volume > 1) {
-        volume = 1;
-        volumeValue = 100; 
-    }
-
-    volumeElement.style.width = volumeValue + '%';
-    var icon = volume <= 0 ? 'images/player/mute.svg' : 'images/player/volume.svg';
-    volumeIcon.setAttribute('src', icon);
-
-    var mediaSelector = grandparentElement.classList.contains('movie-item') ? '.movie-video' : '.modal-audio';        
-    grandparentElement.querySelector(mediaSelector).volume = volume;  
 }
