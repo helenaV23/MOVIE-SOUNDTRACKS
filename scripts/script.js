@@ -369,6 +369,61 @@ class SlideComponent {
     }
 }
 
+class SliderComponent {
+    
+    constructor(slidesData) {
+        this.slidesData = slidesData;
+    }
+
+    render() {
+        const sliderWrapper = document.createElement('div');
+        sliderWrapper.classList.add('slider-wrapper');
+
+        const moviesList = document.createElement('ul');
+        moviesList.classList.add('movies-list');
+
+        for (var itemData of this.slidesData) {
+            var imageSrc = `images/slider/${itemData.imageSrc}`;
+            var imageAlt = itemData.imageAlt;
+            var videoSrc = `videos/${itemData.videoSrc}`;
+
+            var slideComponent = new SlideComponent(imageSrc, imageAlt, videoSrc);
+            var renderedSlideComponent = slideComponent.render();
+
+            moviesList.appendChild(renderedSlideComponent);
+        }
+
+        const leftButton = document.createElement('a');
+        leftButton.classList.add('btn-link', 'slider-btn-left');
+        leftButton.href = '#';
+
+        const leftButtonSvg = `
+            <svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2"/>
+            </svg>
+        `;
+
+        leftButton.innerHTML = leftButtonSvg;
+
+        const rightButton = document.createElement('a');
+        rightButton.classList.add('btn-link', 'slider-btn-right');
+        rightButton.href = '#';
+
+        const rightButtonSvg = `
+            <svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2"/>
+            </svg> 
+        `
+        rightButton.innerHTML = rightButtonSvg;
+
+        sliderWrapper.appendChild(moviesList);
+        sliderWrapper.appendChild(leftButton);
+        sliderWrapper.appendChild(rightButton);
+
+        return sliderWrapper;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
     var jsListenButtons = document.querySelectorAll('.js-listen');
@@ -449,23 +504,15 @@ document.addEventListener('DOMContentLoaded', function () {
         ],
     ]; 
 
-    var sliderWrappers = document.querySelectorAll('.slider-wrapper');
+    var sliderSections = document.querySelectorAll('.movie-slider');
 
-    for (var i = 0; i < sliderWrappers.length; i++) {
-        var sliderData = slidersData[i];
-    
-        for (var itemData of sliderData) {
-            var imageSrc = `images/slider/${itemData.imageSrc}`;
-            var imageAlt = itemData.imageAlt;
-            var videoSrc = `videos/${itemData.videoSrc}`;
-    
-            var slideComponent = new SlideComponent(imageSrc, imageAlt, videoSrc);
-            var renderedSlideComponent = slideComponent.render();
-    
-            var moviesList = sliderWrappers[i].querySelector('.movies-list');
-            moviesList.appendChild(renderedSlideComponent);
-        }
-    }
+    sliderSections.forEach(function (sliderSectionElem, index) {
+        var sliderData = slidersData[index];
+        var sliderWrapperComponent = new SliderComponent(sliderData);
+        var renderedsliderWrapperComponent = sliderWrapperComponent.render();
+ 
+        sliderSectionElem.querySelector('.wrapper').appendChild(renderedsliderWrapperComponent);
+     });
 
     // Opening/closing burger menu 
     menuBtn.addEventListener('click', function () {
