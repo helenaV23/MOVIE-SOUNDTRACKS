@@ -364,7 +364,6 @@ class SlideComponent {
         movieItem.appendChild(renderedPlayButton);
         movieItem.appendChild(mediaControlsElement);
 
-
         return movieItem;
     }
 }
@@ -424,22 +423,46 @@ class SliderComponent {
     }
 }
 
+class ListenButtonComponent {
+    #buttonClick;
+
+    constructor (buttonClick) {
+        this.#buttonClick = buttonClick;
+    }
+
+    render() {
+        const listenBtn = document.createElement('button');
+        listenBtn.classList.add('btn');
+        listenBtn.textContent = 'Listen';
+
+        listenBtn.addEventListener('click', () => {
+            this.#buttonClick();
+        });
+
+        return listenBtn;   
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
-    var jsListenButtons = document.querySelectorAll('.js-listen');
     var menuBtn = document.querySelector('.menu-btn');
 
-    jsListenButtons.forEach(function (jsListenButton) {
-        jsListenButton.addEventListener('click', function() {
-            var currentFilmSection = jsListenButton.closest('section');
-            var filmTitle = currentFilmSection.dataset.title;
-            var filmRating = currentFilmSection.dataset.rating;
-            var audio = currentFilmSection.dataset.audio;
+    var movieContent = this.querySelectorAll('.movie-content');
 
-            var modalComponent = new ModalComponent(filmTitle, filmRating, audio);
-            var renderedModalComponent = modalComponent.render();
-            body.appendChild(renderedModalComponent);
+    movieContent.forEach(function (movieContentElem) {
+        var listenBtn = new ListenButtonComponent(function () {
+            var currentFilmSection = movieContentElem.closest('section');
+                var filmTitle = currentFilmSection.dataset.title;
+                var filmRating = currentFilmSection.dataset.rating;
+                var audio = currentFilmSection.dataset.audio;
+        
+                var modalComponent = new ModalComponent(filmTitle, filmRating, audio);
+                var renderedModalComponent = modalComponent.render();
+                document.body.appendChild(renderedModalComponent);
         });
+    
+        var renderedListenBtn = listenBtn.render();
+        movieContentElem.appendChild(renderedListenBtn);
     });
 
     var slidersData = [
@@ -512,7 +535,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var renderedsliderWrapperComponent = sliderWrapperComponent.render();
  
         sliderSectionElem.querySelector('.wrapper').appendChild(renderedsliderWrapperComponent);
-     });
+    });
 
     // Opening/closing burger menu 
     menuBtn.addEventListener('click', function () {
