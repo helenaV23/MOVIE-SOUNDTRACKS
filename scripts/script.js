@@ -1,16 +1,29 @@
-class PlayButtonComponent {
-    #buttonClick;
+class AbstractBaseButtonComponent {
+    _buttonClick;
+
+    constructor(buttonClick) {
+        this._buttonClick = buttonClick;
+    }
+
+    renderButton(className) {
+        const button = document.createElement('button'); 
+        button.classList.add(className);
+
+        return button;
+    }
+}
+
+class PlayButtonComponent extends AbstractBaseButtonComponent {
     #button;
     #playing;
 
     constructor(buttonClick) {
-        this.#buttonClick = buttonClick;
+        super(buttonClick);
         this.#playing = false;
     }
 
     render() {
-        this.#button = document.createElement('button');
-        this.#button.classList.add('btn-play');
+        this.#button = super.renderButton('btn-play');
     
         this.#button.addEventListener('click', () => {
             this.#playing = !this.#playing;
@@ -21,7 +34,7 @@ class PlayButtonComponent {
                 this.#button.classList.remove('btn-pause');
             }
 
-            this.#buttonClick(this.#playing);
+            this._buttonClick(this.#playing);
         });
 
         return this.#button;
@@ -423,20 +436,18 @@ class SliderComponent {
     }
 }
 
-class ListenButtonComponent {
-    #buttonClick;
+class ListenButtonComponent extends AbstractBaseButtonComponent {
 
     constructor (buttonClick) {
-        this.#buttonClick = buttonClick;
+        super(buttonClick);
     }
 
     render() {
-        const listenBtn = document.createElement('button');
-        listenBtn.classList.add('btn');
+        const listenBtn = super.renderButton('btn');
         listenBtn.textContent = 'Listen';
 
         listenBtn.addEventListener('click', () => {
-            this.#buttonClick();
+            this._buttonClick();
         });
 
         return listenBtn;   
