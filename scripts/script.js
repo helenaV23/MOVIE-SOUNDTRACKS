@@ -1,16 +1,29 @@
-class PlayButtonComponent {
-    #buttonClick;
+class AbstractBaseButtonComponent {
+    _buttonClick;
+
+    constructor(buttonClick) {
+        this._buttonClick = buttonClick;
+    }
+
+    renderButton(className) {
+        const button = document.createElement('button'); 
+        button.classList.add(className);
+
+        return button;
+    }
+}
+
+class PlayButtonComponent extends AbstractBaseButtonComponent {
     #button;
     #playing;
 
     constructor(buttonClick) {
-        this.#buttonClick = buttonClick;
+        super(buttonClick);
         this.#playing = false;
     }
 
     render() {
-        this.#button = document.createElement('button');
-        this.#button.classList.add('btn-play');
+        this.#button = super.renderButton('btn-play');
     
         this.#button.addEventListener('click', () => {
             this.#playing = !this.#playing;
@@ -21,7 +34,7 @@ class PlayButtonComponent {
                 this.#button.classList.remove('btn-pause');
             }
 
-            this.#buttonClick(this.#playing);
+            this._buttonClick(this.#playing);
         });
 
         return this.#button;
@@ -364,7 +377,6 @@ class SlideComponent {
         movieItem.appendChild(renderedPlayButton);
         movieItem.appendChild(mediaControlsElement);
 
-
         return movieItem;
     }
 }
@@ -424,22 +436,44 @@ class SliderComponent {
     }
 }
 
+class ListenButtonComponent extends AbstractBaseButtonComponent {
+
+    constructor (buttonClick) {
+        super(buttonClick);
+    }
+
+    render() {
+        const listenBtn = super.renderButton('btn');
+        listenBtn.textContent = 'Listen';
+
+        listenBtn.addEventListener('click', () => {
+            this._buttonClick();
+        });
+
+        return listenBtn;   
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
-    var jsListenButtons = document.querySelectorAll('.js-listen');
     var menuBtn = document.querySelector('.menu-btn');
 
-    jsListenButtons.forEach(function (jsListenButton) {
-        jsListenButton.addEventListener('click', function() {
-            var currentFilmSection = jsListenButton.closest('section');
-            var filmTitle = currentFilmSection.dataset.title;
-            var filmRating = currentFilmSection.dataset.rating;
-            var audio = currentFilmSection.dataset.audio;
+    var movieContent = this.querySelectorAll('.movie-content');
 
-            var modalComponent = new ModalComponent(filmTitle, filmRating, audio);
-            var renderedModalComponent = modalComponent.render();
-            body.appendChild(renderedModalComponent);
+    movieContent.forEach(function (movieContentElem) {
+        var listenBtn = new ListenButtonComponent(function () {
+            var currentFilmSection = movieContentElem.closest('section');
+                var filmTitle = currentFilmSection.dataset.title;
+                var filmRating = currentFilmSection.dataset.rating;
+                var audio = currentFilmSection.dataset.audio;
+        
+                var modalComponent = new ModalComponent(filmTitle, filmRating, audio);
+                var renderedModalComponent = modalComponent.render();
+                document.body.appendChild(renderedModalComponent);
         });
+    
+        var renderedListenBtn = listenBtn.render();
+        movieContentElem.appendChild(renderedListenBtn);
     });
 
     var slidersData = [
@@ -512,7 +546,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var renderedsliderWrapperComponent = sliderWrapperComponent.render();
  
         sliderSectionElem.querySelector('.wrapper').appendChild(renderedsliderWrapperComponent);
-     });
+    });
 
     // Opening/closing burger menu 
     menuBtn.addEventListener('click', function () {
