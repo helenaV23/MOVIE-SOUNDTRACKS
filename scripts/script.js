@@ -394,13 +394,13 @@ class SliderComponent {
         const moviesList = document.createElement('ul');
         moviesList.classList.add('movies-list');
 
-        for (var itemData of this.slidesData) {
-            var imageSrc = `images/slider/${itemData.imageSrc}`;
-            var imageAlt = itemData.imageAlt;
-            var videoSrc = `videos/${itemData.videoSrc}`;
+        for (const itemData of this.slidesData) {
+            const imageSrc = `images/slider/${itemData.imageSrc}`;
+            const imageAlt = itemData.imageAlt;
+            const videoSrc = `videos/${itemData.videoSrc}`;
 
-            var slideComponent = new SlideComponent(imageSrc, imageAlt, videoSrc);
-            var renderedSlideComponent = slideComponent.render();
+            const slideComponent = new SlideComponent(imageSrc, imageAlt, videoSrc);
+            const renderedSlideComponent = slideComponent.render();
 
             moviesList.appendChild(renderedSlideComponent);
         }
@@ -454,26 +454,133 @@ class ListenButtonComponent extends AbstractBaseButtonComponent {
     }
 }
 
+class MovieInfoComponent {
+    #movieContentData;
+    #centerAlignedBlocks;
+
+    constructor(movieContentData, centerAlignedBlocks) {
+        this.#movieContentData = movieContentData;
+        this.#centerAlignedBlocks = centerAlignedBlocks;
+    };
+
+    render() {
+        const movieInfo = document.createElement('div');
+        movieInfo.classList.add('movie-info');
+
+        if (this.#centerAlignedBlocks) {
+            movieInfo.classList.add('align-center');
+        }
+
+        const h2 = document.createElement('h2');
+        h2.textContent = this.#movieContentData.header;
+
+        const rating = document.createElement('span');
+        rating.classList.add('rating');
+        rating.textContent = this.#movieContentData.rating;
+
+        const movieContent = document.createElement('div');
+        movieContent.classList.add('movie-content');
+
+        const movieDescription = document.createElement('p');
+        movieDescription.classList.add('movie-description');
+        movieDescription.textContent = this.#movieContentData.description;
+
+        movieInfo.appendChild(h2);
+        movieInfo.appendChild(movieContent);
+
+        h2.appendChild(rating);
+        movieContent.appendChild(movieDescription);
+
+        const listenBtn = new ListenButtonComponent(() => {
+            const filmTitle = this.#movieContentData.header;
+            const filmRating = this.#movieContentData.rating;
+            const audio = this.#movieContentData.audio;
+    
+            const modalComponent = new ModalComponent(filmTitle, filmRating, audio);
+            const renderedModalComponent = modalComponent.render();
+            document.body.appendChild(renderedModalComponent);
+        });
+
+        const renderedListenBtn = listenBtn.render();
+        movieContent.appendChild(renderedListenBtn);
+
+        return movieInfo;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
     var menuBtn = document.querySelector('.menu-btn');
+    var aboutMovieWrappers = document.querySelectorAll('.about-movie .wrapper');;
 
-    var movieContent = this.querySelectorAll('.movie-content');
+    var movieContentData = [
+        {
+            rating: '.10',
+            header: 'GUARDIANS OF THE GALAXY VOL. 2',
+            description: 'While the Awesome Mix Vol. 1 in Guardians of the Galaxy was resonant with a lot of people, it was the soundtrack in Guardians of the Galaxy Vol. 2 that improved  on the formula. The first film featured songs that were fun and upbeat but didn`t have much to do with the film`s story.',
+            audio: 'guardinas-of-the-galaxy-vol-2.ogg',
+        },
+        {
+            rating: '.09',
+            header: 'JURASSIC PARK',
+            description: 'John Williams did a lot of music for many popular franchises. After his work on Star Wars, he would later do the score for Jurassic Park. This dinosaur film was full of epic shots and tense moments that were further brought to life by Williams` music.',
+            audio: 'jurassic-park.ogg',
+        },
+        {
+            rating: '.08',
+            header: 'STAR WARS: A NEW HOPE',
+            description: 'When Star Wars: A New Hope was released, it introduced many iconic themes that people would recognize decades after. That was thanks to John Williams, who put together the iconic fanfare, the Imperial March, and so many more great tracks.',
+            audio: 'star-wars-a-new-hope.ogg',
+        },
+        {
+            rating: '.07',
+            header: 'BABY DRIVER',
+            description: 'Baby Driver`s soundtrack is similar to Guardians of the Galaxy in many ways. It uses a lot of older songs to provide a backdrop to the films many beats. However, what Edgar Wright did with the music was so far beyond that.',
+            audio: 'baby-driver.ogg',
+        },
+        {
+            rating: '.06',
+            header: 'GOODFELLAS',
+            description: 'Martin Scorcese`s movie Goodfellas remains one of his best to date. The movie deals with gangs, drugs, and everything else  in between. It`s a crime movie that isn`t afraid to deal with the dark side of life. Going along with every scene is a great soundtrack full of hand-picked songs that compliment every moment they appear in.',
+            audio: 'goodfellas.ogg',
+        },
+        {
+            rating: '.05',
+            header: 'BLADE RUNNER',
+            description: 'It`s astounding that Blade Runner didn`t become as popular as other movies released in its time. It arguably has one of the best soundtracks in movie history, with every tune being a perfect match with the action on-screen.',
+            audio: 'blade-runner.ogg',
+        },
+        {
+            rating: '.04',
+            header: 'O BROTHER, WHERE ART THOU?',
+            description: 'O Brother, Where Art Thou? is a movie that fires on all cylinders. It takes place in the Great Depression and involves a group of convicts who go on a wild journey to find a treasure of sorts. With this film based in a stylistic period in history, the soundtrack was designed to match it.',
+            audio: 'o-brother-where-art-thou.ogg',
+        },
+        {
+            rating: '.03',
+            header: '2001: A SPACE ODYSSEY',
+            description: 'The movie tries very hard to sell the idea of what space exploration would be like, and its themes of isolation and sophistication are further enhanced by its soundtrack. 2001: A Space Odyssey makes use of classical themes and motifs to narrow down a tone that makes the movie feel all its own.',
+            audio: '2001-a-space-odyssey.ogg',
+        },
+        {
+            rating: '.02',
+            header: 'THE GODFATHER',
+            description: 'The Godfather is one of cinema`s best works. There are so many pieces in that movie that just work, and the soundtrack is part of it. Because the movie deals with crime, gangs, and the works, the music is designed to reflect that.',
+            audio: 'the-godfather.ogg',
+        },
+        {
+            rating: '.01',
+            header: 'THE LORD OF THE RINGS',
+            description: 'Everything about the soundtrack in The Lord of the Rings is excellent, which is one of the many reasons that the trilogy remains one of the most beloved in cinema history. Where Peter Jackson had a frame of reference with Tolkien`s detailed descriptions, Howard Shore had to match those visuals with music all his own.',
+            audio: 'the-lord-of-the-rings.ogg',
+        },
+    ];
 
-    movieContent.forEach(function (movieContentElem) {
-        var listenBtn = new ListenButtonComponent(function () {
-            var currentFilmSection = movieContentElem.closest('section');
-                var filmTitle = currentFilmSection.dataset.title;
-                var filmRating = currentFilmSection.dataset.rating;
-                var audio = currentFilmSection.dataset.audio;
-        
-                var modalComponent = new ModalComponent(filmTitle, filmRating, audio);
-                var renderedModalComponent = modalComponent.render();
-                document.body.appendChild(renderedModalComponent);
-        });
-    
-        var renderedListenBtn = listenBtn.render();
-        movieContentElem.appendChild(renderedListenBtn);
+    movieContentData.forEach((movieData, index) => {
+        var wrapper = aboutMovieWrappers[index];
+        var movieInfo = new MovieInfoComponent(movieData, index % 3 === 2);
+        var renderedMovieInfo = movieInfo.render();
+        wrapper.appendChild(renderedMovieInfo);
     });
 
     var slidersData = [
