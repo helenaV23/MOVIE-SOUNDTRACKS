@@ -511,7 +511,7 @@ class MovieInfoComponent {
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
     var menuBtn = document.querySelector('.menu-btn');
-    var aboutMovieWrappers = document.querySelectorAll('.about-movie .wrapper');;
+    var aboutMovieWrappers = document.querySelectorAll('.about-movie .wrapper');
 
     var movieContentData = [
         {
