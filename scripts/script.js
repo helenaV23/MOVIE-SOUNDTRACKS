@@ -1,5 +1,5 @@
 class AbstractBaseButtonComponent {
-    _buttonClick; // protected property
+    _buttonClick;
 
     constructor(buttonClick) {
         this._buttonClick = buttonClick;
