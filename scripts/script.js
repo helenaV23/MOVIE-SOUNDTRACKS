@@ -508,10 +508,144 @@ class MovieInfoComponent {
     }
 }
 
+class BaseSectionComponent {
+    _wrapper;
+
+    render() {
+        const section = document.createElement('section');
+        this._wrapper = document.createElement('div');
+        this._wrapper.classList.add('wrapper');
+        section.appendChild(this._wrapper);
+
+        return section;
+    }
+}
+
+class MovieSectionComponent extends BaseSectionComponent {
+    #id;
+    #sectionData;
+    #reverseBlock;
+    #movieContentData;
+
+    constructor(id, sectionData, reverseBlock, movieContentData) {
+        super();
+        this.#id = id;
+        this.#sectionData = sectionData;
+        this.#reverseBlock = reverseBlock;
+        this.#movieContentData = movieContentData;
+    }
+
+    render() {
+        const section = super.render();
+        section.classList.add('about-movie');
+        section.id = this.#id;
+        this._wrapper.classList.add('push-apart');
+        const img = document.createElement('img');
+        img.src = `images/${this.#sectionData.image}`;
+        img.alt = this.#sectionData.alt;
+        
+        this._wrapper.appendChild(img);
+
+        if (this.#reverseBlock) {
+            this._wrapper.classList.add('reverse-block');
+        }
+
+        var movieInfo = new MovieInfoComponent(this.#movieContentData);
+        var renderedMovieInfo = movieInfo.render();
+        this._wrapper.appendChild(renderedMovieInfo);
+
+        return section;
+    }
+}
+
+class MovieCentralSectionComponent extends BaseSectionComponent {
+    #id;
+    #sectionData;
+    #movieContent;
+
+    constructor(id, sectionData, movieContent) {
+        super();
+        this.#id = id;
+        this.#sectionData = sectionData;
+        this.#movieContent = movieContent;
+    }
+
+    render() {
+        const section = super.render();
+        section.classList.add('about-movie', 'movie-heroes', this.#sectionData.sectionClass);
+        section.id = this.#id;
+        var movieInfo = new MovieInfoComponent(this.#movieContent, true);
+        var renderedMovieInfo = movieInfo.render();
+        this._wrapper.appendChild(renderedMovieInfo);
+
+        return section;
+    }
+}
+
+class SliderSectionComponent extends BaseSectionComponent {
+    #sliderData;
+
+    constructor(sliderData) {
+        super();
+        this.#sliderData = sliderData;
+    }
+
+    render() {
+        const section = super.render();
+        section.classList.add('movie-slider');
+
+        const sliderComponent = new SliderComponent(this.#sliderData);
+        const renderedSliderComponent = sliderComponent.render();
+        
+        this._wrapper.appendChild(renderedSliderComponent);
+        return section;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
     var menuBtn = document.querySelector('.menu-btn');
-    var aboutMovieWrappers = document.querySelectorAll('.about-movie .wrapper');
+    var main = document.querySelector('main');
+
+    var sectionsData = [
+        {
+            image: 'guardians-of-the-galaxy.png',
+            alt: 'guardians-of-the-galaxy',
+        },    
+        {
+            image: 'jurassic-park.png',
+            alt: 'jurassic-park-image',
+        },
+        {
+            sectionClass: 'star-wars-heroes',
+        },
+        {
+            image: 'baby-driver-banner.png',
+            alt: 'baby-driver-banner',
+        },
+        {
+            image: 'goodfellas-banner.png',
+            alt: 'goodfellas-image',
+        },
+        {
+            sectionClass: 'blade-runner-heroes',
+        },
+        {
+            image: 'o-brother-where-art-thou.png',
+            alt: 'o-brother-where-art-thou-banner',
+        },
+        {
+            image: 'space-odyssey.png',
+            alt: 'space-odyssey-image',
+        },
+        {
+            sectionClass: 'godfather-heroes',
+        },
+        {
+            image: 'the-lord-of-rings.png',
+            alt: 'the-lord-of-rings-banner',
+        },
+    ];
 
     var movieContentData = [
         {
@@ -519,18 +653,27 @@ document.addEventListener('DOMContentLoaded', function () {
             header: 'GUARDIANS OF THE GALAXY VOL. 2',
             description: 'While the Awesome Mix Vol. 1 in Guardians of the Galaxy was resonant with a lot of people, it was the soundtrack in Guardians of the Galaxy Vol. 2 that improved  on the formula. The first film featured songs that were fun and upbeat but didn`t have much to do with the film`s story.',
             audio: 'guardinas-of-the-galaxy-vol-2.ogg',
+            imageSrc: 'guardians-video.png',
+            imageAlt: 'guardians',
+            videoSrc: 'guardinas-of-the-galaxy-vol-2.mp4',
         },
         {
             rating: '.09',
             header: 'JURASSIC PARK',
             description: 'John Williams did a lot of music for many popular franchises. After his work on Star Wars, he would later do the score for Jurassic Park. This dinosaur film was full of epic shots and tense moments that were further brought to life by Williams` music.',
             audio: 'jurassic-park.ogg',
+            imageSrc: 'the-lost-world-jurassic-park-video.png',
+            imageAlt: 'jurassic-park',
+            videoSrc: 'jurassic-park.mp4',
         },
         {
             rating: '.08',
             header: 'STAR WARS: A NEW HOPE',
             description: 'When Star Wars: A New Hope was released, it introduced many iconic themes that people would recognize decades after. That was thanks to John Williams, who put together the iconic fanfare, the Imperial March, and so many more great tracks.',
             audio: 'star-wars-a-new-hope.ogg',
+            imageSrc: 'star-wars-video.png',
+            imageAlt: 'star-wars',
+            videoSrc: 'star-wars-a-new-hope.mp4',
         },
         {
             rating: '.07',
@@ -575,13 +718,6 @@ document.addEventListener('DOMContentLoaded', function () {
             audio: 'the-lord-of-the-rings.ogg',
         },
     ];
-
-    movieContentData.forEach((movieData, index) => {
-        var wrapper = aboutMovieWrappers[index];
-        var movieInfo = new MovieInfoComponent(movieData, index % 3 === 2);
-        var renderedMovieInfo = movieInfo.render();
-        wrapper.appendChild(renderedMovieInfo);
-    });
 
     var slidersData = [
         [
@@ -645,14 +781,26 @@ document.addEventListener('DOMContentLoaded', function () {
         ],
     ]; 
 
-    var sliderSections = document.querySelectorAll('.movie-slider');
+    sectionsData.forEach(function (sectionData, index) {
+        var id = sectionsData.length - index;
 
-    sliderSections.forEach(function (sliderSectionElem, index) {
-        var sliderData = slidersData[index];
-        var sliderWrapperComponent = new SliderComponent(sliderData);
-        var renderedsliderWrapperComponent = sliderWrapperComponent.render();
- 
-        sliderSectionElem.querySelector('.wrapper').appendChild(renderedsliderWrapperComponent);
+        if (index % 3 === 2) {
+            var movieContent = movieContentData[index];
+            var section = new MovieCentralSectionComponent(id, sectionData, movieContent);
+            var renderedSection = section.render();
+            main.insertBefore(renderedSection, main.querySelector('.sign-up')); 
+
+            var sliderDataIndex = Math.floor(index / 3);
+            var slider = new SliderSectionComponent(slidersData[sliderDataIndex]);
+            var renderedSlider = slider.render();
+            main.insertBefore(renderedSlider, main.querySelector('.sign-up'));
+        } else {
+            var reverseBlock = index % 3 === 1;
+            var movieContent = movieContentData[index];
+            var section = new MovieSectionComponent(id, sectionData, reverseBlock, movieContent);
+            var renderedSection = section.render();
+            main.insertBefore(renderedSection, main.querySelector('.sign-up')); 
+        }
     });
 
     // Opening/closing burger menu 
