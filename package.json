@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "styles": "sass --watch styles/style.scss:styles/style.css"
+    "styles": "sass --watch styles/style.scss:styles/style.css",
+    "styles:build": "sass --no-source-map styles/style.scss:styles/style.css --style compressed",
+    "scripts": "tsc -w --outFile ./index.js --sourceMap",
+    "scripts:build": "tsc --outFile ./index.js",
+    "build": "cp node_modules/requirejs/require.js ./ && npm run styles:build && npm run scripts:build"
   },
   "repository": {
     "type": "git",
@@ -17,6 +21,10 @@
   },
   "homepage": "https://github.com/helenaV23/Movie-Soundtracks#readme",
   "devDependencies": {
-    "sass": "^1.56.1"
+    "sass": "^1.56.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "requirejs": "^2.3.6"
   }
 }

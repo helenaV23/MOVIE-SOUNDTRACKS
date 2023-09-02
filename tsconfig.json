@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "module": "amd",
+        "target": "ESNext"
+    },
+    "files": [
+        "scripts/index.ts"
+    ]
+}

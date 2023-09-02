@@ -1,49 +1,4 @@
-class AbstractBaseButtonComponent {
-    _buttonClick;
-
-    constructor(buttonClick) {
-        this._buttonClick = buttonClick;
-    }
-
-    renderButton(className) {
-        const button = document.createElement('button'); 
-        button.classList.add(className);
-
-        return button;
-    }
-}
-
-class PlayButtonComponent extends AbstractBaseButtonComponent {
-    #button;
-    #playing;
-
-    constructor(buttonClick) {
-        super(buttonClick);
-        this.#playing = false;
-    }
-
-    render() {
-        this.#button = super.renderButton('btn-play');
-    
-        this.#button.addEventListener('click', () => {
-            this.#playing = !this.#playing;
-    
-            if (this.#playing) {
-                this.#button.classList.add('btn-pause');
-            } else {
-                this.#button.classList.remove('btn-pause');
-            }
-
-            this._buttonClick(this.#playing);
-        });
-
-        return this.#button;
-    }
-
-    reset() {
-        this.#button.classList.remove('btn-pause');
-    }
-}
+import { PlayButtonComponent } from "./components/buttons/play-button.component";
 
 class VolumeControlComponent {
     #volumeChange;
@@ -166,7 +121,7 @@ class ProgressControlComponent {
             this.#timeLineProgress.style.width = '0';
     
             this.#media.addEventListener('play', () => {
-                this.#showProgress(this.#media);
+                this.#showProgress();
             });
         
             this.#media.addEventListener('pause', () => {
@@ -363,7 +318,7 @@ class SlideComponent {
         const allVideos = document.querySelectorAll('.movie-video');
         allVideos.forEach((videoElem) => {
             if (videoElem !== movieVideo) {
-                videoElem.pause();
+                (videoElem as any).pause();
                 videoElem.closest('.movie-item').classList.remove('movie-item-playing');
                 videoElem.parentNode.querySelector('.btn-play').classList.remove('btn-pause');
             }
@@ -382,9 +337,10 @@ class SlideComponent {
 }
 
 class SliderComponent {
+    #slidesData;
     
     constructor(slidesData) {
-        this.slidesData = slidesData;
+        this.#slidesData = slidesData;
     }
 
     render() {
@@ -394,7 +350,7 @@ class SliderComponent {
         const moviesList = document.createElement('ul');
         moviesList.classList.add('movies-list');
 
-        for (const itemData of this.slidesData) {
+        for (const itemData of this.#slidesData) {
             const imageSrc = `images/slider/${itemData.imageSrc}`;
             const imageAlt = itemData.imageAlt;
             const videoSrc = `videos/${itemData.videoSrc}`;
@@ -436,18 +392,20 @@ class SliderComponent {
     }
 }
 
-class ListenButtonComponent extends AbstractBaseButtonComponent {
+class ListenButtonComponent {
+    #buttonClick;
 
     constructor (buttonClick) {
-        super(buttonClick);
+        this.#buttonClick = buttonClick;
     }
 
     render() {
-        const listenBtn = super.renderButton('btn');
+        const listenBtn = document.createElement('button'); 
+        listenBtn.classList.add('btn');
         listenBtn.textContent = 'Listen';
 
         listenBtn.addEventListener('click', () => {
-            this._buttonClick();
+            this.#buttonClick();
         });
 
         return listenBtn;   
@@ -458,7 +416,7 @@ class MovieInfoComponent {
     #movieContentData;
     #centerAlignedBlocks;
 
-    constructor(movieContentData, centerAlignedBlocks) {
+    constructor(movieContentData, centerAlignedBlocks?) {
         this.#movieContentData = movieContentData;
         this.#centerAlignedBlocks = centerAlignedBlocks;
     };
@@ -602,7 +560,7 @@ class SliderSectionComponent extends BaseSectionComponent {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+(function () {    
     var body = document.body;
     var menuBtn = document.querySelector('.menu-btn');
     var main = document.querySelector('main');
@@ -786,8 +744,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (index % 3 === 2) {
             var movieContent = movieContentData[index];
-            var section = new MovieCentralSectionComponent(id, sectionData, movieContent);
-            var renderedSection = section.render();
+            var centralSection = new MovieCentralSectionComponent(id, sectionData, movieContent);
+            var renderedSection = centralSection.render();
             main.insertBefore(renderedSection, main.querySelector('.sign-up')); 
 
             var sliderDataIndex = Math.floor(index / 3);
@@ -818,24 +776,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Adjusting media volume when volume is being dragged
-    document.querySelectorAll('.movie-item').forEach(function (movieItem) {
-        var volumeRange = movieItem.querySelector('.volume-control').querySelector('.volume-range');
-        volumeRange.addEventListener('mousedown', function (e) {
-            setVolume(volumeRange, e.pageX);
-
-            window.addEventListener('mousemove', handleMouseMove);
-
-            document.addEventListener('mouseup', function() {
-                window.removeEventListener('mousemove', handleMouseMove);
-            }, { once: true });
-        });
-        
-        function handleMouseMove(e) {
-            setVolume(volumeRange, e.pageX);
-        }
-    });
-
     initSliders(1);
 
     closeVideo('.slider-btn-left');
@@ -844,7 +784,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     makeSmoothScroll('.submenu-link');
     makeSmoothScroll('.js-scroll-link');
-});
+}());
 
 function closeVideo(selector) {
     var elements = document.querySelectorAll(selector);
@@ -852,7 +792,7 @@ function closeVideo(selector) {
     elements.forEach(function (element) {
         element.addEventListener('click', function () {
             document.querySelectorAll('.movie-video').forEach(function (movieVideoElem) {
-                movieVideoElem.pause();
+                (movieVideoElem as any).pause();
             });
             document.querySelectorAll('.movie-item').forEach(function (movieItemElem) {
                 movieItemElem.classList.remove('movie-item-playing');
