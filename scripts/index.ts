@@ -1,4 +1,4 @@
-import { PlayButtonComponent } from "./components/buttons/play-button.component";
+import { ListenButtonComponent, PlayButtonComponent } from "./components/buttons";
 
 class VolumeControlComponent {
     #volumeChange;
@@ -389,26 +389,6 @@ class SliderComponent {
         sliderWrapper.appendChild(rightButton);
 
         return sliderWrapper;
-    }
-}
-
-class ListenButtonComponent {
-    #buttonClick;
-
-    constructor (buttonClick) {
-        this.#buttonClick = buttonClick;
-    }
-
-    render() {
-        const listenBtn = document.createElement('button'); 
-        listenBtn.classList.add('btn');
-        listenBtn.textContent = 'Listen';
-
-        listenBtn.addEventListener('click', () => {
-            this.#buttonClick();
-        });
-
-        return listenBtn;   
     }
 }
 

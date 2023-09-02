@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
         "module": "amd",
-        "target": "ESNext"
+        "target": "ESNext",
+        "moduleResolution": "Node"
     },
     "files": [
         "scripts/index.ts"
