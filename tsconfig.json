@@ -6,5 +6,7 @@
     },
     "files": [
         "scripts/index.ts"
-    ]
+    ],
+    "include": ["*/**/*.ts"],
+    "exclude": ["node_modules"]
 }

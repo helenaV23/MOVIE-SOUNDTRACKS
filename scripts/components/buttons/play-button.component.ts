@@ -1,4 +1,6 @@
-export class PlayButtonComponent {
+import { IComponent } from "../../models";
+
+export class PlayButtonComponent implements IComponent {
     private button: HTMLElement;
     private playing: boolean;
     private buttonClick: (playing: boolean) => void;

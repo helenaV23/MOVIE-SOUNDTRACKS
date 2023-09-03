@@ -1,4 +1,6 @@
-export class ListenButtonComponent {
+import { IComponent } from "../../models";
+
+export class ListenButtonComponent implements IComponent {
     private buttonClick: () => void;
 
     constructor (buttonClick: () => void) {

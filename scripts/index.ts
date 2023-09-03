@@ -1,168 +1,99 @@
 import { ListenButtonComponent, PlayButtonComponent } from "./components/buttons";
+import { ProgressControlComponent, VolumeControlComponent } from "./components/media-controls";
 
-class VolumeControlComponent {
-    #volumeChange;
-    #volumeIcon;
-    #volume;
+// class ProgressControlComponent {
+//     #mediaPlayButton;
+//     #media;
+//     #mediaTime;
+//     #currentTime;
+//     #timeLine;
+//     #timeLineProgress;
+//     #mediaDuration;
+//     #timer;
 
-    constructor(volumeChange) {
-        this.#volumeChange = volumeChange;
-    }
+//     constructor(mediaPlayButton, media) {
+//         this.#mediaPlayButton = mediaPlayButton;
+//         this.#media = media;
+//     }
 
-    render() {
-        const volumeControlDiv = document.createElement('div');
-        volumeControlDiv.classList.add('volume-control');
+//     render() {
+//         this.#mediaTime = document.createElement('div');
+//         this.#mediaTime.classList.add('media-time');
+    
+//         this.#currentTime = document.createElement('span');
+//         this.#currentTime.classList.add('current-time');
+    
+//         this.#timeLine = document.createElement('div');
+//         this.#timeLine.classList.add('timeline');
+    
+//         this.#timeLineProgress = document.createElement('div');
+//         this.#timeLineProgress.classList.add('timeline-progress');
+    
+//         this.#mediaDuration = document.createElement('span');
+//         this.#mediaDuration.classList.add('media-duration');
+    
+//         this.#mediaTime.appendChild(this.#currentTime);
+//         this.#mediaTime.appendChild(this.#timeLine);
+//         this.#mediaTime.appendChild(this.#mediaDuration);
+    
+//         this.#timeLine.appendChild(this.#timeLineProgress);
+    
+//         this.#showMediaTime();
+    
+//         return this.#mediaTime;
+//     }
 
-        this.#volumeIcon = document.createElement('img');
-        this.#volumeIcon.classList.add('volume-icon');
-        this.#volumeIcon.setAttribute('src', 'images/player/volume.svg');
-        this.#volumeIcon.setAttribute('alt', 'volume-icon');
-
-        const volumeRange = this.#createVolumeRange();
+//     #showMediaTime() {
+//         this.#timer = 0;
+    
+//         this.#media.addEventListener('loadedmetadata', () => {
+//             this.#mediaDuration.textContent = this.#formatTime(this.#media.duration);
+//             this.#currentTime.textContent = this.#formatTime(0);
+//             this.#timeLineProgress.style.width = '0';
+    
+//             this.#media.addEventListener('play', () => {
+//                 this.#showProgress();
+//             });
         
-        this.#volume = document.createElement('div');
-        this.#volume.classList.add('volume');
-        volumeRange.appendChild(this.#volume);
-
-        volumeControlDiv.appendChild(this.#volumeIcon);
-        volumeControlDiv.appendChild(volumeRange);
-
-        return volumeControlDiv;
-    }
-
-    #createVolumeRange() {
-        const volumeRange = document.createElement('div');
-        volumeRange.classList.add('volume-range');
-        volumeRange.addEventListener('mousedown', (e) => {
-            this.setVolume(volumeRange, e.pageX);
-
-            window.addEventListener('mousemove', handleMouseMove);
-
-            document.addEventListener('mouseup', () => {
-                window.removeEventListener('mousemove', handleMouseMove);
-            }, { once: true });
-        });
-
-        const handleMouseMove = (e) => {
-            this.setVolume(volumeRange, e.pageX);
-        };
-
-        return volumeRange;
-    }
-
-    setVolume(element, eventXPosition) {
-        const volumeRangeWidth = element.offsetWidth;
-        const volumeRangeLeftPostion = element.getBoundingClientRect().left;
-        const x = eventXPosition - volumeRangeLeftPostion;
-        let volume = x / volumeRangeWidth;
-
-        if (volume <= 0) {
-            volume = 0;
-        } else if (volume > 1) {
-            volume = 1;
-        }
-
-        this.#volume.style.width = `${volume * 100}%`;
-        const icon = volume <= 0 ? 'images/player/mute.svg' : 'images/player/volume.svg';
-        this.#volumeIcon.setAttribute('src', icon);
+//             this.#media.addEventListener('pause', () => {
+//                 cancelAnimationFrame(this.#timer);
+//             });
     
-        this.#volumeChange(volume);  
-    }
-}
+//             this.#media.addEventListener('ended', () => {
+//                 this.#mediaPlayButton.reset();
+//                 this.#currentTime.textContent = this.#formatTime(0);
+//                 this.#timeLineProgress.style.width = '0';
+//             });
+    
+//             this.#timeLine.addEventListener('click', (e) => {
+//                 const progress = e.offsetX / this.#timeLine.offsetWidth;
+//                 const newCurrentTime = progress * this.#media.duration;
+    
+//                 this.#media.currentTime = newCurrentTime;
+    
+//                 this.#currentTime.textContent = this.#formatTime(newCurrentTime);
+//                 this.#timeLineProgress.style.width = `${progress * 100}%`;    
+//             });
+//         });
+//     }
 
-class ProgressControlComponent {
-    #mediaPlayButton;
-    #media;
-    #mediaTime;
-    #currentTime;
-    #timeLine;
-    #timeLineProgress;
-    #mediaDuration;
-    #timer;
+//     #showProgress() {
+//         const currTime = this.#media.currentTime;
+//         this.#currentTime.textContent = this.#formatTime(currTime);
+    
+//         const progress = (currTime / this.#media.duration) * 100;
+//         this.#timeLineProgress.style.width = `${progress}%`;
+    
+//         this.#timer = requestAnimationFrame(this.#showProgress.bind(this, this.#media));
+//     }
 
-    constructor(mediaPlayButton, media) {
-        this.#mediaPlayButton = mediaPlayButton;
-        this.#media = media;
-    }
-
-    render() {
-        this.#mediaTime = document.createElement('div');
-        this.#mediaTime.classList.add('media-time');
-    
-        this.#currentTime = document.createElement('span');
-        this.#currentTime.classList.add('current-time');
-    
-        this.#timeLine = document.createElement('div');
-        this.#timeLine.classList.add('timeline');
-    
-        this.#timeLineProgress = document.createElement('div');
-        this.#timeLineProgress.classList.add('timeline-progress');
-    
-        this.#mediaDuration = document.createElement('span');
-        this.#mediaDuration.classList.add('media-duration');
-    
-        this.#mediaTime.appendChild(this.#currentTime);
-        this.#mediaTime.appendChild(this.#timeLine);
-        this.#mediaTime.appendChild(this.#mediaDuration);
-    
-        this.#timeLine.appendChild(this.#timeLineProgress);
-    
-        this.#showMediaTime();
-    
-        return this.#mediaTime;
-    }
-
-    #showMediaTime() {
-        this.#timer = 0;
-    
-        this.#media.addEventListener('loadedmetadata', () => {
-            this.#mediaDuration.textContent = this.#formatTime(this.#media.duration);
-            this.#currentTime.textContent = this.#formatTime(0);
-            this.#timeLineProgress.style.width = '0';
-    
-            this.#media.addEventListener('play', () => {
-                this.#showProgress();
-            });
+//     #formatTime(time) {
+//         const minutes = Math.floor(time / 60);
+//         const seconds = Math.floor(time - minutes * 60);
         
-            this.#media.addEventListener('pause', () => {
-                cancelAnimationFrame(this.#timer);
-            });
-    
-            this.#media.addEventListener('ended', () => {
-                this.#mediaPlayButton.reset();
-                this.#currentTime.textContent = this.#formatTime(0);
-                this.#timeLineProgress.style.width = '0';
-            });
-    
-            this.#timeLine.addEventListener('click', (e) => {
-                const progress = e.offsetX / this.#timeLine.offsetWidth;
-                const newCurrentTime = progress * this.#media.duration;
-    
-                this.#media.currentTime = newCurrentTime;
-    
-                this.#currentTime.textContent = this.#formatTime(newCurrentTime);
-                this.#timeLineProgress.style.width = `${progress * 100}%`;    
-            });
-        });
-    }
-
-    #showProgress() {
-        const currTime = this.#media.currentTime;
-        this.#currentTime.textContent = this.#formatTime(currTime);
-    
-        const progress = (currTime / this.#media.duration) * 100;
-        this.#timeLineProgress.style.width = `${progress}%`;
-    
-        this.#timer = requestAnimationFrame(this.#showProgress.bind(this, this.#media));
-    }
-
-    #formatTime(time) {
-        const minutes = Math.floor(time / 60);
-        const seconds = Math.floor(time - minutes * 60);
-        
-        return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-    }
-}
+//         return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+//     }
+// }
 
 class MediaControlsComponent {
     #playButton;
