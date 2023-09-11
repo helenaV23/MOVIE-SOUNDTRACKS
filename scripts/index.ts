@@ -1,359 +1,14 @@
-import { ListenButtonComponent, PlayButtonComponent } from "./components/buttons";
-import { MediaControlsComponent } from "./components/media-controls";
+import { MovieCentralSectionComponent, MovieSectionComponent } from "./components/sections";
+import { SliderSectionComponent } from "./components/sections/slider-section.component";
+import { IMovieData, ISectionData, ISliderData } from "./models";
 
-class ModalComponent {
-    #filmTitle;
-    #filmRating;
-    #audio;
-    #modalOverlay;
-    #modalAudio;
-    #modalPlayButton;
-
-    constructor(filmTitle, filmRating, audio) {
-        this.#filmTitle = filmTitle;
-        this.#filmRating = filmRating;
-        this.#audio = audio;
-    }
-
-    render() {
-        document.body.classList.add('lock');
-        this.#modalOverlay = document.createElement('div');
-        this.#modalOverlay.classList.add('modal-overlay');
-    
-        const modalContainer = document.createElement('div');
-        modalContainer.classList.add('modal-container');
-    
-        modalContainer.addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
-    
-        const modalAudioInfo = document.createElement('div');
-        modalAudioInfo.classList.add('modal-audio-info');
-        
-        const modalRating = document.createElement('span');
-        modalRating.classList.add('modal-rating');
-        modalRating.textContent = this.#filmRating;
-    
-        const modalTitle = document.createElement('h3');
-        modalTitle.classList.add('modal-title');
-        modalTitle.textContent = this.#filmTitle;
-        
-        modalContainer.appendChild(modalAudioInfo);
-        modalAudioInfo.appendChild(modalRating);
-        modalAudioInfo.appendChild(modalTitle);
-    
-        const modalCloseBtn = document.createElement('button');
-        modalCloseBtn.classList.add('modal-close-btn');
-    
-        const modalCloseBtnSpan = document.createElement('span');
-        
-        modalCloseBtn.appendChild(modalCloseBtnSpan);
-    
-        this.#modalAudio = document.createElement('audio');
-        this.#modalAudio.classList.add('modal-audio');
-        this.#modalAudio.setAttribute('src', `audios/${this.#audio}`);
-    
-        this.#modalOverlay.appendChild(modalContainer);
-        modalContainer.appendChild(modalCloseBtn);
-        modalContainer.appendChild(this.#modalAudio);
-    
-        this.#modalPlayButton = new PlayButtonComponent((playing) => {
-            if (playing) {
-                this.#modalAudio.play();
-            } else {
-                this.#modalAudio.pause();
-            }
-        });
-    
-        const renderedButton = this.#modalPlayButton.render();
-        modalContainer.appendChild(renderedButton);
-    
-        const mediaControlElement = new MediaControlsComponent(this.#modalPlayButton, this.#modalAudio);
-        const renderedMediaControlElement = mediaControlElement.render();
-        modalContainer.appendChild(renderedMediaControlElement);
-    
-        this.#closeModal(this.#modalOverlay);
-        this.#closeModal(modalCloseBtn);
-    
-        return this.#modalOverlay;
-    }
-
-    #closeModal(element) {
-
-        element.addEventListener('click', () => {
-            document.body.classList.remove('lock');
-            this.#modalOverlay.remove();
-        });
-    } 
-}
-
-class SlideComponent {
-    #imageSrc;
-    #imageAlt;
-    #videoSrc;
-
-    constructor(imageSrc, imageAlt, videoSrc) {
-        this.#imageSrc = imageSrc;
-        this.#imageAlt = imageAlt;
-        this.#videoSrc = videoSrc;
-    }
-
-    render() {
-        const movieItem = document.createElement('li');
-        movieItem.classList.add('movie-item');
-
-        const movieItemImage = document.createElement('img');
-        movieItemImage.classList.add('movie-item-image');
-        movieItemImage.src = this.#imageSrc;
-        movieItemImage.alt = this.#imageAlt;
-
-        const movieVideo = document.createElement('video');
-        movieVideo.classList.add('movie-video');
-        movieVideo.src = this.#videoSrc;
-
-        const playButton = new PlayButtonComponent((playing) => {
-            if (playing) {
-                movieItem.classList.add('movie-item-playing');
-                movieVideo.play();
-            } else {
-                movieItem.classList.remove('movie-item-playing');
-                movieVideo.pause();
-            }
-        });
-
-        const renderedPlayButton = playButton.render();
-
-        const allVideos = document.querySelectorAll('.movie-video');
-        allVideos.forEach((videoElem) => {
-            if (videoElem !== movieVideo) {
-                (videoElem as any).pause();
-                videoElem.closest('.movie-item').classList.remove('movie-item-playing');
-                videoElem.parentNode.querySelector('.btn-play').classList.remove('btn-pause');
-            }
-        });
-
-        const mediaControlsComponent = new MediaControlsComponent(playButton, movieVideo);
-        const mediaControlsElement = mediaControlsComponent.render();
-
-        movieItem.appendChild(movieItemImage);
-        movieItem.appendChild(movieVideo);
-        movieItem.appendChild(renderedPlayButton);
-        movieItem.appendChild(mediaControlsElement);
-
-        return movieItem;
-    }
-}
-
-class SliderComponent {
-    #slidesData;
-    
-    constructor(slidesData) {
-        this.#slidesData = slidesData;
-    }
-
-    render() {
-        const sliderWrapper = document.createElement('div');
-        sliderWrapper.classList.add('slider-wrapper');
-
-        const moviesList = document.createElement('ul');
-        moviesList.classList.add('movies-list');
-
-        for (const itemData of this.#slidesData) {
-            const imageSrc = `images/slider/${itemData.imageSrc}`;
-            const imageAlt = itemData.imageAlt;
-            const videoSrc = `videos/${itemData.videoSrc}`;
-
-            const slideComponent = new SlideComponent(imageSrc, imageAlt, videoSrc);
-            const renderedSlideComponent = slideComponent.render();
-
-            moviesList.appendChild(renderedSlideComponent);
-        }
-
-        const leftButton = document.createElement('a');
-        leftButton.classList.add('btn-link', 'slider-btn-left');
-        leftButton.href = '#';
-
-        const leftButtonSvg = `
-            <svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2"/>
-            </svg>
-        `;
-
-        leftButton.innerHTML = leftButtonSvg;
-
-        const rightButton = document.createElement('a');
-        rightButton.classList.add('btn-link', 'slider-btn-right');
-        rightButton.href = '#';
-
-        const rightButtonSvg = `
-            <svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2"/>
-            </svg> 
-        `
-        rightButton.innerHTML = rightButtonSvg;
-
-        sliderWrapper.appendChild(moviesList);
-        sliderWrapper.appendChild(leftButton);
-        sliderWrapper.appendChild(rightButton);
-
-        return sliderWrapper;
-    }
-}
-
-class MovieInfoComponent {
-    #movieContentData;
-    #centerAlignedBlocks;
-
-    constructor(movieContentData, centerAlignedBlocks?) {
-        this.#movieContentData = movieContentData;
-        this.#centerAlignedBlocks = centerAlignedBlocks;
-    };
-
-    render() {
-        const movieInfo = document.createElement('div');
-        movieInfo.classList.add('movie-info');
-
-        if (this.#centerAlignedBlocks) {
-            movieInfo.classList.add('align-center');
-        }
-
-        const h2 = document.createElement('h2');
-        h2.textContent = this.#movieContentData.header;
-
-        const rating = document.createElement('span');
-        rating.classList.add('rating');
-        rating.textContent = this.#movieContentData.rating;
-
-        const movieContent = document.createElement('div');
-        movieContent.classList.add('movie-content');
-
-        const movieDescription = document.createElement('p');
-        movieDescription.classList.add('movie-description');
-        movieDescription.textContent = this.#movieContentData.description;
-
-        movieInfo.appendChild(h2);
-        movieInfo.appendChild(movieContent);
-
-        h2.appendChild(rating);
-        movieContent.appendChild(movieDescription);
-
-        const listenBtn = new ListenButtonComponent(() => {
-            const filmTitle = this.#movieContentData.header;
-            const filmRating = this.#movieContentData.rating;
-            const audio = this.#movieContentData.audio;
-    
-            const modalComponent = new ModalComponent(filmTitle, filmRating, audio);
-            const renderedModalComponent = modalComponent.render();
-            document.body.appendChild(renderedModalComponent);
-        });
-
-        const renderedListenBtn = listenBtn.render();
-        movieContent.appendChild(renderedListenBtn);
-
-        return movieInfo;
-    }
-}
-
-class BaseSectionComponent {
-    _wrapper;
-
-    render() {
-        const section = document.createElement('section');
-        this._wrapper = document.createElement('div');
-        this._wrapper.classList.add('wrapper');
-        section.appendChild(this._wrapper);
-
-        return section;
-    }
-}
-
-class MovieSectionComponent extends BaseSectionComponent {
-    #id;
-    #sectionData;
-    #reverseBlock;
-    #movieContentData;
-
-    constructor(id, sectionData, reverseBlock, movieContentData) {
-        super();
-        this.#id = id;
-        this.#sectionData = sectionData;
-        this.#reverseBlock = reverseBlock;
-        this.#movieContentData = movieContentData;
-    }
-
-    render() {
-        const section = super.render();
-        section.classList.add('about-movie');
-        section.id = this.#id;
-        this._wrapper.classList.add('push-apart');
-        const img = document.createElement('img');
-        img.src = `images/${this.#sectionData.image}`;
-        img.alt = this.#sectionData.alt;
-        
-        this._wrapper.appendChild(img);
-
-        if (this.#reverseBlock) {
-            this._wrapper.classList.add('reverse-block');
-        }
-
-        var movieInfo = new MovieInfoComponent(this.#movieContentData);
-        var renderedMovieInfo = movieInfo.render();
-        this._wrapper.appendChild(renderedMovieInfo);
-
-        return section;
-    }
-}
-
-class MovieCentralSectionComponent extends BaseSectionComponent {
-    #id;
-    #sectionData;
-    #movieContent;
-
-    constructor(id, sectionData, movieContent) {
-        super();
-        this.#id = id;
-        this.#sectionData = sectionData;
-        this.#movieContent = movieContent;
-    }
-
-    render() {
-        const section = super.render();
-        section.classList.add('about-movie', 'movie-heroes', this.#sectionData.sectionClass);
-        section.id = this.#id;
-        var movieInfo = new MovieInfoComponent(this.#movieContent, true);
-        var renderedMovieInfo = movieInfo.render();
-        this._wrapper.appendChild(renderedMovieInfo);
-
-        return section;
-    }
-}
-
-class SliderSectionComponent extends BaseSectionComponent {
-    #sliderData;
-
-    constructor(sliderData) {
-        super();
-        this.#sliderData = sliderData;
-    }
-
-    render() {
-        const section = super.render();
-        section.classList.add('movie-slider');
-
-        const sliderComponent = new SliderComponent(this.#sliderData);
-        const renderedSliderComponent = sliderComponent.render();
-        
-        this._wrapper.appendChild(renderedSliderComponent);
-        return section;
-    }
-}
 
 (function () {    
     var body = document.body;
     var menuBtn = document.querySelector('.menu-btn');
     var main = document.querySelector('main');
 
-    var sectionsData = [
+    var sectionsData: ISectionData[] = [
         {
             image: 'guardians-of-the-galaxy.png',
             alt: 'guardians-of-the-galaxy',
@@ -393,33 +48,24 @@ class SliderSectionComponent extends BaseSectionComponent {
         },
     ];
 
-    var movieContentData = [
+    var movieContentData: IMovieData[]= [
         {
             rating: '.10',
             header: 'GUARDIANS OF THE GALAXY VOL. 2',
             description: 'While the Awesome Mix Vol. 1 in Guardians of the Galaxy was resonant with a lot of people, it was the soundtrack in Guardians of the Galaxy Vol. 2 that improved  on the formula. The first film featured songs that were fun and upbeat but didn`t have much to do with the film`s story.',
             audio: 'guardinas-of-the-galaxy-vol-2.ogg',
-            imageSrc: 'guardians-video.png',
-            imageAlt: 'guardians',
-            videoSrc: 'guardinas-of-the-galaxy-vol-2.mp4',
         },
         {
             rating: '.09',
             header: 'JURASSIC PARK',
             description: 'John Williams did a lot of music for many popular franchises. After his work on Star Wars, he would later do the score for Jurassic Park. This dinosaur film was full of epic shots and tense moments that were further brought to life by Williams` music.',
             audio: 'jurassic-park.ogg',
-            imageSrc: 'the-lost-world-jurassic-park-video.png',
-            imageAlt: 'jurassic-park',
-            videoSrc: 'jurassic-park.mp4',
         },
         {
             rating: '.08',
             header: 'STAR WARS: A NEW HOPE',
             description: 'When Star Wars: A New Hope was released, it introduced many iconic themes that people would recognize decades after. That was thanks to John Williams, who put together the iconic fanfare, the Imperial March, and so many more great tracks.',
             audio: 'star-wars-a-new-hope.ogg',
-            imageSrc: 'star-wars-video.png',
-            imageAlt: 'star-wars',
-            videoSrc: 'star-wars-a-new-hope.mp4',
         },
         {
             rating: '.07',
@@ -465,7 +111,7 @@ class SliderSectionComponent extends BaseSectionComponent {
         },
     ];
 
-    var slidersData = [
+    var slidersData: ISliderData[][] = [
         [
             {
                 imageSrc: 'guardians-video.png',

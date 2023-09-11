@@ -2,11 +2,10 @@ import { IComponent } from "../../models";
 
 export class PlayButtonComponent implements IComponent {
     private button: HTMLElement;
-    private playing: boolean;
+    private playing: boolean = false;
     private buttonClick: (playing: boolean) => void;
 
     constructor(buttonClick: (playing: boolean) => void) {
-        this.playing = false;
         this.buttonClick = buttonClick;
     }
 
