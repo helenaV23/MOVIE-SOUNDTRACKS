@@ -32,10 +32,6 @@ export class SlideComponent implements IComponent {
         const renderedPlayButton = this.createPlayButtonComponent();
         const mediaControlsElement = this.createMediaControlsComponent();
 
-        renderedPlayButton.addEventListener('click', () => {
-            this.stopAllOtherVideos();
-        });
-
         this.movieItem.appendChild(movieItemImage);
         this.movieItem.appendChild(this.movieVideo);
         this.movieItem.appendChild(renderedPlayButton);
@@ -53,6 +49,7 @@ export class SlideComponent implements IComponent {
                 this.movieItem.classList.remove('movie-item-playing');
                 this.movieVideo.pause();
             }
+            this.stopAllOtherVideos();
         });
 
         const renderedPlayButton = playButton.render();

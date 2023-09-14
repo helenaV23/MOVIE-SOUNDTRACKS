@@ -30,5 +30,6 @@ export class PlayButtonComponent implements IComponent {
 
     public reset(): void {
         this.button.classList.remove('btn-pause');
+        this.playing = false;
     }
 }
