@@ -1,3 +1,6 @@
 styles/style.css
 styles/style.css.map
 node_modules/
+index.js
+require.js
+index.js.map
