@@ -210,8 +210,6 @@ import { IMovieData, ISectionData, ISliderData } from "./models";
         });
     });
 
-    initSliders(1);
-
     closeVideo('.slider-btn-left');
     closeVideo('.slider-btn-right');
     closeVideo('.js-listen');
@@ -236,40 +234,6 @@ function closeVideo(selector) {
             });
         });
     });
-}
-
-function initSliders(initialSlide) {
-    var SLIDE_STEP = -100;
-
-    document.querySelectorAll('.slider-wrapper').forEach(function (sliderWrapperElem) {
-        var currentSlide = initialSlide;
-        var moviesList = sliderWrapperElem.querySelector('.movies-list');
-        var lastSlideIndex = moviesList.querySelectorAll('.movie-item').length - 1;
-
-        moveSlide(moviesList, currentSlide);
-
-        sliderWrapperElem.querySelector('.slider-btn-right').addEventListener('click', function (e) {
-            e.preventDefault();
-
-            if (currentSlide < lastSlideIndex) {
-                currentSlide++;
-                moveSlide(moviesList, currentSlide);
-            }
-        });
-
-        sliderWrapperElem.querySelector('.slider-btn-left').addEventListener('click', function (e) {
-            e.preventDefault();
-
-            if (currentSlide > 0) {
-                currentSlide--;
-                moveSlide(moviesList, currentSlide);
-            }
-        });
-    });
-
-    function moveSlide(element, slide) {
-        element.style.marginLeft = (slide * SLIDE_STEP) + '%';
-    }
 }
 
 function makeSmoothScroll(selector) {

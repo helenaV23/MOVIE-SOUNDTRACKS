@@ -6,14 +6,18 @@ export class SliderComponent implements IComponent {
     private moviesList: HTMLElement; 
     private leftButton: HTMLAnchorElement;
     private rightButton: HTMLAnchorElement;
+    private sliderWrapper: HTMLElement;
+    private currentSlide: number;
+    private static readonly slideStep: number = -100;
     
-    constructor(slidesData: ISliderData[]) {
+    constructor(slidesData: ISliderData[], initialSlide: number) {
         this.slidesData = slidesData;
+        this.currentSlide = initialSlide;
     }
 
     public render(): HTMLElement {
-        const sliderWrapper = document.createElement('div');
-        sliderWrapper.classList.add('slider-wrapper');
+        this.sliderWrapper = document.createElement('div');
+        this.sliderWrapper.classList.add('slider-wrapper');
 
         this.moviesList = document.createElement('ul');
         this.moviesList.classList.add('movies-list');
@@ -21,11 +25,13 @@ export class SliderComponent implements IComponent {
         this.createSlideComponent();
         this.createSvgButtons();
 
-        sliderWrapper.appendChild(this.moviesList);
-        sliderWrapper.appendChild(this.leftButton);
-        sliderWrapper.appendChild(this.rightButton);
+        this.sliderWrapper.appendChild(this.moviesList);
+        this.sliderWrapper.appendChild(this.leftButton);
+        this.sliderWrapper.appendChild(this.rightButton);
 
-        return sliderWrapper;
+        this.initSlider();
+
+        return this.sliderWrapper;
     }
 
     private createSlideComponent(): void {
@@ -36,7 +42,7 @@ export class SliderComponent implements IComponent {
 
             const slideComponent = new SlideComponent(imageSrc, imageAlt, videoSrc);
             const renderedSlideComponent = slideComponent.render();
-
+            
             this.moviesList.appendChild(renderedSlideComponent);
         }
     }
@@ -64,5 +70,33 @@ export class SliderComponent implements IComponent {
             </svg> 
         `
         this.rightButton.innerHTML = rightButtonSvg;
+    }
+
+    private initSlider(): void {
+        const lastSlideIndex = this.slidesData.length - 1;
+        
+        this.moveSlide();
+
+        this.rightButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            if (this.currentSlide < lastSlideIndex) {
+                this.currentSlide++;
+                this.moveSlide();
+            }
+        });
+
+        this.leftButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            if (this.currentSlide > 0) {
+                this.currentSlide--;
+                this.moveSlide();
+            }
+        });
+    }
+
+    private moveSlide(): void {
+        this.moviesList.style.marginLeft = `${this.currentSlide * SliderComponent.slideStep}%`;
     }
 }

@@ -14,7 +14,7 @@ export class SliderSectionComponent extends BaseSectionComponent {
         const section = super.render();
         section.classList.add('movie-slider');
 
-        const sliderComponent = new SliderComponent(this.sliderData);
+        const sliderComponent = new SliderComponent(this.sliderData, 1);
         const renderedSliderComponent = sliderComponent.render();
         
         this.wrapper.appendChild(renderedSliderComponent);
