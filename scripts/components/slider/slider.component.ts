@@ -8,6 +8,7 @@ export class SliderComponent implements IComponent {
     private rightButton: HTMLAnchorElement;
     private sliderWrapper: HTMLElement;
     private currentSlide: number;
+    private static readonly slideStep: number = -100;
     
     constructor(slidesData: ISliderData[], initialSlide: number) {
         this.slidesData = slidesData;
@@ -96,7 +97,6 @@ export class SliderComponent implements IComponent {
     }
 
     private moveSlide(): void {
-        const SLIDE_STEP = -100;
-        this.moviesList.style.marginLeft = (this.currentSlide * SLIDE_STEP) + '%';
+        this.moviesList.style.marginLeft = `${this.currentSlide * SliderComponent.slideStep}%`;
     }
 }
