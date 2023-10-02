@@ -1,15 +1,16 @@
 import { PlayButtonComponent } from "./buttons";
 import { MediaControlsComponent } from "./media-controls";
 import { IComponent } from "../models";
+import { getMovieRating } from "../utils";
 
 export class ModalComponent implements IComponent {
-    private filmRating: string;
+    private filmRating: number;
     private audio: string;
     private modalOverlay: HTMLElement;
     private modalAudio: HTMLMediaElement;
     private modalPlayButton: PlayButtonComponent;
 
-    constructor(private filmTitle: string, filmRating: string, audio: string) {
+    constructor(private filmTitle: string, filmRating: number, audio: string) {
         this.filmRating = filmRating;
         this.audio = audio;
     }
@@ -96,8 +97,8 @@ export class ModalComponent implements IComponent {
         
         const modalRating = document.createElement('span');
         modalRating.classList.add('modal-rating');
-        modalRating.textContent = this.filmRating;
-    
+        modalRating.textContent = getMovieRating(this.filmRating);
+
         const modalTitle = document.createElement('h3');
         modalTitle.classList.add('modal-title');
         modalTitle.textContent = this.filmTitle;

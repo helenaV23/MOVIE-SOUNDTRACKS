@@ -1,19 +1,17 @@
-import { IMovieData, ISectionData } from "../../models";
+import { IMovie} from "../../models";
 import { BaseSectionComponent } from "./base-section.component";
 import { MovieInfoComponent } from "../movie-info.component";
 
 export class MovieSectionComponent extends BaseSectionComponent {
     private id: number;
-    private sectionData: ISectionData;
+    private movieData: IMovie;
     private reverseBlock: boolean;
-    private movieContentData: IMovieData;
 
-    constructor(id: number, sectionData: ISectionData, reverseBlock: boolean, movieContentData: IMovieData) {
+    constructor(id: number, movieData: IMovie, reverseBlock: boolean) {
         super();
         this.id = id;
-        this.sectionData = sectionData;
+        this.movieData = movieData;
         this.reverseBlock = reverseBlock;
-        this.movieContentData = movieContentData;
     }
 
     public render(): HTMLElement {
@@ -22,8 +20,9 @@ export class MovieSectionComponent extends BaseSectionComponent {
         section.id = this.id.toString();
         this.wrapper.classList.add('push-apart');
         const img = document.createElement('img');
-        img.src = `images/${this.sectionData.image}`;
-        img.alt = this.sectionData.alt;
+        img.src = `images/${this.movieData.imageCovers}`;
+
+        img.alt = this.movieData.title;
         
         this.wrapper.appendChild(img);
 
@@ -31,7 +30,7 @@ export class MovieSectionComponent extends BaseSectionComponent {
             this.wrapper.classList.add('reverse-block');
         }
 
-        const movieInfo = new MovieInfoComponent(this.movieContentData);
+        const movieInfo = new MovieInfoComponent(this.movieData);
         const renderedMovieInfo = movieInfo.render();
         this.wrapper.appendChild(renderedMovieInfo);
 

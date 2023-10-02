@@ -1,8 +1,8 @@
-import { IComponent, ISliderData } from "../../models";
+import { IComponent, IMovie } from "../../models";
 import { SlideComponent } from "./slide.component";
 
 export class SliderComponent implements IComponent {
-    private slidesData: ISliderData[];
+    private movieData: IMovie[];
     private moviesList: HTMLElement; 
     private leftButton: HTMLAnchorElement;
     private rightButton: HTMLAnchorElement;
@@ -10,8 +10,8 @@ export class SliderComponent implements IComponent {
     private currentSlide: number;
     private static readonly slideStep: number = -100;
     
-    constructor(slidesData: ISliderData[], initialSlide: number) {
-        this.slidesData = slidesData;
+    constructor(movieData: IMovie[], initialSlide: number) {
+        this.movieData = movieData;
         this.currentSlide = initialSlide;
     }
 
@@ -35,10 +35,10 @@ export class SliderComponent implements IComponent {
     }
 
     private createSlideComponent(): void {
-        for (const itemData of this.slidesData) {
-            const imageSrc = `images/slider/${itemData.imageSrc}`;
-            const imageAlt = itemData.imageAlt;
-            const videoSrc = `videos/${itemData.videoSrc}`;
+        for (const itemData of this.movieData) {
+            const imageSrc = `images/slider/${itemData.videoCoverUrl}`;
+            const imageAlt = `${itemData.title}-image`;
+            const videoSrc = `videos/${itemData.videoUrl}`;
 
             const slideComponent = new SlideComponent(imageSrc, imageAlt, videoSrc);
             const renderedSlideComponent = slideComponent.render();
@@ -73,7 +73,7 @@ export class SliderComponent implements IComponent {
     }
 
     private initSlider(): void {
-        const lastSlideIndex = this.slidesData.length - 1;
+        const lastSlideIndex = this.movieData.length - 1;
         
         this.moveSlide();
 
