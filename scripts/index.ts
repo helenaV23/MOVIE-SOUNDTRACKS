@@ -7,28 +7,24 @@ import { data } from "./data";
     var body = document.body;
     var menuBtn = document.querySelector('.menu-btn');
     var main = document.querySelector('main');
-    const groupsOfThreeMovies: IMovie[][] = [];
 
-    for (let i = 0; i < data.length; i += 3) {
-        const group = data.slice(i, i + 3);
-        groupsOfThreeMovies.push(group);
-    }
+    var sliderData: IMovie[] = [];
 
     data.forEach(function (dataItem, index, data) {
         var id = data.length - index;
         var reverseBlock = index % 3 === 1;
 
+        sliderData.push(dataItem);
+
         if (index % 3 === 2) {
             var centralSection = new MovieCentralSectionComponent(id, dataItem);
             var renderedSection = centralSection.render();
-            main.insertBefore(renderedSection, main.querySelector('.sign-up')); 
-            
-            var sliderDataIndex = Math.floor(index / 3);
-            console.log(groupsOfThreeMovies[sliderDataIndex]);
-            
-            var slider = new SliderSectionComponent(groupsOfThreeMovies[sliderDataIndex]);
+            main.insertBefore(renderedSection, main.querySelector('.sign-up'));             
+
+            var slider = new SliderSectionComponent(sliderData);
             var renderedSlider = slider.render();
             main.insertBefore(renderedSlider, main.querySelector('.sign-up'));
+            sliderData = [];
         } else {
             var section = new MovieSectionComponent(id, dataItem, reverseBlock);
             var renderedSection = section.render();
