@@ -1,20 +1,20 @@
-import { ISliderData } from "../../models";
+import { IMovie} from "../../models";
 import { SliderComponent } from "../slider/slider.component";
 import { BaseSectionComponent } from "./base-section.component";
 
 export class SliderSectionComponent extends BaseSectionComponent {
-    private sliderData: ISliderData[];
+    private movieData: IMovie[];
 
-    constructor(sliderData: ISliderData[]) {
+    constructor(movieData: IMovie[]) {
         super();
-        this.sliderData = sliderData;
+        this.movieData = movieData;
     }
 
     public render(): HTMLElement {
         const section = super.render();
         section.classList.add('movie-slider');
 
-        const sliderComponent = new SliderComponent(this.sliderData, 1);
+        const sliderComponent = new SliderComponent(this.movieData, 1);
         const renderedSliderComponent = sliderComponent.render();
         
         this.wrapper.appendChild(renderedSliderComponent);

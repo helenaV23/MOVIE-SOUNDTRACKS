@@ -1,13 +1,14 @@
 import { ModalComponent } from "./modal.component";
-import { IComponent, IMovieData } from "../models";
+import { IComponent, IMovie } from "../models";
 import { ListenButtonComponent } from "./buttons/listen-button.component";
+import { getMovieRating } from "../utils";
 
 export class MovieInfoComponent implements IComponent {
-    private movieContentData: IMovieData;
+    private movieData: IMovie;
     private centerAlignedBlocks: boolean;
 
-    constructor(movieContentData: IMovieData, centerAlignedBlocks: boolean = false) {
-        this.movieContentData = movieContentData;
+    constructor(movieData: IMovie, centerAlignedBlocks: boolean = false) {
+        this.movieData = movieData;
         this.centerAlignedBlocks = centerAlignedBlocks;
     };
 
@@ -20,18 +21,18 @@ export class MovieInfoComponent implements IComponent {
         }
 
         const h2 = document.createElement('h2');
-        h2.textContent = this.movieContentData.header;
+        h2.textContent = this.movieData.title;
 
         const rating = document.createElement('span');
         rating.classList.add('rating');
-        rating.textContent = this.movieContentData.rating;
-
+        rating.textContent = getMovieRating(this.movieData.rating);
+        
         const movieContent = document.createElement('div');
         movieContent.classList.add('movie-content');
 
         const movieDescription = document.createElement('p');
         movieDescription.classList.add('movie-description');
-        movieDescription.textContent = this.movieContentData.description;
+        movieDescription.textContent = this.movieData.description;
 
         movieInfo.appendChild(h2);
         movieInfo.appendChild(movieContent);
@@ -47,11 +48,9 @@ export class MovieInfoComponent implements IComponent {
 
     private createListenButtonComponent(): HTMLElement {
         const listenBtn = new ListenButtonComponent(() => {
-            const filmTitle = this.movieContentData.header;
-            const filmRating = this.movieContentData.rating;
-            const audio = this.movieContentData.audio;
-    
-            const modalComponent = new ModalComponent(filmTitle, filmRating, audio);
+            const { title, rating, audioUrl } = this.movieData;
+            
+            const modalComponent = new ModalComponent(title, rating, audioUrl);
             const renderedModalComponent = modalComponent.render();
             document.body.appendChild(renderedModalComponent);
         });
