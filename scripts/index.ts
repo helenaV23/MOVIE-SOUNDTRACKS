@@ -1,6 +1,5 @@
 import { MovieCentralSectionComponent, MovieSectionComponent } from "./components/sections";
 import { SliderSectionComponent } from "./components/sections/slider-section.component";
-import { IMovie } from "./models";
 import { data } from "./data";
 
 (function () {    
@@ -8,23 +7,20 @@ import { data } from "./data";
     var menuBtn = document.querySelector('.menu-btn');
     var main = document.querySelector('main');
 
-    var sliderData: IMovie[] = [];
-
-    data.forEach(function (dataItem, index, data) {
+    data.forEach(function (dataItem, index) {
         var id = data.length - index;
         var reverseBlock = index % 3 === 1;
-
-        sliderData.push(dataItem);
 
         if (index % 3 === 2) {
             var centralSection = new MovieCentralSectionComponent(id, dataItem);
             var renderedSection = centralSection.render();
-            main.insertBefore(renderedSection, main.querySelector('.sign-up'));             
-
+            main.insertBefore(renderedSection, main.querySelector('.sign-up'));
+            
+            var sliderData = data.slice(index - 2, index + 1);
+            
             var slider = new SliderSectionComponent(sliderData);
             var renderedSlider = slider.render();
             main.insertBefore(renderedSlider, main.querySelector('.sign-up'));
-            sliderData = [];
         } else {
             var section = new MovieSectionComponent(id, dataItem, reverseBlock);
             var renderedSection = section.render();
