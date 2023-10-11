@@ -1,6 +1,8 @@
-import { MovieCentralSectionComponent, MovieSectionComponent } from "./components/sections";
+import { MovieCentralSectionComponent, MovieSectionComponent, SignUpSectionComponent } from "./components/sections";
 import { SliderSectionComponent } from "./components/sections/slider-section.component";
 import { data } from "./data";
+import { FooterComponent } from "./components/footer.component";
+
 
 (function () {    
     var body = document.body;
@@ -20,13 +22,21 @@ import { data } from "./data";
             
             var slider = new SliderSectionComponent(sliderData);
             var renderedSlider = slider.render();
-            main.insertBefore(renderedSlider, main.querySelector('.sign-up'));
+            main.appendChild(renderedSlider);
         } else {
             var section = new MovieSectionComponent(id, dataItem, reverseBlock);
             var renderedSection = section.render();
-            main.insertBefore(renderedSection, main.querySelector('.sign-up')); 
+            main.appendChild(renderedSection);
         }
     });
+
+    var signUp = new SignUpSectionComponent();
+    var renderedSection = signUp.render();
+    main.appendChild(renderedSection);
+
+    var footer = new FooterComponent();
+    var renderedFooter = footer.render();
+    body.appendChild(renderedFooter);
 
     // Opening/closing burger menu 
     menuBtn.addEventListener('click', function () {
