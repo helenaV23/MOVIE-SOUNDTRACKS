@@ -1,16 +1,19 @@
-import { MovieCentralSectionComponent, MovieSectionComponent, SignUpSectionComponent } from "./components/sections";
+import { MovieCentralSectionComponent, MovieSectionComponent, SignUpSectionComponent, MainScreenSectionComponent } from "./components/sections";
 import { SliderSectionComponent } from "./components/sections/slider-section.component";
 import { data } from "./data";
 import { FooterComponent } from "./components/footer.component";
-
 
 (function () {    
     var body = document.body;
     var menuBtn = document.querySelector('.menu-btn');
     var main = document.querySelector('main');
 
-    data.forEach(function (dataItem, index) {
-        var id = data.length - index;
+    var mainScreen = new MainScreenSectionComponent(data);
+    var renderedMainScreen = mainScreen.render();
+    main.appendChild(renderedMainScreen);
+    
+    data.ratingData.forEach(function (dataItem, index) {
+        var id = data.ratingData.length - index;
         var reverseBlock = index % 3 === 1;
 
         if (index % 3 === 2) {
@@ -18,7 +21,7 @@ import { FooterComponent } from "./components/footer.component";
             var renderedSection = centralSection.render();
             main.insertBefore(renderedSection, main.querySelector('.sign-up'));
             
-            var sliderData = data.slice(index - 2, index + 1);
+            var sliderData = data.ratingData.slice(index - 2, index + 1);
             
             var slider = new SliderSectionComponent(sliderData);
             var renderedSlider = slider.render();
