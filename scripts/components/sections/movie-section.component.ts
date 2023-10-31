@@ -17,7 +17,7 @@ export class MovieSectionComponent extends BaseSectionComponent {
     public render(): HTMLElement {
         const section = super.render();
         section.classList.add('about-movie');
-        section.id = this.id.toString();
+        section.id = `rating-${this.id}`;
         this.wrapper.classList.add('push-apart');
         const img = document.createElement('img');
         img.src = `images/${this.movieData.imageCovers}`;

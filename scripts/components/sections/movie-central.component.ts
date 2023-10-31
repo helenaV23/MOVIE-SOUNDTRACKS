@@ -20,7 +20,7 @@ export class MovieCentralSectionComponent extends BaseSectionComponent {
         const backgroundImageStyle = imageCovers.map((imageCover) => `url("images/${imageCover}")`).join(', ');
         section.style.backgroundImage = backgroundImageStyle;
 
-        section.id = this.id.toString();
+        section.id = `rating-${this.id}`;
         const movieInfo = new MovieInfoComponent(this.movieData, true);
         const renderedMovieInfo = movieInfo.render();
         this.wrapper.appendChild(renderedMovieInfo);
