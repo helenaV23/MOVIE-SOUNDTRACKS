@@ -2,11 +2,15 @@ import { MovieCentralSectionComponent, MovieSectionComponent, SignUpSectionCompo
 import { SliderSectionComponent } from "./components/sections/slider-section.component";
 import { data } from "./data";
 import { FooterComponent } from "./components/footer.component";
+import { HeaderComponent } from "./components/header.component";
 
 (function () {    
     var body = document.body;
-    var menuBtn = document.querySelector('.menu-btn');
     var main = document.querySelector('main');
+
+    var header = new HeaderComponent(data.ratingData);
+    var renderedHeader = header.render();
+    body.appendChild(renderedHeader);
 
     var mainScreen = new MainScreenSectionComponent(data);
     var renderedMainScreen = mainScreen.render();
@@ -40,21 +44,6 @@ import { FooterComponent } from "./components/footer.component";
     var footer = new FooterComponent();
     var renderedFooter = footer.render();
     body.appendChild(renderedFooter);
-
-    // Opening/closing burger menu 
-    menuBtn.addEventListener('click', function () {
-        document.querySelector('.menu-wrapper').classList.toggle('open-burger-menu');
-        menuBtn.classList.toggle('menu-btn-active');
-        body.classList.toggle('lock');
-    });
-
-    document.querySelectorAll('.submenu-link').forEach(function (submenuLink) {
-        submenuLink.addEventListener('click', function() {
-            body.classList.remove('lock');
-            document.querySelector('.menu-wrapper').classList.remove('open-burger-menu');
-            menuBtn.classList.remove('menu-btn-active');
-        });
-    });
 
     closeVideo('.slider-btn-left');
     closeVideo('.slider-btn-right');
