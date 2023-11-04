@@ -1,57 +1,14 @@
-import { MovieCentralSectionComponent, MovieSectionComponent, SignUpSectionComponent, MainScreenSectionComponent } from "./components/sections";
-import { SliderSectionComponent } from "./components/sections/slider-section.component";
-import { data } from "./data";
-import { FooterComponent } from "./components/footer.component";
-import { HeaderComponent } from "./components/header.component";
+import { AppComponent } from "./components/app.component";
 
-(function () {    
-    var body = document.body;
-    var main = document.querySelector('main');
+const appComponent = new AppComponent(); 
+appComponent.init();
 
-    var header = new HeaderComponent(data.ratingData);
-    var renderedHeader = header.render();
-    body.appendChild(renderedHeader);
+closeVideo('.slider-btn-left');
+closeVideo('.slider-btn-right');
+closeVideo('.js-listen');
 
-    var mainScreen = new MainScreenSectionComponent(data);
-    var renderedMainScreen = mainScreen.render();
-    main.appendChild(renderedMainScreen);
-    
-    data.ratingData.forEach(function (dataItem, index) {
-        var id = data.ratingData.length - index;
-        var reverseBlock = index % 3 === 1;
-
-        if (index % 3 === 2) {
-            var centralSection = new MovieCentralSectionComponent(id, dataItem);
-            var renderedSection = centralSection.render();
-            main.insertBefore(renderedSection, main.querySelector('.sign-up'));
-            
-            var sliderData = data.ratingData.slice(index - 2, index + 1);
-            
-            var slider = new SliderSectionComponent(sliderData);
-            var renderedSlider = slider.render();
-            main.appendChild(renderedSlider);
-        } else {
-            var section = new MovieSectionComponent(id, dataItem, reverseBlock);
-            var renderedSection = section.render();
-            main.appendChild(renderedSection);
-        }
-    });
-
-    var signUp = new SignUpSectionComponent();
-    var renderedSection = signUp.render();
-    main.appendChild(renderedSection);
-
-    var footer = new FooterComponent();
-    var renderedFooter = footer.render();
-    body.appendChild(renderedFooter);
-
-    closeVideo('.slider-btn-left');
-    closeVideo('.slider-btn-right');
-    closeVideo('.js-listen');
-
-    makeSmoothScroll('.submenu-link');
-    makeSmoothScroll('.js-scroll-link');
-}());
+makeSmoothScroll('.submenu-link');
+makeSmoothScroll('.js-scroll-link');
 
 function closeVideo(selector) {
     var elements = document.querySelectorAll(selector);
