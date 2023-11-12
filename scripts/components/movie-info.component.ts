@@ -2,6 +2,7 @@ import { ModalComponent } from "./modal.component";
 import { IComponent, IMovie } from "../models";
 import { ListenButtonComponent } from "./buttons/listen-button.component";
 import { getMovieRating } from "../utils";
+import { slideService } from "..";
 
 export class MovieInfoComponent implements IComponent {
     private movieData: IMovie;
@@ -49,6 +50,7 @@ export class MovieInfoComponent implements IComponent {
     private createListenButtonComponent(): HTMLElement {
         const listenBtn = new ListenButtonComponent(() => {
             const { title, rating, audioUrl } = this.movieData;
+            slideService.stopSlideVideos();
             
             const modalComponent = new ModalComponent(title, rating, audioUrl);
             const renderedModalComponent = modalComponent.render();

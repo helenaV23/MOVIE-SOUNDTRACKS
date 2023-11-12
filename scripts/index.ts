@@ -1,32 +1,14 @@
 import { AppComponent } from "./components/app.component";
+import { SlideService } from "./services/slide.service";
+
+export const slideService = new SlideService();
+
 
 const appComponent = new AppComponent(); 
 appComponent.init();
 
-closeVideo('.slider-btn-left');
-closeVideo('.slider-btn-right');
-closeVideo('.js-listen');
-
 makeSmoothScroll('.submenu-link');
 makeSmoothScroll('.js-scroll-link');
-
-function closeVideo(selector) {
-    var elements = document.querySelectorAll(selector);
-
-    elements.forEach(function (element) {
-        element.addEventListener('click', function () {
-            document.querySelectorAll('.movie-video').forEach(function (movieVideoElem) {
-                (movieVideoElem as any).pause();
-            });
-            document.querySelectorAll('.movie-item').forEach(function (movieItemElem) {
-                movieItemElem.classList.remove('movie-item-playing');
-            });
-            document.querySelectorAll('.btn-play').forEach(function (jsVideoPlayElem) {
-                jsVideoPlayElem.classList.remove('btn-pause');
-            });
-        });
-    });
-}
 
 function makeSmoothScroll(selector) {
     var elements = document.querySelectorAll(selector);

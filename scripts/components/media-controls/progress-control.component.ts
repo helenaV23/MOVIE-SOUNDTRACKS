@@ -80,11 +80,11 @@ export class ProgressControlComponent implements IComponent {
     private showProgress(): void {
         const currTime = this.media.currentTime;
         this.currentTime.textContent = this.formatTime(currTime);
-    
+
         const progress = (currTime / this.media.duration) * 100;
         this.timeLineProgress.style.width = `${progress}%`;
     
-        this.timer = requestAnimationFrame(this.showProgress.bind(this, this.media));
+        this.timer = requestAnimationFrame(() => this.showProgress());
     }
 
     private formatTime(time: number): string {
