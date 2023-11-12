@@ -2,6 +2,10 @@ export interface IComponent {
     render(): HTMLElement;
 }
 
+export interface IOnEnded {
+    onEnded(): void;
+}
+
 export interface ITopData {
     helperTitle: string;
     title: string;

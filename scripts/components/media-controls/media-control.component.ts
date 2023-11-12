@@ -1,14 +1,13 @@
-import { IComponent } from "../../models";
+import { IComponent, IOnEnded } from "../../models";
 import { ProgressControlComponent } from "./progress-control.component";
-import { PlayButtonComponent } from "../buttons";
 import { VolumeControlComponent } from "./volume-control.component";
 
 export class MediaControlsComponent implements IComponent {
-    private playButton: PlayButtonComponent;
+    private onEndedComponent: IOnEnded;
     private media: HTMLMediaElement;
 
-    constructor(playButton: PlayButtonComponent, media: HTMLMediaElement) {
-        this.playButton = playButton;
+    constructor(onEndedComponent: IOnEnded, media: HTMLMediaElement) {
+        this.onEndedComponent = onEndedComponent;
         this.media = media;
     }
 
@@ -16,7 +15,7 @@ export class MediaControlsComponent implements IComponent {
         const mediaControls = document.createElement('div');
         mediaControls.classList.add('media-controls');
     
-        const progressControlElem = new ProgressControlComponent(this.playButton, this.media);
+        const progressControlElem = new ProgressControlComponent(this.onEndedComponent, this.media);
         const renderedProgressControlElement = progressControlElem.render();
     
         const volumeControlElement = new VolumeControlComponent((volume) => {

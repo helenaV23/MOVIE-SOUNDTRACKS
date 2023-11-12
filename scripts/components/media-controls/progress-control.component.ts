@@ -1,8 +1,7 @@
-import { IComponent } from "../../models";
-import { PlayButtonComponent } from "../buttons";
+import { IComponent, IOnEnded } from "../../models";
 
 export class ProgressControlComponent implements IComponent {
-    private mediaPlayButton: PlayButtonComponent;
+    private onEndedComponent: IOnEnded;
     private media: HTMLMediaElement;
     private mediaTime: HTMLElement;
     private currentTime: HTMLElement;
@@ -11,8 +10,8 @@ export class ProgressControlComponent implements IComponent {
     private mediaDuration: HTMLElement;
     private timer: number;
 
-    constructor(mediaPlayButton: PlayButtonComponent, media: HTMLMediaElement) {
-        this.mediaPlayButton = mediaPlayButton;
+    constructor(onEndedComponent: IOnEnded, media: HTMLMediaElement) {
+        this.onEndedComponent = onEndedComponent;
         this.media = media;
     }
 
@@ -60,7 +59,7 @@ export class ProgressControlComponent implements IComponent {
             });
     
             this.media.addEventListener('ended', () => {
-                this.mediaPlayButton.reset();
+                this.onEndedComponent.onEnded();
                 this.currentTime.textContent = this.formatTime(0);
                 this.timeLineProgress.style.width = '0';
             });

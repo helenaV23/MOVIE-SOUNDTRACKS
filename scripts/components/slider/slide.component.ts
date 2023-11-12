@@ -1,9 +1,9 @@
-import { IComponent } from "../../models";
+import { IComponent, IOnEnded } from "../../models";
 import { PlayButtonComponent } from "../buttons";
 import { MediaControlsComponent } from "../media-controls";
 import { slideService } from "../../index";
 
-export class SlideComponent implements IComponent {
+export class SlideComponent implements IComponent, IOnEnded {
     private imageSrc: string;
     private imageAlt: string;
     private videoSrc: string;
@@ -44,7 +44,12 @@ export class SlideComponent implements IComponent {
     public stopVideo(): void {
         this.movieVideo.pause();
         this.movieItem.classList.remove('movie-item-playing');
-        this.playButton.reset();
+        this.playButton.onEnded();
+    }
+
+    public onEnded(): void {
+        this.movieItem.classList.remove('movie-item-playing');
+        this.playButton.onEnded();
     }
 
     private createPlayButtonComponent(): HTMLElement {
@@ -63,7 +68,7 @@ export class SlideComponent implements IComponent {
     }
 
     private createMediaControlsComponent(): HTMLElement {
-        const mediaControlsComponent = new MediaControlsComponent(this.playButton, this.movieVideo);
+        const mediaControlsComponent = new MediaControlsComponent(this, this.movieVideo);
         const mediaControlsElement = mediaControlsComponent.render();
 
         return mediaControlsElement;
