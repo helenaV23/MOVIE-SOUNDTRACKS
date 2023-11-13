@@ -1,6 +1,6 @@
-import { IComponent } from "../../models";
+import { IComponent, IOnEnded } from "../../models";
 
-export class PlayButtonComponent implements IComponent {
+export class PlayButtonComponent implements IComponent, IOnEnded {
     private button: HTMLElement;
     private playing: boolean = false;
     private buttonClick: (playing: boolean) => void;
@@ -28,7 +28,7 @@ export class PlayButtonComponent implements IComponent {
         return this.button;
     }
 
-    public reset(): void {
+    public onEnded(): void {
         this.button.classList.remove('btn-pause');
         this.playing = false;
     }

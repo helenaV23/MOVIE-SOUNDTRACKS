@@ -25,7 +25,7 @@ export class AppComponent {
             if (index % 3 === 2) {
                 const centralSection = new MovieCentralSectionComponent(id, dataItem);
                 const renderedSection = centralSection.render();
-                main.insertBefore(renderedSection, main.querySelector('.sign-up'));
+                main.appendChild(renderedSection);
                 
                 const sliderData = data.ratingData.slice(index - 2, index + 1);
                 

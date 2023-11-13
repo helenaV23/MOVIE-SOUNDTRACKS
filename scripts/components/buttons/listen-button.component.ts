@@ -3,7 +3,7 @@ import { IComponent } from "../../models";
 export class ListenButtonComponent implements IComponent {
     private buttonClick: () => void;
 
-    constructor (buttonClick: () => void) {
+    constructor(buttonClick: () => void) {
         this.buttonClick = buttonClick;
     }
 

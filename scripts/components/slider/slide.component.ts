@@ -1,8 +1,9 @@
-import { IComponent } from "../../models";
+import { IComponent, IOnEnded } from "../../models";
 import { PlayButtonComponent } from "../buttons";
 import { MediaControlsComponent } from "../media-controls";
+import { slideService } from "../../index";
 
-export class SlideComponent implements IComponent {
+export class SlideComponent implements IComponent, IOnEnded {
     private imageSrc: string;
     private imageAlt: string;
     private videoSrc: string;
@@ -40,8 +41,19 @@ export class SlideComponent implements IComponent {
         return this.movieItem;
     }
 
+    public stopVideo(): void {
+        this.movieVideo.pause();
+        this.movieItem.classList.remove('movie-item-playing');
+        this.playButton.onEnded();
+    }
+
+    public onEnded(): void {
+        this.movieItem.classList.remove('movie-item-playing');
+        this.playButton.onEnded();
+    }
+
     private createPlayButtonComponent(): HTMLElement {
-        const playButton = new PlayButtonComponent((playing) => {
+        this.playButton = new PlayButtonComponent((playing) => {
             if (playing) {
                 this.movieItem.classList.add('movie-item-playing');
                 this.movieVideo.play();
@@ -49,29 +61,16 @@ export class SlideComponent implements IComponent {
                 this.movieItem.classList.remove('movie-item-playing');
                 this.movieVideo.pause();
             }
-            this.stopAllOtherVideos();
+            slideService.stopSlideVideos(this);
         });
 
-        const renderedPlayButton = playButton.render();
-
-        return renderedPlayButton;
+        return this.playButton.render();
     }
 
     private createMediaControlsComponent(): HTMLElement {
-        const mediaControlsComponent = new MediaControlsComponent(this.playButton, this.movieVideo);
+        const mediaControlsComponent = new MediaControlsComponent(this, this.movieVideo);
         const mediaControlsElement = mediaControlsComponent.render();
 
         return mediaControlsElement;
-    }
-
-    private stopAllOtherVideos(): void {
-        const allVideos = document.querySelectorAll('.movie-video');
-        allVideos.forEach((videoElem: HTMLMediaElement) => {
-            if (videoElem !== this.movieVideo) {
-                videoElem.pause();
-                videoElem.closest('.movie-item').classList.remove('movie-item-playing');
-                videoElem.parentNode.querySelector('.btn-play').classList.remove('btn-pause');
-            }
-        });
     }
 }

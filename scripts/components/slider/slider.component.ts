@@ -1,5 +1,6 @@
 import { IComponent, IMovie } from "../../models";
 import { SlideComponent } from "./slide.component";
+import { slideService } from "../../index";
 
 export class SliderComponent implements IComponent {
     private movieData: IMovie[];
@@ -41,6 +42,8 @@ export class SliderComponent implements IComponent {
             const videoSrc = `videos/${itemData.videoUrl}`;
 
             const slideComponent = new SlideComponent(imageSrc, imageAlt, videoSrc);
+            slideService.registerSlideComponent(slideComponent);
+            
             const renderedSlideComponent = slideComponent.render();
             
             this.moviesList.appendChild(renderedSlideComponent);
@@ -79,6 +82,7 @@ export class SliderComponent implements IComponent {
 
         this.rightButton.addEventListener('click', (e) => {
             e.preventDefault();
+            slideService.stopSlideVideos();
 
             if (this.currentSlide < lastSlideIndex) {
                 this.currentSlide++;
@@ -88,7 +92,8 @@ export class SliderComponent implements IComponent {
 
         this.leftButton.addEventListener('click', (e) => {
             e.preventDefault();
-
+            slideService.stopSlideVideos();
+            
             if (this.currentSlide > 0) {
                 this.currentSlide--;
                 this.moveSlide();
