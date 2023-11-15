@@ -1,4 +1,4 @@
-import { data } from "../data";
+import { dataService } from "..";
 import { FooterComponent } from "./footer.component";
 import { HeaderComponent } from "./header.component";
 import { MainScreenSectionComponent, MovieCentralSectionComponent, MovieSectionComponent, SignUpSectionComponent } from "./sections";
@@ -9,17 +9,18 @@ export class AppComponent {
         const body = document.body;
         const main = document.createElement('main');
         body.appendChild(main);
-    
-        const header = new HeaderComponent(data.ratingData);
+
+        const header = new HeaderComponent();
         const renderedHeader = header.render();
         body.appendChild(renderedHeader);
     
-        const mainScreen = new MainScreenSectionComponent(data);
+        const mainScreen = new MainScreenSectionComponent();
         const renderedMainScreen = mainScreen.render();
         main.appendChild(renderedMainScreen);
+        const ratingData = dataService.getRating();
         
-        data.ratingData.forEach((dataItem, index) => {
-            const id = data.ratingData.length - index;
+        ratingData.forEach((dataItem, index) => {
+            const id = ratingData.length - index;
             const reverseBlock = index % 3 === 1;
     
             if (index % 3 === 2) {
@@ -27,7 +28,7 @@ export class AppComponent {
                 const renderedSection = centralSection.render();
                 main.appendChild(renderedSection);
                 
-                const sliderData = data.ratingData.slice(index - 2, index + 1);
+                const sliderData = ratingData.slice(index - 2, index + 1);
                 
                 const slider = new SliderSectionComponent(sliderData);
                 const renderedSlider = slider.render();

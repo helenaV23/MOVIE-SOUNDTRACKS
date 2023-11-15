@@ -1,4 +1,5 @@
-import { IComponent, IMovie } from "../models";
+import { dataService } from "..";
+import { IComponent } from "../models";
 import { getMovieRating } from "../utils";
 
 export class HeaderComponent implements IComponent {
@@ -7,14 +8,9 @@ export class HeaderComponent implements IComponent {
     ];
 
     private menu: HTMLElement;
-    private data: IMovie[];
     private submenu: HTMLElement;
     private menuWrapper: HTMLElement;
     private menuBtn: HTMLButtonElement;
-
-    constructor(data: IMovie[]) {
-        this.data = data;
-    }
 
     public render(): HTMLElement {
         const header = document.createElement('header');
@@ -94,8 +90,9 @@ export class HeaderComponent implements IComponent {
     private createSubMenuLinks(): void {
         this.submenu = document.createElement('ul');
         this.submenu.classList.add('submenu');
+        const data = dataService.getRating();
 
-        this.data.forEach((item) => {
+        data.forEach((item) => {
             const subMenuItem = document.createElement('li');
             subMenuItem.classList.add('submenu-item');
             const submenuLink = document.createElement('a');

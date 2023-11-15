@@ -1,32 +1,29 @@
-import { IComponent, ITopData } from "../../models";
+import { dataService } from "../..";
+import { IComponent } from "../../models";
 import { BaseSectionComponent } from "./base-section.component";
 
 export class MainScreenSectionComponent extends BaseSectionComponent implements IComponent {
-    private topData: ITopData;
-
-    constructor(topData: ITopData) {
-        super();
-        this.topData = topData;
-    }
 
     public render(): HTMLElement {
+        const data = dataService.getData();
+
         const section = super.render();
         section.classList.add('main-screen');
 
         const title = document.createElement('h1');
         const accentTitle = document.createElement('span');
         accentTitle.classList.add('accent-title');
-        accentTitle.textContent = this.topData.helperTitle;
+        accentTitle.textContent = data.helperTitle;
         title.appendChild(accentTitle);
-        title.appendChild(document.createTextNode(this.topData.title));
+        title.appendChild(document.createTextNode(data.title));
 
         const mainScreenDescription = document.createElement('p');
         mainScreenDescription.classList.add('main-screen-description');
-        mainScreenDescription.textContent = this.topData.description;
+        mainScreenDescription.textContent = data.description;
 
         const scrollLink = document.createElement('a');
         scrollLink.classList.add('btn-link', 'js-scroll-link');
-        scrollLink.href = `#rating-${this.topData.ratingData[0].rating}`;
+        scrollLink.href = `#rating-${data.ratingData[0].rating}`;
         
         const buttonSvg = `
             <svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg">
