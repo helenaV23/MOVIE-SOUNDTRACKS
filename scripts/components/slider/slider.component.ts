@@ -1,15 +1,17 @@
 import { IComponent, IMovie } from "../../models";
 import { SlideComponent } from "./slide.component";
-import { slideService } from "../../index";
+import { ServiceLocator, Services } from "../../services/service-locator";
+import { SlideService } from "../../services/slide.service";
 
 export class SliderComponent implements IComponent {
+    private static readonly slideStep: number = -100;
     private movieData: IMovie[];
     private moviesList: HTMLElement; 
     private leftButton: HTMLAnchorElement;
     private rightButton: HTMLAnchorElement;
     private sliderWrapper: HTMLElement;
     private currentSlide: number;
-    private static readonly slideStep: number = -100;
+    private slideService: SlideService = ServiceLocator.inject<SlideService>(Services.slideService);
     
     constructor(movieData: IMovie[], initialSlide: number) {
         this.movieData = movieData;
@@ -42,7 +44,7 @@ export class SliderComponent implements IComponent {
             const videoSrc = `videos/${itemData.videoUrl}`;
 
             const slideComponent = new SlideComponent(imageSrc, imageAlt, videoSrc);
-            slideService.registerSlideComponent(slideComponent);
+            this.slideService.registerSlideComponent(slideComponent);
             
             const renderedSlideComponent = slideComponent.render();
             
@@ -82,7 +84,7 @@ export class SliderComponent implements IComponent {
 
         this.rightButton.addEventListener('click', (e) => {
             e.preventDefault();
-            slideService.stopSlideVideos();
+            this.slideService.stopSlideVideos();
 
             if (this.currentSlide < lastSlideIndex) {
                 this.currentSlide++;
@@ -92,7 +94,7 @@ export class SliderComponent implements IComponent {
 
         this.leftButton.addEventListener('click', (e) => {
             e.preventDefault();
-            slideService.stopSlideVideos();
+            this.slideService.stopSlideVideos();
             
             if (this.currentSlide > 0) {
                 this.currentSlide--;

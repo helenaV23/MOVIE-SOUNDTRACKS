@@ -1,7 +1,8 @@
 import { IComponent, IOnEnded } from "../../models";
 import { PlayButtonComponent } from "../buttons";
 import { MediaControlsComponent } from "../media-controls";
-import { slideService } from "../../index";
+import { SlideService } from "../../services/slide.service";
+import { ServiceLocator, Services } from "../../services/service-locator";
 
 export class SlideComponent implements IComponent, IOnEnded {
     private imageSrc: string;
@@ -10,6 +11,7 @@ export class SlideComponent implements IComponent, IOnEnded {
     private movieItem: HTMLElement;
     private movieVideo: HTMLMediaElement;
     private playButton: PlayButtonComponent;
+    private slideService: SlideService = ServiceLocator.inject<SlideService>(Services.slideService);
 
     constructor(imageSrc: string, imageAlt: string, videoSrc: string) {
         this.imageSrc = imageSrc;
@@ -61,7 +63,7 @@ export class SlideComponent implements IComponent, IOnEnded {
                 this.movieItem.classList.remove('movie-item-playing');
                 this.movieVideo.pause();
             }
-            slideService.stopSlideVideos(this);
+            this.slideService.stopSlideVideos(this);
         });
 
         return this.playButton.render();

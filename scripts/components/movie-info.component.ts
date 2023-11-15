@@ -2,11 +2,15 @@ import { ModalComponent } from "./modal.component";
 import { IComponent, IMovie } from "../models";
 import { ListenButtonComponent } from "./buttons/listen-button.component";
 import { getMovieRating } from "../utils";
-import { dataService, slideService } from "..";
+import { DataService } from "../services/data.service";
+import { ServiceLocator, Services } from "../services/service-locator";
+import { SlideService } from "../services/slide.service";
 
 export class MovieInfoComponent implements IComponent {
     private movieData: IMovie;
     private centerAlignedBlocks: boolean;
+    private dataService: DataService = ServiceLocator.inject<DataService>(Services.dataService);
+    private slideService: SlideService = ServiceLocator.inject<SlideService>(Services.slideService);
 
     constructor(movieData: IMovie, centerAlignedBlocks: boolean = false) {
         this.movieData = movieData;
@@ -50,8 +54,8 @@ export class MovieInfoComponent implements IComponent {
     private createListenButtonComponent(): HTMLElement {
         const listenBtn = new ListenButtonComponent(() => {
             const { title, rating, id } = this.movieData;
-            slideService.stopSlideVideos();
-            const movieAudio = dataService.getAudio(id);
+            this.slideService.stopSlideVideos();
+            const movieAudio = this.dataService.getAudio(id);
             
             const modalComponent = new ModalComponent(title, rating, movieAudio.audioUrl);
             const renderedModalComponent = modalComponent.render();

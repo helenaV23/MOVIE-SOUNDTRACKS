@@ -1,5 +1,6 @@
-import { dataService } from "..";
 import { IComponent } from "../models";
+import { DataService } from "../services/data.service";
+import { ServiceLocator, Services } from "../services/service-locator";
 import { getMovieRating } from "../utils";
 
 export class HeaderComponent implements IComponent {
@@ -7,6 +8,7 @@ export class HeaderComponent implements IComponent {
         'Search', 'Add to the favorites', 'FAQ'
     ];
 
+    private dataService: DataService = ServiceLocator.inject<DataService>(Services.dataService);
     private menu: HTMLElement;
     private submenu: HTMLElement;
     private menuWrapper: HTMLElement;
@@ -90,7 +92,7 @@ export class HeaderComponent implements IComponent {
     private createSubMenuLinks(): void {
         this.submenu = document.createElement('ul');
         this.submenu.classList.add('submenu');
-        const data = dataService.getRating();
+        const data = this.dataService.getRating();
 
         data.forEach((item) => {
             const subMenuItem = document.createElement('li');

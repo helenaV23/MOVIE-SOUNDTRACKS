@@ -1,11 +1,17 @@
-import { dataService } from "..";
+import { DataService } from "../services/data.service";
+import { ServiceLocator, Services } from "../services/service-locator";
+import { SlideService } from "../services/slide.service";
 import { FooterComponent } from "./footer.component";
 import { HeaderComponent } from "./header.component";
 import { MainScreenSectionComponent, MovieCentralSectionComponent, MovieSectionComponent, SignUpSectionComponent } from "./sections";
 import { SliderSectionComponent } from "./sections/slider-section.component";
 
 export class AppComponent {
+    private dataService: DataService;
+    
     public init(): void {
+        this.resisterServices();
+
         const body = document.body;
         const main = document.createElement('main');
         body.appendChild(main);
@@ -17,7 +23,7 @@ export class AppComponent {
         const mainScreen = new MainScreenSectionComponent();
         const renderedMainScreen = mainScreen.render();
         main.appendChild(renderedMainScreen);
-        const ratingData = dataService.getRating();
+        const ratingData = this.dataService.getRating();
         
         ratingData.forEach((dataItem, index) => {
             const id = ratingData.length - index;
@@ -47,5 +53,12 @@ export class AppComponent {
         const footer = new FooterComponent();
         const renderedFooter = footer.render();
         body.appendChild(renderedFooter);
+    }
+
+    private resisterServices(): void {
+        this.dataService = new DataService();
+
+        ServiceLocator.register(Services.dataService, this.dataService);
+        ServiceLocator.register(Services.slideService, new SlideService());
     }
 }

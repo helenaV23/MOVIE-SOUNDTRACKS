@@ -1,11 +1,13 @@
-import { dataService } from "../..";
 import { IComponent } from "../../models";
+import { DataService } from "../../services/data.service";
+import { ServiceLocator, Services } from "../../services/service-locator";
 import { BaseSectionComponent } from "./base-section.component";
 
 export class MainScreenSectionComponent extends BaseSectionComponent implements IComponent {
+    private dataService: DataService = ServiceLocator.inject<DataService>(Services.dataService);
 
     public render(): HTMLElement {
-        const data = dataService.getData();
+        const data = this.dataService.getData();
 
         const section = super.render();
         section.classList.add('main-screen');
