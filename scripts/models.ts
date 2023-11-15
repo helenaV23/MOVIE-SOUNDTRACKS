@@ -14,11 +14,16 @@ export interface ITopData {
 }
 
 export interface IMovie {
+    id: number;
     title: string;
     description: string;
     imageCovers: string[];
     rating: number;
-    audioUrl: string;
     videoUrl?: string;
     videoCoverUrl?: string;
+}
+
+export interface IMovieAudio {
+    id: number;
+    audioUrl: string;
 }

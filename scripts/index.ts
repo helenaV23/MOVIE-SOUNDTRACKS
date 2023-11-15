@@ -1,7 +1,9 @@
 import { AppComponent } from "./components/app.component";
+import { DataService } from "./services/data.service";
 import { SlideService } from "./services/slide.service";
 
 export const slideService = new SlideService();
+export const dataService = new DataService();
 
 
 const appComponent = new AppComponent(); 
