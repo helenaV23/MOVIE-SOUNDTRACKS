@@ -7,7 +7,6 @@ export class SlideService {
         this.slideComponents.push(slideComponent);
     }
 
-    
     public stopSlideVideos(slideComponentToPlay?: SlideComponent): void {
         for (const slideComponent of this.slideComponents) {
             if (slideComponent !== slideComponentToPlay) {

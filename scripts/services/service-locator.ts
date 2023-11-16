@@ -1,6 +1,7 @@
 export enum Services {
     dataService,
     slideService,
+    scrollService,
 }
 
 export class ServiceLocator {
