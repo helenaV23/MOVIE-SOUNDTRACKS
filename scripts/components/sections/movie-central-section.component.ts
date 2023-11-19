@@ -3,22 +3,20 @@ import { BaseSectionComponent } from "./base-section.component";
 import { MovieInfoComponent } from "../movie-info.component";
 
 export class MovieCentralSectionComponent extends BaseSectionComponent implements IMovieComponent {
-    private id: number;
     private movieData: IMovie;
     private section: HTMLElement;
 
-    constructor(id: number, movieData: IMovie) {
+    constructor(movieData: IMovie) {
         super();
-        this.id = id;
         this.movieData = movieData;
     }
 
     public getId(): number {
-        return this.id;
+        return this.movieData.id;
     }
 
-    public getContainer(): HTMLElement {
-        return this.section;
+    public getContainerOffsetTop(): number {
+        return this.section.getBoundingClientRect().top;
     }
 
     public render(): HTMLElement {
@@ -29,7 +27,6 @@ export class MovieCentralSectionComponent extends BaseSectionComponent implement
         const backgroundImageStyle = imageCovers.map((imageCover) => `url("images/${imageCover}")`).join(', ');
         this.section.style.backgroundImage = backgroundImageStyle;
 
-        this.section.id = `rating-${this.id}`;
         const movieInfo = new MovieInfoComponent(this.movieData, true);
         const renderedMovieInfo = movieInfo.render();
         this.wrapper.appendChild(renderedMovieInfo);

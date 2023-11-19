@@ -30,5 +30,5 @@ export interface IMovieAudio {
 
 export interface IMovieComponent {
     getId(): number;
-    getContainer(): HTMLElement;
+    getContainerOffsetTop(): number;
 }

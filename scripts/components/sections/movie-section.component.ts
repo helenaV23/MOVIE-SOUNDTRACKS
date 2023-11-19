@@ -3,30 +3,27 @@ import { BaseSectionComponent } from "./base-section.component";
 import { MovieInfoComponent } from "../movie-info.component";
 
 export class MovieSectionComponent extends BaseSectionComponent implements IMovieComponent {
-    private id: number;
     private movieData: IMovie;
     private reverseBlock: boolean;
     private section: HTMLElement;
 
-    constructor(id: number, movieData: IMovie, reverseBlock: boolean) {
+    constructor(movieData: IMovie, reverseBlock: boolean) {
         super();
-        this.id = id;
         this.movieData = movieData;
         this.reverseBlock = reverseBlock;
     }
 
     public getId(): number {
-        return this.id;
+        return this.movieData.id;
     }
 
-    public getContainer(): HTMLElement {
-        return this.section;
+    public getContainerOffsetTop(): number {
+        return this.section.getBoundingClientRect().top;
     }
 
     public render(): HTMLElement {
         this.section = super.render();
         this.section.classList.add('about-movie');
-        this.section.id = `rating-${this.id}`;
         this.wrapper.classList.add('push-apart');
         const img = document.createElement('img');
         img.src = `images/${this.movieData.imageCovers}`;

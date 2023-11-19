@@ -28,11 +28,10 @@ export class AppComponent {
         const ratingData = this.dataService.getRating();
         
         ratingData.forEach((dataItem, index) => {
-            const id = ratingData.length - index;
             const reverseBlock = index % 3 === 1;
     
             if (index % 3 === 2) {
-                const centralSection = new MovieCentralSectionComponent(id, dataItem);
+                const centralSection = new MovieCentralSectionComponent(dataItem);
                 
                 this.scrollService.registerMovieComponent(centralSection);
 
@@ -45,7 +44,7 @@ export class AppComponent {
                 const renderedSlider = slider.render();
                 main.appendChild(renderedSlider);
             } else {
-                const section = new MovieSectionComponent(id, dataItem, reverseBlock);
+                const section = new MovieSectionComponent(dataItem, reverseBlock);
                 this.scrollService.registerMovieComponent(section);
                 const renderedSection = section.render();
                 main.appendChild(renderedSection);
