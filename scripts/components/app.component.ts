@@ -1,4 +1,5 @@
 import { DataService } from "../services/data.service";
+import { ScrollService } from "../services/scroll.service";
 import { ServiceLocator, Services } from "../services/service-locator";
 import { SlideService } from "../services/slide.service";
 import { FooterComponent } from "./footer.component";
@@ -8,6 +9,7 @@ import { SliderSectionComponent } from "./sections/slider-section.component";
 
 export class AppComponent {
     private dataService: DataService;
+    private scrollService: ScrollService;
     
     public init(): void {
         this.resisterServices();
@@ -26,11 +28,13 @@ export class AppComponent {
         const ratingData = this.dataService.getRating();
         
         ratingData.forEach((dataItem, index) => {
-            const id = ratingData.length - index;
             const reverseBlock = index % 3 === 1;
     
             if (index % 3 === 2) {
-                const centralSection = new MovieCentralSectionComponent(id, dataItem);
+                const centralSection = new MovieCentralSectionComponent(dataItem);
+                
+                this.scrollService.registerMovieComponent(centralSection);
+
                 const renderedSection = centralSection.render();
                 main.appendChild(renderedSection);
                 
@@ -40,7 +44,8 @@ export class AppComponent {
                 const renderedSlider = slider.render();
                 main.appendChild(renderedSlider);
             } else {
-                const section = new MovieSectionComponent(id, dataItem, reverseBlock);
+                const section = new MovieSectionComponent(dataItem, reverseBlock);
+                this.scrollService.registerMovieComponent(section);
                 const renderedSection = section.render();
                 main.appendChild(renderedSection);
             }
@@ -57,8 +62,10 @@ export class AppComponent {
 
     private resisterServices(): void {
         this.dataService = new DataService();
+        this.scrollService = new ScrollService();
 
         ServiceLocator.register(Services.dataService, this.dataService);
         ServiceLocator.register(Services.slideService, new SlideService());
+        ServiceLocator.register(Services.scrollService, this.scrollService);
     }
 }

@@ -27,3 +27,8 @@ export interface IMovieAudio {
     id: number;
     audioUrl: string;
 }
+
+export interface IMovieComponent {
+    getId(): number;
+    getContainerOffsetTop(): number;
+}

@@ -1,5 +1,6 @@
 import { IComponent } from "../models";
 import { DataService } from "../services/data.service";
+import { ScrollService } from "../services/scroll.service";
 import { ServiceLocator, Services } from "../services/service-locator";
 import { getMovieRating } from "../utils";
 
@@ -9,6 +10,7 @@ export class HeaderComponent implements IComponent {
     ];
 
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.dataService);
+    private scrollService: ScrollService = ServiceLocator.inject<ScrollService>(Services.scrollService);
     private menu: HTMLElement;
     private submenu: HTMLElement;
     private menuWrapper: HTMLElement;
@@ -99,10 +101,13 @@ export class HeaderComponent implements IComponent {
             subMenuItem.classList.add('submenu-item');
             const submenuLink = document.createElement('a');
             submenuLink.classList.add('submenu-link');
-            submenuLink.href = `#rating-${item.rating}`;
+            submenuLink.href = '#';
             submenuLink.textContent = getMovieRating(item.rating);
 
-            submenuLink.addEventListener('click', () => {
+            submenuLink.addEventListener('click', (e: MouseEvent) => {
+                e.preventDefault();
+                this.scrollService.scrollToSection(item.id);
+
                 document.body.classList.remove('lock');
                 this.menuWrapper.classList.remove('open-burger-menu');
                 this.menuBtn.classList.remove('menu-btn-active');

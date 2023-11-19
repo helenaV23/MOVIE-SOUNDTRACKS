@@ -159,7 +159,7 @@ export class DataService {
     }
 
     public getAudio(id: number): IMovieAudio {
-        return audioData.find(item => item.id == id);
+        return audioData.find(item => item.id === id);
     }
 
     private fetchData(): void {
