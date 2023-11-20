@@ -1,8 +1,7 @@
 import { IComponent, IOnEnded } from "../../models";
 import { PlayButtonComponent } from "../buttons";
 import { MediaControlsComponent } from "../media-controls";
-import { SlideService } from "../../services/slide.service";
-import { ServiceLocator, Services } from "../../services/service-locator";
+import { ServiceLocator, Services, SlideService } from "../../services";
 
 export class SlideComponent implements IComponent, IOnEnded {
     private imageSrc: string;

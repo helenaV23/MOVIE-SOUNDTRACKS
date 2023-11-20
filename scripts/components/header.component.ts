@@ -1,7 +1,5 @@
 import { IComponent } from "../models";
-import { DataService } from "../services/data.service";
-import { ScrollService } from "../services/scroll.service";
-import { ServiceLocator, Services } from "../services/service-locator";
+import { DataService, ScrollService, ServiceLocator, Services } from "../services";
 import { getMovieRating } from "../utils";
 
 export class HeaderComponent implements IComponent {
@@ -24,10 +22,10 @@ export class HeaderComponent implements IComponent {
 
         const logoLink = this.createLogo();
         wrapper.appendChild(logoLink);
-        
+
         this.createMenuBtn();
         wrapper.appendChild(this.menuBtn);
-        
+
         this.menuWrapper = document.createElement('nav');
         this.menuWrapper.classList.add('menu-wrapper');
         wrapper.appendChild(this.menuWrapper);

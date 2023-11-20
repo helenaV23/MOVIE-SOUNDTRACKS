@@ -1,7 +1,5 @@
 import { IComponent } from "../../models";
-import { DataService } from "../../services/data.service";
-import { ScrollService } from "../../services/scroll.service";
-import { ServiceLocator, Services } from "../../services/service-locator";
+import { DataService, ScrollService, ServiceLocator, Services } from "../../services";
 import { BaseSectionComponent } from "./base-section.component";
 
 export class MainScreenSectionComponent extends BaseSectionComponent implements IComponent {

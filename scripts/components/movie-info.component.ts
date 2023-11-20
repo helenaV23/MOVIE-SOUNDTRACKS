@@ -2,9 +2,7 @@ import { ModalComponent } from "./modal.component";
 import { IComponent, IMovie } from "../models";
 import { ListenButtonComponent } from "./buttons/listen-button.component";
 import { getMovieRating } from "../utils";
-import { DataService } from "../services/data.service";
-import { ServiceLocator, Services } from "../services/service-locator";
-import { SlideService } from "../services/slide.service";
+import { DataService, ServiceLocator, Services, SlideService } from "../services";
 
 export class MovieInfoComponent implements IComponent {
     private movieData: IMovie;
@@ -31,7 +29,7 @@ export class MovieInfoComponent implements IComponent {
         const rating = document.createElement('span');
         rating.classList.add('rating');
         rating.textContent = getMovieRating(this.movieData.rating);
-        
+
         const movieContent = document.createElement('div');
         movieContent.classList.add('movie-content');
 
@@ -56,7 +54,7 @@ export class MovieInfoComponent implements IComponent {
             const { title, rating, id } = this.movieData;
             this.slideService.stopSlideVideos();
             const movieAudio = this.dataService.getAudio(id);
-            
+
             const modalComponent = new ModalComponent(title, rating, movieAudio.audioUrl);
             const renderedModalComponent = modalComponent.render();
             document.body.appendChild(renderedModalComponent);
