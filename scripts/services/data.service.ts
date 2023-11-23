@@ -142,28 +142,31 @@ const audioData: IMovieAudio[] = [
 export class DataService {
     private data: ITopData;
 
-    public getData(): ITopData {
+    public getData(callback: (data: ITopData) => void): void {
         if (!this.data) {
-            this.fetchData();
+            this.fetchData(callback);
+        } else {
+            callback(this.data);
         }
-
-        return this.data;
     }
 
-    public getRating(): IMovie[] {
+    public getRating(callback: (ratingData: IMovie[]) => void): void {
         if (!this.data) {
-            this.fetchData();
+            this.fetchData((d) => {
+                callback(d.ratingData);
+            });
+        } else {
+            callback(this.data.ratingData);
         }
-        
-        return this.data.ratingData;
     }
 
-    public getAudio(id: number): IMovieAudio {
-        return audioData.find(item => item.id === id);
-    }
+    public getAudio(id: number, callback: (audioData: IMovieAudio) => void): void {
+        callback(audioData.find(item => item.id === id));
+    } 
 
-    private fetchData(): void {
+    private fetchData(callback: (data: ITopData) => void): void {
         data.ratingData.sort((a, b) => b.rating - a.rating);
         this.data = data;
+        callback(this.data);  
     }
 }

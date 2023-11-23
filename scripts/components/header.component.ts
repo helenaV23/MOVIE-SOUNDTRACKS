@@ -92,27 +92,27 @@ export class HeaderComponent implements IComponent {
     private createSubMenuLinks(): void {
         this.submenu = document.createElement('ul');
         this.submenu.classList.add('submenu');
-        const data = this.dataService.getRating();
-
-        data.forEach((item) => {
-            const subMenuItem = document.createElement('li');
-            subMenuItem.classList.add('submenu-item');
-            const submenuLink = document.createElement('a');
-            submenuLink.classList.add('submenu-link');
-            submenuLink.href = '#';
-            submenuLink.textContent = getMovieRating(item.rating);
-
-            submenuLink.addEventListener('click', (e: MouseEvent) => {
-                e.preventDefault();
-                this.scrollService.scrollToSection(item.id);
-
-                document.body.classList.remove('lock');
-                this.menuWrapper.classList.remove('open-burger-menu');
-                this.menuBtn.classList.remove('menu-btn-active');
+        this.dataService.getRating((data) => {
+            data.forEach((item) => {
+                const subMenuItem = document.createElement('li');
+                subMenuItem.classList.add('submenu-item');
+                const submenuLink = document.createElement('a');
+                submenuLink.classList.add('submenu-link');
+                submenuLink.href = '#';
+                submenuLink.textContent = getMovieRating(item.rating);
+    
+                submenuLink.addEventListener('click', (e: MouseEvent) => {
+                    e.preventDefault();
+                    this.scrollService.scrollToSection(item.id);
+    
+                    document.body.classList.remove('lock');
+                    this.menuWrapper.classList.remove('open-burger-menu');
+                    this.menuBtn.classList.remove('menu-btn-active');
+                });
+    
+                subMenuItem.appendChild(submenuLink);
+                this.submenu.appendChild(subMenuItem);
             });
-
-            subMenuItem.appendChild(submenuLink);
-            this.submenu.appendChild(subMenuItem);
         });
     }
 }

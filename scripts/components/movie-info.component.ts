@@ -53,11 +53,11 @@ export class MovieInfoComponent implements IComponent {
         const listenBtn = new ListenButtonComponent(() => {
             const { title, rating, id } = this.movieData;
             this.slideService.stopSlideVideos();
-            const movieAudio = this.dataService.getAudio(id);
-
-            const modalComponent = new ModalComponent(title, rating, movieAudio.audioUrl);
-            const renderedModalComponent = modalComponent.render();
-            document.body.appendChild(renderedModalComponent);
+            this.dataService.getAudio(id, (movieAudio) => {
+                const modalComponent = new ModalComponent(title, rating, movieAudio.audioUrl);
+                const renderedModalComponent = modalComponent.render();
+                document.body.appendChild(renderedModalComponent);
+            });   
         });
 
         const renderedListenBtn = listenBtn.render();
